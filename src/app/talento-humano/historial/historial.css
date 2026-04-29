@@ -1,0 +1,33 @@
+.page {
+  padding: 32px;
+  background: #f1f5f9;
+  min-height: 100vh;
+}
+
+.header {
+  margin-bottom: 24px;
+}
+
+.card {
+  background: white;
+  padding: 24px;
+  border-radius: 20px;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+th, td {
+  padding: 12px;
+  border-bottom: 1px solid #e2e8f0;
+}
+
+.PENDIENTE { color: #f59e0b; font-weight: bold; }
+.EN_PROCESO { color: #2563eb; font-weight: bold; }
+.APROBADO { color: #16a34a; font-weight: bold; }
+
+.error {
+  color: red;
+}

@@ -1,0 +1,36 @@
+.page {
+  padding: 32px;
+  background: #f1f5f9;
+  min-height: 100vh;
+}
+
+.header {
+  margin-bottom: 24px;
+}
+
+.header h1 {
+  margin: 0;
+  font-size: 32px;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 20px;
+}
+
+.card {
+  padding: 24px;
+  border-radius: 20px;
+  background: white;
+  text-align: center;
+}
+
+.card h2 {
+  font-size: 40px;
+}
+
+.total { border-left: 6px solid #64748b; }
+.pendiente { border-left: 6px solid #f59e0b; }
+.proceso { border-left: 6px solid #2563eb; }
+.aprobado { border-left: 6px solid #16a34a; }

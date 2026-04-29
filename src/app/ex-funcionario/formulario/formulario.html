@@ -1,0 +1,293 @@
+<div class="toolbar no-print">
+  <button (click)="guardar()">Guardar</button>
+  <button (click)="cargar()">Cargar datos</button>
+  <button (click)="limpiar()" class="danger">Limpiar</button>
+  <button (click)="imprimir()" class="print">Imprimir / Exportar PDF</button>
+</div>
+
+<p class="mensaje no-print" *ngIf="mensaje">{{ mensaje }}</p>
+
+<div class="documento">
+
+  <!-- ================= HOJA 1 ================= -->
+  <section class="hoja">
+
+    <table class="tabla-principal">
+      <tr>
+        <td class="logo-box" rowspan="2">
+          <img src="/img/logo-inamhi.png" alt="INAMHI" class="logo">
+        </td>
+        <td class="titulo-central">
+          FORMULARIO DE PAZ Y SALVO
+        </td>
+        <td class="codigo">
+          Código: TH-FOR-001
+        </td>
+      </tr>
+      <tr>
+        <td class="subtitulo-central">
+          DIRECCIÓN DE ADMINISTRACIÓN DE RECURSOS HUMANOS
+        </td>
+        <td class="codigo">
+          Página 1 de 2
+        </td>
+      </tr>
+    </table>
+
+    <table class="tabla">
+      <tr>
+        <th colspan="4" class="seccion">DATOS GENERALES DEL EX FUNCIONARIO</th>
+      </tr>
+
+      <tr>
+        <td class="label">NOMBRES Y APELLIDOS</td>
+        <td colspan="3">
+          <input [(ngModel)]="datos.nombre">
+        </td>
+      </tr>
+
+      <tr>
+        <td class="label">CÉDULA</td>
+        <td>
+          <input [(ngModel)]="datos.cedula">
+        </td>
+        <td class="label">TELÉFONO</td>
+        <td>
+          <input [(ngModel)]="datos.telefono">
+        </td>
+      </tr>
+
+      <tr>
+        <td class="label">CARGO</td>
+        <td>
+          <input [(ngModel)]="datos.cargo">
+        </td>
+        <td class="label">UNIDAD / DIRECCIÓN</td>
+        <td>
+          <input [(ngModel)]="datos.unidad">
+        </td>
+      </tr>
+
+      <tr>
+        <td class="label">FECHA DE INGRESO</td>
+        <td>
+          <input type="date" [(ngModel)]="datos.fechaIngreso">
+        </td>
+        <td class="label">FECHA DE SALIDA</td>
+        <td>
+          <input type="date" [(ngModel)]="datos.fechaSalida">
+        </td>
+      </tr>
+
+      <tr>
+        <td class="label">CORREO PERSONAL</td>
+        <td colspan="3">
+          <input [(ngModel)]="datos.correo">
+        </td>
+      </tr>
+
+      <tr>
+        <td class="label">MOTIVO DE SALIDA</td>
+        <td colspan="3">
+          <textarea [(ngModel)]="datos.motivoSalida"></textarea>
+        </td>
+      </tr>
+    </table>
+
+    <table class="tabla">
+      <tr>
+        <th colspan="4" class="seccion">DIRECCIÓN ADMINISTRATIVA FINANCIERA</th>
+      </tr>
+
+      <tr>
+        <td class="label">GESTIÓN DE BIENES</td>
+        <td colspan="3">
+          <textarea [(ngModel)]="datos.bienes"></textarea>
+        </td>
+      </tr>
+
+      <tr>
+        <td class="label">OBSERVACIONES</td>
+        <td colspan="3">
+          <textarea [(ngModel)]="datos.observacionBienes"></textarea>
+        </td>
+      </tr>
+
+      <tr>
+        <td class="firma">RESPONSABLE</td>
+        <td class="firma-linea"></td>
+        <td class="firma">FECHA</td>
+        <td class="firma-linea"></td>
+      </tr>
+    </table>
+
+    <table class="tabla">
+      <tr>
+        <th colspan="4" class="seccion">GESTIÓN DE TECNOLOGÍAS DE LA INFORMACIÓN Y COMUNICACIÓN</th>
+      </tr>
+
+      <tr>
+        <td class="label">USUARIO / CORREO INSTITUCIONAL</td>
+        <td colspan="3">
+          <textarea [(ngModel)]="datos.usuarioCorreo"></textarea>
+        </td>
+      </tr>
+
+      <tr>
+        <td class="label">EQUIPOS TECNOLÓGICOS</td>
+        <td colspan="3">
+          <textarea [(ngModel)]="datos.equiposTecnologicos"></textarea>
+        </td>
+      </tr>
+
+      <tr>
+        <td class="label">OBSERVACIONES</td>
+        <td colspan="3">
+          <textarea [(ngModel)]="datos.observacionTics"></textarea>
+        </td>
+      </tr>
+
+      <tr>
+        <td class="firma">RESPONSABLE</td>
+        <td class="firma-linea"></td>
+        <td class="firma">FECHA</td>
+        <td class="firma-linea"></td>
+      </tr>
+    </table>
+
+  </section>
+
+  <!-- ================= HOJA 2 ================= -->
+  <section class="hoja">
+
+    <table class="tabla-principal">
+      <tr>
+        <td class="logo-box" rowspan="2">
+          <img src="/img/logo-inamhi.png" alt="INAMHI" class="logo">
+        </td>
+        <td class="titulo-central">
+          FORMULARIO DE PAZ Y SALVO
+        </td>
+        <td class="codigo">
+          Código: TH-FOR-001
+        </td>
+      </tr>
+      <tr>
+        <td class="subtitulo-central">
+          DIRECCIÓN DE ADMINISTRACIÓN DE RECURSOS HUMANOS
+        </td>
+        <td class="codigo">
+          Página 2 de 2
+        </td>
+      </tr>
+    </table>
+
+    <table class="tabla">
+      <tr>
+        <th colspan="4" class="seccion">GESTIÓN FINANCIERA</th>
+      </tr>
+
+      <tr>
+        <td class="label">VALORES PENDIENTES</td>
+        <td colspan="3">
+          <textarea [(ngModel)]="datos.valoresPendientes"></textarea>
+        </td>
+      </tr>
+
+      <tr>
+        <td class="label">OBSERVACIONES</td>
+        <td colspan="3">
+          <textarea [(ngModel)]="datos.observacionFinanciera"></textarea>
+        </td>
+      </tr>
+
+      <tr>
+        <td class="firma">RESPONSABLE</td>
+        <td class="firma-linea"></td>
+        <td class="firma">FECHA</td>
+        <td class="firma-linea"></td>
+      </tr>
+    </table>
+
+    <table class="tabla">
+      <tr>
+        <th colspan="4" class="seccion">DIRECCIÓN DE ADMINISTRACIÓN DE RECURSOS HUMANOS</th>
+      </tr>
+
+      <tr>
+        <td class="label">DOCUMENTOS ENTREGADOS</td>
+        <td colspan="3">
+          <textarea [(ngModel)]="datos.documentosEntregados"></textarea>
+        </td>
+      </tr>
+
+      <tr>
+        <td class="label">OBSERVACIONES</td>
+        <td colspan="3">
+          <textarea [(ngModel)]="datos.observacionTH"></textarea>
+        </td>
+      </tr>
+
+      <tr>
+        <td class="firma">RESPONSABLE</td>
+        <td class="firma-linea"></td>
+        <td class="firma">FECHA</td>
+        <td class="firma-linea"></td>
+      </tr>
+    </table>
+
+    <table class="tabla">
+      <tr>
+        <th colspan="4" class="seccion">RECEPCIÓN DE DOCUMENTOS</th>
+      </tr>
+
+      <tr>
+        <td class="label">RECEPCIÓN</td>
+        <td colspan="3">
+          <textarea [(ngModel)]="datos.recepcion"></textarea>
+        </td>
+      </tr>
+
+      <tr>
+        <td class="label">OBSERVACIONES</td>
+        <td colspan="3">
+          <textarea [(ngModel)]="datos.observacionRecepcion"></textarea>
+        </td>
+      </tr>
+
+      <tr>
+        <td class="firma">RESPONSABLE</td>
+        <td class="firma-linea"></td>
+        <td class="firma">FECHA</td>
+        <td class="firma-linea"></td>
+      </tr>
+    </table>
+
+    <table class="tabla">
+      <tr>
+        <th colspan="4" class="seccion">AUTORIZACIÓN</th>
+      </tr>
+
+      <tr>
+        <td colspan="4" class="texto-autorizacion">
+          Yo, <strong>{{ datos.nombre || '_________________________' }}</strong>,
+          con cédula No.
+          <strong>{{ datos.cedula || '________________' }}</strong>,
+          declaro que la información registrada en este formulario es verdadera
+          y autorizo la verificación correspondiente dentro del proceso de paz y salvo institucional.
+        </td>
+      </tr>
+
+      <tr>
+        <td class="firma">FIRMA DEL EX FUNCIONARIO</td>
+        <td class="firma-linea"></td>
+        <td class="firma">FECHA</td>
+        <td>
+          <input type="date" [(ngModel)]="datos.fechaFormulario">
+        </td>
+      </tr>
+    </table>
+
+  </section>
+
+</div>

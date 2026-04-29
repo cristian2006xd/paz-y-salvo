@@ -1,0 +1,57 @@
+.page {
+  min-height: 100vh;
+  padding: 32px;
+  background: #f1f5f9;
+  font-family: Arial, sans-serif;
+}
+
+.header {
+  margin-bottom: 24px;
+}
+
+.header h1 {
+  margin: 0 0 8px;
+  color: #0f172a;
+  font-size: 32px;
+}
+
+.header p {
+  margin: 0;
+  color: #64748b;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+}
+
+.card {
+  padding: 26px;
+  border-radius: 22px;
+  background: white;
+  text-align: center;
+  box-shadow: 0 12px 30px rgba(15, 23, 42, 0.08);
+}
+
+.card h2 {
+  margin: 0 0 10px;
+  font-size: 42px;
+}
+
+.card span {
+  color: #64748b;
+  font-weight: 700;
+}
+
+.pendiente {
+  border-left: 6px solid #f59e0b;
+}
+
+.revision {
+  border-left: 6px solid #2563eb;
+}
+
+.aprobado {
+  border-left: 6px solid #16a34a;
+}

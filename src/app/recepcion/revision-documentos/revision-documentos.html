@@ -1,0 +1,77 @@
+<div class="page">
+
+  <header class="header">
+    <div>
+      <h1>Revisión de Documentos</h1>
+      <p>Validación final del documento firmado por el ex funcionario.</p>
+    </div>
+  </header>
+
+  <section class="card" *ngIf="cargando">
+    Cargando documentos...
+  </section>
+
+  <section class="error-card" *ngIf="error">
+    {{ error }}
+  </section>
+
+  <section class="success-card" *ngIf="mensaje">
+    {{ mensaje }}
+  </section>
+
+  <section class="card" *ngIf="!cargando">
+
+    <table>
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Ex Funcionario</th>
+          <th>Usuario</th>
+          <th>Solicitud</th>
+          <th>Archivo</th>
+          <th>Estado</th>
+          <th>Observación</th>
+          <th>Acciones</th>
+        </tr>
+      </thead>
+
+      <tbody>
+        <tr *ngFor="let d of documentos">
+          <td>{{ d.id }}</td>
+          <td>{{ d.nombres }} {{ d.apellidos }}</td>
+          <td>{{ d.usuario }}</td>
+          <td>#{{ d.solicitud_id }}</td>
+          <td>{{ d.nombre_archivo }}</td>
+          <td>
+            <span
+              class="badge"
+              [class.ok]="d.estado === 'APROBADO'"
+              [class.bad]="d.estado === 'RECHAZADO'"
+            >
+              {{ d.estado }}
+            </span>
+          </td>
+          <td>{{ d.observacion || 'Sin observación' }}</td>
+          <td>
+            <button (click)="aprobar(d)" [disabled]="d.estado === 'APROBADO'">
+              Aprobar
+            </button>
+
+            <button class="danger" (click)="rechazar(d)" [disabled]="d.estado === 'RECHAZADO'">
+              Rechazar
+            </button>
+          </td>
+        </tr>
+
+        <tr *ngIf="documentos.length === 0">
+          <td colspan="8" class="empty">
+            No existen documentos cargados.
+          </td>
+        </tr>
+      </tbody>
+
+    </table>
+
+  </section>
+
+</div>

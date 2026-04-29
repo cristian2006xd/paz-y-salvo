@@ -1,0 +1,64 @@
+<div class="usuarios-container">
+
+  <h1>Gestión de Usuarios</h1>
+
+  <div class="form-card">
+    <h2>Crear usuario</h2>
+
+    <div class="form-grid">
+      <input [(ngModel)]="nuevo.nombres" placeholder="Nombres">
+      <input [(ngModel)]="nuevo.apellidos" placeholder="Apellidos">
+      <input [(ngModel)]="nuevo.usuario" placeholder="Usuario">
+      <input [(ngModel)]="nuevo.password" type="password" placeholder="Contraseña">
+
+      <select [(ngModel)]="nuevo.rol">
+        <option value="admin">Admin</option>
+        <option value="talento_humano">Talento Humano</option>
+        <option value="ex_funcionario">Ex Funcionario</option>
+        <option value="area">Área</option>
+        <option value="recepcion">Recepción</option>
+      </select>
+
+      <input [(ngModel)]="nuevo.area" placeholder="Área">
+    </div>
+
+    <button (click)="crearUsuario()" [disabled]="cargando">
+      {{ cargando ? 'Guardando...' : 'Crear Usuario' }}
+    </button>
+
+    <p class="mensaje">{{ mensaje }}</p>
+  </div>
+
+  <div class="tabla-card">
+    <h2>Lista de usuarios</h2>
+
+    <table>
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Nombres</th>
+          <th>Usuario</th>
+          <th>Rol</th>
+          <th>Área</th>
+          <th>Estado</th>
+        </tr>
+      </thead>
+
+      <tbody>
+        <tr *ngFor="let u of usuarios">
+          <td>{{ u.id }}</td>
+          <td>{{ u.nombres }} {{ u.apellidos }}</td>
+          <td>{{ u.usuario }}</td>
+          <td>{{ u.rol }}</td>
+          <td>{{ u.area }}</td>
+          <td>
+            <span [class.activo]="u.estado === 'ACTIVO'">
+              {{ u.estado }}
+            </span>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+</div>

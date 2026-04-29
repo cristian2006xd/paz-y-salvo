@@ -1,0 +1,98 @@
+<div class="page">
+  <header class="header no-print">
+    <div>
+      <h1>Documento Final</h1>
+      <p>Genere, firme y suba el documento final de paz y salvo.</p>
+    </div>
+
+    <button (click)="imprimirPDF()" [disabled]="!puedeDescargar()">
+      Imprimir / Guardar PDF
+    </button>
+  </header>
+
+  <section class="card" *ngIf="cargando">
+    Cargando documento...
+  </section>
+
+  <section class="error-card" *ngIf="!cargando && error">
+    {{ error }}
+  </section>
+
+  <ng-container *ngIf="!cargando && !error">
+
+    <section class="document">
+      <h2>PAZ Y SALVO INSTITUCIONAL</h2>
+
+      <p>
+        Se certifica que el/la ex funcionario/a
+        <strong>{{ usuario?.nombres }} {{ usuario?.apellidos }}</strong>,
+        identificado/a con usuario institucional
+        <strong>{{ usuario?.usuario }}</strong>,
+        registra el siguiente estado dentro del proceso de paz y salvo:
+      </p>
+
+      <div class="status">
+        Estado general:
+        <strong>{{ solicitud?.estado }}</strong>
+      </div>
+
+      <table>
+        <thead>
+          <tr>
+            <th>Área</th>
+            <th>Estado</th>
+            <th>Responsable</th>
+            <th>Detalle</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          <tr *ngFor="let a of areas">
+            <td>{{ a.area }}</td>
+            <td>{{ a.estado }}</td>
+            <td>{{ a.responsable || 'Pendiente' }}</td>
+            <td>{{ a.detalle || 'Pendiente' }}</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="firma">
+        <div>
+          <span></span>
+          <p>Firma Responsable Talento Humano</p>
+        </div>
+
+        <div>
+          <span></span>
+          <p>Firma Ex Funcionario</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="upload-card no-print">
+      <h2>Subir documento firmado</h2>
+      <p>Una vez firmado electrónicamente, suba el archivo en formato PDF.</p>
+
+      <input
+        type="file"
+        accept="application/pdf"
+        (change)="seleccionarArchivo($event)"
+        [disabled]="!puedeDescargar()"
+      />
+
+      <button
+        (click)="subirDocumentoFirmado()"
+        [disabled]="subiendo || !puedeDescargar()"
+      >
+        {{ subiendo ? 'Subiendo...' : 'Subir documento firmado' }}
+      </button>
+
+      <p class="success" *ngIf="mensaje">{{ mensaje }}</p>
+
+      <p class="blocked" *ngIf="!puedeDescargar()">
+        El documento solo se puede subir cuando la solicitud esté APROBADA.
+      </p>
+    </section>
+
+  </ng-container>
+</div>

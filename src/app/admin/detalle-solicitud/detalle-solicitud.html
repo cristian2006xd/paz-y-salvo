@@ -1,0 +1,113 @@
+<div class="page">
+
+  <header class="header">
+    <div>
+      <h1>Detalle de Solicitud</h1>
+      <p>Control administrativo completo del proceso.</p>
+    </div>
+
+    <a routerLink="/admin/solicitudes">Volver</a>
+  </header>
+
+  <section class="card" *ngIf="cargando">
+    Cargando detalle...
+  </section>
+
+  <section class="error" *ngIf="error">
+    {{ error }}
+  </section>
+
+  <section class="success" *ngIf="mensaje">
+    {{ mensaje }}
+  </section>
+
+  <ng-container *ngIf="!cargando && solicitud">
+
+    <section class="summary">
+      <div>
+        <span>Solicitud</span>
+        <strong>#{{ solicitud.id }}</strong>
+      </div>
+
+      <div>
+        <span>Funcionario</span>
+        <strong>{{ solicitud.nombres }} {{ solicitud.apellidos }}</strong>
+      </div>
+
+      <div>
+        <span>Usuario</span>
+        <strong>{{ solicitud.usuario }}</strong>
+      </div>
+
+      <div>
+        <span>Estado</span>
+        <strong [class]="solicitud.estado">{{ solicitud.estado }}</strong>
+      </div>
+    </section>
+
+    <section class="card">
+      <h2>Progreso por áreas</h2>
+
+      <div class="progress-info">
+        <strong>{{ porcentaje() }}%</strong>
+        <span>{{ completadas() }} de {{ areas.length }} áreas completadas</span>
+      </div>
+
+      <div class="bar">
+        <div class="fill" [style.width.%]="porcentaje()"></div>
+      </div>
+
+      <div class="areas-grid">
+        <article class="area" *ngFor="let a of areas" [class.ok]="a.estado === 'COMPLETADO'">
+          <h3>{{ a.area }}</h3>
+          <span>{{ a.estado }}</span>
+          <p><strong>Responsable:</strong> {{ a.responsable || 'Pendiente' }}</p>
+          <p><strong>Detalle:</strong> {{ a.detalle || 'Pendiente' }}</p>
+          <p><strong>Observación:</strong> {{ a.observacion || 'Sin observación' }}</p>
+        </article>
+      </div>
+    </section>
+
+    <section class="card">
+      <h2>Control manual</h2>
+
+      <textarea
+        [(ngModel)]="observacion"
+        placeholder="Observación administrativa"
+        rows="4"
+      ></textarea>
+
+      <div class="actions">
+        <button
+          class="review"
+          (click)="enviarRevision()"
+          [disabled]="guardando"
+        >
+          Enviar a revisión
+        </button>
+
+        <button
+          class="approve"
+          (click)="aprobar()"
+          [disabled]="guardando || !todasCompletadas()"
+        >
+          Aprobar
+        </button>
+
+        <button
+          class="deny"
+          (click)="negar()"
+          [disabled]="guardando"
+        >
+          Negar
+        </button>
+      </div>
+
+      <p class="hint" *ngIf="!todasCompletadas()">
+        Para aprobar, todas las áreas deben estar completadas.
+      </p>
+    </section>
+
+  </ng-container>
+
+</div>

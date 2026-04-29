@@ -1,0 +1,23 @@
+<div class="page">
+  <header class="header">
+    <div>
+      <h1>Datos Personales</h1>
+      <p>Complete la información requerida para el proceso de paz y salvo.</p>
+    </div>
+  </header>
+
+  <section class="card">
+    <div class="form-grid">
+      <input [(ngModel)]="datos.cedula" placeholder="Cédula">
+      <input [(ngModel)]="datos.telefono" placeholder="Teléfono">
+      <input [(ngModel)]="datos.correo" placeholder="Correo personal">
+      <input [(ngModel)]="datos.direccion" placeholder="Dirección">
+      <input [(ngModel)]="datos.cargo" placeholder="Cargo que desempeñaba">
+      <input [(ngModel)]="datos.unidad" placeholder="Unidad / área">
+    </div>
+
+    <button (click)="guardar()">Guardar datos</button>
+
+    <p class="success" *ngIf="mensaje">{{ mensaje }}</p>
+  </section>
+</div>

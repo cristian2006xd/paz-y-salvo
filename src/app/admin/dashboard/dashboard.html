@@ -1,0 +1,80 @@
+<div class="dashboard-layout">
+
+  <aside class="sidebar">
+    <div class="brand">
+      <div class="brand-logo">PS</div>
+      <div>
+        <h2>Paz y Salvo</h2>
+        <span>Panel administrador</span>
+      </div>
+    </div>
+
+    <nav class="menu">
+      <a routerLink="/admin/dashboard" routerLinkActive="active">Dashboard</a>
+      <a routerLink="/admin/usuarios" routerLinkActive="active">Usuarios</a>
+      <a routerLink="/admin/solicitudes" routerLinkActive="active">Solicitudes</a>
+      <a routerLink="/admin/auditoria" routerLinkActive="active">Auditoría</a>
+      <a routerLink="/admin/reportes" routerLinkActive="active">Reportes</a>
+    </nav>
+
+    <button class="logout" (click)="logout()">Cerrar sesión</button>
+  </aside>
+
+  <main class="content">
+    <header class="topbar">
+      <div>
+        <h1>Dashboard Administrativo</h1>
+        <p>Gestión general del sistema institucional de paz y salvo.</p>
+      </div>
+
+      <div class="user-box">
+        <strong>{{ usuario?.nombres || 'Administrador' }}</strong>
+        <span>{{ usuario?.rol || 'admin' }}</span>
+      </div>
+    </header>
+
+    <section class="cards-grid">
+      <article class="card">
+        <span>Solicitudes totales</span>
+        <h3>0</h3>
+        <p>Procesos registrados</p>
+      </article>
+
+      <article class="card">
+        <span>Pendientes</span>
+        <h3>0</h3>
+        <p>Áreas por completar</p>
+      </article>
+
+      <article class="card">
+        <span>Aprobadas</span>
+        <h3>0</h3>
+        <p>Procesos finalizados</p>
+      </article>
+
+      <article class="card">
+        <span>Usuarios activos</span>
+        <h3>0</h3>
+        <p>Accesos habilitados</p>
+      </article>
+    </section>
+
+    <section class="panel">
+      <div class="panel-header">
+        <h2>Resumen del sistema</h2>
+        <button routerLink="/talento-humano/crear-solicitud">
+          Nueva solicitud
+        </button>
+      </div>
+
+      <div class="empty-state">
+        <h3>Sistema administrativo activo</h3>
+        <p>
+          Desde este panel se administran usuarios, solicitudes, auditoría,
+          reportes y control general del proceso de paz y salvo institucional.
+        </p>
+      </div>
+    </section>
+  </main>
+
+</div>

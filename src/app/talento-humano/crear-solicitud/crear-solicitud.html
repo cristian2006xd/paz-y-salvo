@@ -1,0 +1,94 @@
+<div class="page">
+
+  <header class="header">
+    <div>
+      <h1>Crear Solicitud de Paz y Salvo</h1>
+      <p>Registre una nueva solicitud para iniciar el flujo institucional.</p>
+    </div>
+
+    <div class="user-card">
+      <strong>{{ usuarioActual?.nombres || 'Talento Humano' }}</strong>
+      <span>{{ usuarioActual?.rol || 'talento_humano' }}</span>
+    </div>
+  </header>
+
+  <section class="form-card">
+    <h2>Nueva solicitud</h2>
+
+    <div class="form-grid">
+      <div class="field">
+        <label>Ex funcionario</label>
+        <select [(ngModel)]="nuevaSolicitud.ex_funcionario_id">
+          <option value="">Seleccione un ex funcionario</option>
+          <option *ngFor="let ex of exFuncionarios" [value]="ex.id">
+            {{ ex.nombres }} {{ ex.apellidos }} - {{ ex.usuario }}
+          </option>
+        </select>
+      </div>
+
+      <div class="field">
+        <label>Creado por</label>
+        <input
+          type="text"
+          [value]="usuarioActual?.nombres + ' ' + usuarioActual?.apellidos"
+          disabled
+        />
+      </div>
+    </div>
+
+    <div class="messages">
+      <p class="success" *ngIf="mensaje">{{ mensaje }}</p>
+      <p class="error" *ngIf="error">{{ error }}</p>
+    </div>
+
+    <button (click)="crearSolicitud()" [disabled]="cargando">
+      {{ cargando ? 'Creando solicitud...' : 'Crear Solicitud' }}
+    </button>
+  </section>
+
+  <section class="table-card">
+    <div class="table-header">
+      <div>
+        <h2>Solicitudes registradas</h2>
+        <p>Listado general de procesos de paz y salvo.</p>
+      </div>
+    </div>
+
+    <div class="table-wrapper">
+      <table>
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Ex funcionario</th>
+            <th>Usuario</th>
+            <th>Área</th>
+            <th>Estado</th>
+            <th>Fecha creación</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          <tr *ngFor="let s of solicitudes">
+            <td>{{ s.id }}</td>
+            <td>{{ s.nombres }} {{ s.apellidos }}</td>
+            <td>{{ s.usuario }}</td>
+            <td>{{ s.area || 'Sin área' }}</td>
+            <td>
+              <span class="badge" [ngClass]="s.estado">
+                {{ s.estado }}
+              </span>
+            </td>
+            <td>{{ s.fecha_creacion }}</td>
+          </tr>
+
+          <tr *ngIf="solicitudes.length === 0">
+            <td colspan="6" class="empty">
+              No existen solicitudes registradas.
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+</div>

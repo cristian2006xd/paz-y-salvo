@@ -1,0 +1,70 @@
+<div class="page">
+
+  <header class="header no-print">
+    <div>
+      <h1>Reportes del Sistema</h1>
+      <p>Resumen general del sistema de paz y salvo institucional.</p>
+    </div>
+
+    <div class="actions">
+      <button (click)="cargarResumen()">Refrescar</button>
+      <button class="secondary" (click)="imprimir()">Imprimir / PDF</button>
+    </div>
+  </header>
+
+  <section class="loading" *ngIf="cargando">
+    Cargando reportes...
+  </section>
+
+  <section class="error" *ngIf="error">
+    {{ error }}
+  </section>
+
+  <ng-container *ngIf="!cargando && !error && resumen">
+
+    <section class="report-title">
+      <h2>Reporte General</h2>
+      <span>Generado desde el sistema</span>
+    </section>
+
+    <section class="grid">
+      <article class="card">
+        <span>Usuarios</span>
+        <strong>{{ resumen.usuarios }}</strong>
+        <p>Total de usuarios registrados.</p>
+      </article>
+
+      <article class="card">
+        <span>Solicitudes</span>
+        <strong>{{ resumen.solicitudes }}</strong>
+        <p>Total de solicitudes creadas.</p>
+      </article>
+
+      <article class="card warning">
+        <span>Pendientes</span>
+        <strong>{{ resumen.pendientes }}</strong>
+        <p>Solicitudes pendientes.</p>
+      </article>
+
+      <article class="card process">
+        <span>En proceso</span>
+        <strong>{{ resumen.en_proceso }}</strong>
+        <p>Solicitudes en validación.</p>
+      </article>
+
+      <article class="card success">
+        <span>Aprobadas</span>
+        <strong>{{ resumen.aprobadas }}</strong>
+        <p>Solicitudes finalizadas.</p>
+      </article>
+
+      <article class="card">
+        <span>Documentos</span>
+        <strong>{{ resumen.documentos }}</strong>
+        <p>Documentos firmados cargados.</p>
+      </article>
+    </section>
+
+  </ng-container>
+
+</div>

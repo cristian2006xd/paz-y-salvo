@@ -1,0 +1,45 @@
+<div class="page">
+
+  <header class="header">
+    <h1>Historial de Solicitudes</h1>
+    <p>Registro completo de solicitudes realizadas.</p>
+  </header>
+
+  <section *ngIf="cargando">Cargando...</section>
+
+  <section class="error" *ngIf="error">
+    {{ error }}
+  </section>
+
+  <section class="card" *ngIf="!cargando && !error">
+
+    <table>
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Funcionario</th>
+          <th>Usuario</th>
+          <th>Área</th>
+          <th>Estado</th>
+        </tr>
+      </thead>
+
+      <tbody>
+        <tr *ngFor="let s of solicitudes">
+          <td>{{ s.id }}</td>
+          <td>{{ s.nombres }} {{ s.apellidos }}</td>
+          <td>{{ s.usuario }}</td>
+          <td>{{ s.area }}</td>
+          <td>
+            <span [class]="claseEstado(s.estado)">
+              {{ s.estado }}
+            </span>
+          </td>
+        </tr>
+      </tbody>
+
+    </table>
+
+  </section>
+
+</div>

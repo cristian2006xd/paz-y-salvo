@@ -1,0 +1,101 @@
+<div class="page">
+
+  <header class="header">
+    <div>
+      <h1>Panel del Ex Funcionario</h1>
+      <p>Seguimiento del proceso de paz y salvo institucional.</p>
+    </div>
+
+    <div class="user-card">
+      <strong>{{ usuario?.nombres }} {{ usuario?.apellidos }}</strong>
+      <span>{{ usuario?.usuario }}</span>
+    </div>
+  </header>
+
+  <section class="loading-card" *ngIf="cargando">
+    Cargando información de la solicitud...
+  </section>
+
+  <section class="error-card" *ngIf="!cargando && error">
+    <h2>Sin solicitud activa</h2>
+    <p>{{ error }}</p>
+  </section>
+
+  <ng-container *ngIf="!cargando && !error">
+
+    <section class="summary-card">
+      <div>
+        <span class="label">Estado general</span>
+        <h2>{{ solicitud?.estado }}</h2>
+        <p>Solicitud #{{ solicitud?.id }}</p>
+      </div>
+
+      <div class="progress-box">
+        <strong>{{ porcentaje() }}%</strong>
+        <span>{{ areasCompletadas() }} de {{ totalAreas() }} áreas completadas</span>
+      </div>
+    </section>
+
+    <section class="actions-card">
+      <h2>Acciones disponibles</h2>
+      <p>Complete el formulario oficial y consulte el avance del proceso.</p>
+
+      <div class="actions-grid">
+        <a class="action-btn primary" routerLink="/ex-funcionario/formulario">
+          Llenar formulario de Paz y Salvo
+        </a>
+
+        <a class="action-btn" routerLink="/ex-funcionario/progreso">
+          Ver progreso detallado
+        </a>
+
+        <a
+          class="action-btn success"
+          routerLink="/ex-funcionario/documento-final"
+          [class.disabled]="solicitud?.estado !== 'APROBADO'"
+        >
+          Documento final
+        </a>
+      </div>
+
+      <p class="hint" *ngIf="solicitud?.estado !== 'APROBADO'">
+        El documento final se habilitará cuando todas las áreas completen la validación.
+      </p>
+    </section>
+
+    <section class="progress-card">
+      <div class="progress-header">
+        <h2>Progreso por áreas</h2>
+        <p>Visualización en tiempo real del avance de validación.</p>
+      </div>
+
+      <div class="bar">
+        <div class="bar-fill" [style.width.%]="porcentaje()"></div>
+      </div>
+
+      <div class="areas-grid">
+        <article
+          class="area-card"
+          *ngFor="let area of areas"
+          [class.completed]="area.estado === 'COMPLETADO'"
+        >
+          <div class="icon">
+            {{ area.estado === 'COMPLETADO' ? '✓' : '!' }}
+          </div>
+
+          <h3>{{ area.area }}</h3>
+
+          <span class="status">
+            {{ area.estado }}
+          </span>
+
+          <p>
+            {{ area.comentario || 'Pendiente de validación por el área correspondiente.' }}
+          </p>
+        </article>
+      </div>
+    </section>
+
+  </ng-container>
+
+</div>

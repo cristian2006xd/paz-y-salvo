@@ -1,0 +1,48 @@
+<div class="login-page">
+  <div class="login-card">
+    <section class="login-info">
+      <div class="logo">PS</div>
+
+      <h1>Sistema de Paz y Salvo Institucional</h1>
+      <p>
+        Plataforma para gestionar solicitudes, validaciones por áreas,
+        documentos firmados y auditoría institucional.
+      </p>
+    </section>
+
+    <section class="login-form">
+      <h2>Iniciar sesión</h2>
+      <p class="subtitle">Ingrese sus credenciales para continuar</p>
+
+      <form (ngSubmit)="login()">
+        <div class="form-group">
+          <label>Usuario</label>
+          <input
+            type="text"
+            name="usuario"
+            [(ngModel)]="usuario"
+            placeholder="Ej: admin"
+          />
+        </div>
+
+        <div class="form-group">
+          <label>Contraseña</label>
+          <input
+            type="password"
+            name="password"
+            [(ngModel)]="password"
+            placeholder="Ingrese su contraseña"
+          />
+        </div>
+
+        <div class="error" *ngIf="error">
+          {{ error }}
+        </div>
+
+        <button type="submit" [disabled]="cargando">
+          {{ cargando ? 'Ingresando...' : 'Ingresar' }}
+        </button>
+      </form>
+    </section>
+  </div>
+</div>

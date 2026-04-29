@@ -1,0 +1,62 @@
+.page {
+  min-height: 100vh;
+  padding: 32px;
+  background: #f1f5f9;
+  font-family: Arial, sans-serif;
+}
+
+.header {
+  margin-bottom: 24px;
+}
+
+.header h1 {
+  margin: 0 0 8px;
+  color: #0f172a;
+  font-size: 32px;
+}
+
+.header p {
+  margin: 0;
+  color: #64748b;
+}
+
+.card {
+  padding: 26px;
+  border-radius: 24px;
+  background: white;
+  box-shadow: 0 12px 30px rgba(15, 23, 42, 0.08);
+}
+
+.form-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 16px;
+}
+
+input {
+  padding: 14px;
+  border: 1px solid #cbd5e1;
+  border-radius: 14px;
+  outline: none;
+  background: #f8fafc;
+}
+
+button {
+  margin-top: 20px;
+  padding: 13px 18px;
+  border: none;
+  border-radius: 14px;
+  color: white;
+  background: #2563eb;
+  font-weight: 800;
+  cursor: pointer;
+}
+
+.success {
+  margin-top: 16px;
+  padding: 12px;
+  border-radius: 12px;
+  color: #166534;
+  background: #dcfce7;
+  font-weight: 700;
+}

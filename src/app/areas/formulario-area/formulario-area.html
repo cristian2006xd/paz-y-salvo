@@ -1,0 +1,39 @@
+<div class="page">
+
+  <h1>Formulario Área</h1>
+
+  <div *ngIf="cargando">Cargando...</div>
+
+  <div *ngIf="error" class="error">
+    {{ error }}
+  </div>
+
+  <div *ngIf="area">
+
+    <h2>Área: {{ area.area }}</h2>
+    <p><strong>Funcionario:</strong> {{ area.nombres }} {{ area.apellidos }}</p>
+
+    <form>
+
+      <label>Responsable</label>
+      <input [(ngModel)]="form.responsable" name="responsable">
+
+      <label>Detalle</label>
+      <textarea [(ngModel)]="form.detalle" name="detalle"></textarea>
+
+      <label>Observación</label>
+      <textarea [(ngModel)]="form.observacion" name="observacion"></textarea>
+
+      <button type="button" (click)="guardar()">
+        Guardar validación
+      </button>
+
+    </form>
+
+  </div>
+
+  <div *ngIf="mensaje" class="success">
+    {{ mensaje }}
+  </div>
+
+</div>

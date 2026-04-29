@@ -1,0 +1,22 @@
+<div class="container">
+
+  <h1>Panel de Áreas</h1>
+
+  <div class="grid">
+    <div class="card" *ngFor="let a of areas">
+      <h2>{{ a.area }}</h2>
+
+      <p>
+        Estado:
+        <strong [class.ok]="a.estado === 'COMPLETADO'">
+          {{ a.estado }}
+        </strong>
+      </p>
+
+      <button (click)="completar(a)" *ngIf="a.estado === 'PENDIENTE'">
+        Marcar como completado
+      </button>
+    </div>
+  </div>
+
+</div>

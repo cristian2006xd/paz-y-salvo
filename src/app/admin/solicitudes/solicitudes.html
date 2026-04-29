@@ -1,0 +1,65 @@
+<div class="page">
+
+  <header class="header">
+    <h1>Gestión de Solicitudes</h1>
+    <p>Panel administrativo de procesos de paz y salvo.</p>
+  </header>
+
+  <div class="toolbar">
+    <input
+      type="text"
+      placeholder="Buscar por funcionario, usuario, área o estado..."
+      [(ngModel)]="search"
+      (input)="buscar()"
+    />
+
+    <button (click)="cargar()">Refrescar</button>
+  </div>
+
+  <div *ngIf="cargando" class="loading">
+    Cargando solicitudes...
+  </div>
+
+  <div *ngIf="error" class="error">
+    {{ error }}
+  </div>
+
+  <table *ngIf="!cargando && filtradas.length > 0">
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Funcionario</th>
+        <th>Usuario</th>
+        <th>Área</th>
+        <th>Estado</th>
+        <th>Fecha</th>
+        <th>Acciones</th>
+      </tr>
+    </thead>
+
+    <tbody>
+      <tr *ngFor="let s of filtradas">
+        <td>{{ s.id }}</td>
+        <td>{{ s.nombres }} {{ s.apellidos }}</td>
+        <td>{{ s.usuario }}</td>
+        <td>{{ s.area || 'Sin área' }}</td>
+        <td>
+          <span class="badge" [class]="s.estado">
+            {{ s.estado }}
+          </span>
+        </td>
+        <td>{{ s.fecha_creacion | date:'short' }}</td>
+        <td>
+          <a class="btn-detail" [routerLink]="['/admin/solicitudes', s.id]">
+            Ver detalle
+          </a>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div *ngIf="!cargando && filtradas.length === 0" class="empty">
+    No hay solicitudes registradas.
+  </div>
+
+</div>

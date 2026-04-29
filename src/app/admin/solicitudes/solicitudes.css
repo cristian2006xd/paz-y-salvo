@@ -1,0 +1,45 @@
+.page {
+  padding: 30px;
+  background: #f1f5f9;
+  min-height: 100vh;
+}
+
+.header {
+  margin-bottom: 20px;
+}
+
+.toolbar {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+input {
+  flex: 1;
+  padding: 10px;
+}
+
+button {
+  padding: 10px 16px;
+  cursor: pointer;
+}
+
+table {
+  width: 100%;
+  background: white;
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+th, td {
+  padding: 12px;
+  border-bottom: 1px solid #ddd;
+}
+
+.PENDIENTE { color: orange; }
+.EN_PROCESO { color: blue; }
+.APROBADO { color: green; }
+
+.error {
+  color: red;
+}
