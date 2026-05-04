@@ -3,6 +3,7 @@ from flask_cors import CORS
 import mysql.connector
 import os
 from werkzeug.utils import secure_filename
+import json
 
 app = Flask(__name__)
 CORS(app)
@@ -372,20 +373,53 @@ def crear_solicitud():
             ""
         ))
 
-        conn.commit()
         solicitud_id = cursor.lastrowid
 
+        areas = [
+            "Unidad de Prestación de Servicios",
+            "Dirección Administrativa Financiera",
+            "TICS",
+            "Gestión Financiera",
+            "Seguridad de la Información",
+            "Recursos Humanos",
+            "Recepción de Documentos"
+        ]
+
+        for area in areas:
+            cursor.execute("""
+                INSERT INTO solicitudes_areas
+                (
+                    solicitud_id,
+                    area,
+                    estado,
+                    comentario,
+                    responsable,
+                    detalle,
+                    observacion,
+                    datos_json
+                )
+                VALUES (%s, %s, %s, %s, %s, %s, %s, %s)
+            """, (
+                solicitud_id,
+                area,
+                "PENDIENTE",
+                "Pendiente de revisión",
+                "",
+                "",
+                "",
+                json.dumps({})
+            ))
+
+        conn.commit()
         cursor.close()
         conn.close()
 
-        crear_areas_por_defecto(solicitud_id)
-
         registrar_auditoria(
-            data.get("usuario", "talento_humano"),
-            data.get("rol", "talento_humano"),
+            creado_por,
+            "talento_humano",
             "Solicitudes",
             "Crear solicitud",
-            f"Se creó la solicitud #{solicitud_id}"
+            f"Se creó la solicitud #{solicitud_id} con flujo por áreas"
         )
 
         return jsonify({
@@ -398,7 +432,6 @@ def crear_solicitud():
             "mensaje": "Error al crear solicitud",
             "error": str(e)
         }), 500
-
 
 @app.route("/api/solicitudes/<int:id>", methods=["GET"])
 def detalle_solicitud(id):

@@ -1,22 +1,63 @@
 <div class="container">
 
-  <h1>Panel de Áreas</h1>
+  <div class="header">
+    <h1>Panel de Áreas</h1>
 
-  <div class="grid">
+    <div class="actions">
+      <button class="secondary" (click)="volver()">Volver</button>
+      <button class="danger" (click)="logout()">Salir</button>
+    </div>
+  </div>
+
+  <!-- MENSAJES -->
+  <p class="success" *ngIf="mensaje">{{ mensaje }}</p>
+  <p class="error" *ngIf="error">{{ error }}</p>
+
+  <!-- LOADING -->
+  <p *ngIf="cargando">Cargando áreas...</p>
+
+  <!-- GRID -->
+  <div class="grid" *ngIf="!cargando">
+
     <div class="card" *ngFor="let a of areas">
+
       <h2>{{ a.area }}</h2>
 
       <p>
         Estado:
-        <strong [class.ok]="a.estado === 'COMPLETADO'">
+        <strong 
+          [class.ok]="a.estado === 'COMPLETADO'"
+          [class.pending]="a.estado === 'PENDIENTE'">
           {{ a.estado }}
         </strong>
       </p>
 
-      <button (click)="completar(a)" *ngIf="a.estado === 'PENDIENTE'">
-        Marcar como completado
+      <!-- INPUT PARA COMENTARIO -->
+      <textarea
+        [(ngModel)]="a.comentario"
+        placeholder="Comentario del área">
+      </textarea>
+
+      <!-- BOTÓN -->
+      <button 
+        class="primary"
+        (click)="completar(a)" 
+        *ngIf="a.estado === 'PENDIENTE'">
+        Completar Área
       </button>
+
+      <!-- YA COMPLETADO -->
+      <p class="ok-text" *ngIf="a.estado === 'COMPLETADO'">
+        ✔ Área completada
+      </p>
+
     </div>
+
+  </div>
+
+  <!-- SIN DATOS -->
+  <div *ngIf="areas.length === 0 && !cargando">
+    <p>No hay áreas registradas.</p>
   </div>
 
 </div>

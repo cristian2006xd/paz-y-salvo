@@ -1,39 +1,91 @@
 import { Component, OnInit } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { CommonModule, Location } from '@angular/common';
+import { FormsModule } from '@angular/forms';
+import { Router } from '@angular/router';
+import { HttpClient } from '@angular/common/http';
 import { AreasService } from '../../services/areas';
 
 @Component({
   selector: 'app-area-dashboard',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, FormsModule],
   templateUrl: './dashboard.html',
   styleUrl: './dashboard.css'
 })
 export class Dashboard implements OnInit {
 
   areas: any[] = [];
-  solicitudId = 1; // temporal
+  cargando = false;
+  mensaje = '';
+  error = '';
+  usuario: any = null;
 
-  constructor(private areasService: AreasService) {}
+  constructor(
+    private areasService: AreasService,
+    private http: HttpClient,
+    private router: Router,
+    private location: Location
+  ) {}
 
   ngOnInit(): void {
-    this.cargarAreas();
+    const data = localStorage.getItem('usuario');
+    this.usuario = data ? JSON.parse(data) : null;
+
+    if (!this.usuario?.area) {
+      this.error = 'Este usuario no tiene área asignada.';
+      return;
+    }
+
+    this.cargarPendientePorArea();
   }
 
-  cargarAreas() {
-    this.areasService.obtenerPorSolicitud(this.solicitudId).subscribe({
-      next: (data) => {
-        this.areas = data;
-      }
-    });
+  cargarPendientePorArea(): void {
+    this.cargando = true;
+    this.error = '';
+    this.mensaje = '';
+
+    const area = encodeURIComponent(this.usuario.area);
+
+    this.http.get<any>(`http://localhost:5000/api/areas/pendiente/${area}`)
+      .subscribe({
+        next: (data) => {
+          this.areas = [data];
+          this.cargando = false;
+        },
+        error: () => {
+          this.areas = [];
+          this.mensaje = 'No existen solicitudes pendientes para esta área.';
+          this.cargando = false;
+        }
+      });
   }
 
-  completar(area: any) {
-    this.areasService.actualizarArea(area.id, {
-      estado: 'COMPLETADO',
-      comentario: 'Validado correctamente'
-    }).subscribe(() => {
-      this.cargarAreas();
-    });
+  completar(area: any): void {
+  this.mensaje = '';
+  this.error = '';
+
+  const body = {
+    estado: 'COMPLETADO' as const,
+    comentario: area.comentario || 'Validado correctamente'
+  };
+
+  this.areasService.actualizarArea(area.id, body).subscribe({
+    next: () => {
+      this.mensaje = 'Área completada correctamente.';
+      this.cargarPendientePorArea();
+    },
+    error: () => {
+      this.error = 'Error al completar el área.';
+    }
+  });
+}
+
+  volver(): void {
+    this.location.back();
+  }
+
+  logout(): void {
+    localStorage.clear();
+    this.router.navigate(['/']);
   }
 }
