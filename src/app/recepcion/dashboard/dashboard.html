@@ -5,25 +5,41 @@
       <h1>Panel de Recepción</h1>
       <p>Gestión de documentos finales entregados por los ex funcionarios.</p>
     </div>
+
+    <button routerLink="/recepcion/revision-documentos">
+      Revisar documentos
+    </button>
   </header>
 
   <section class="grid">
 
-    <div class="card pendiente">
-      <h2>{{ stats.pendientes }}</h2>
+    <article class="card pendiente">
       <span>Documentos pendientes</span>
-    </div>
+      <h2>{{ stats.pendientes }}</h2>
+      <p>Esperando revisión final</p>
+    </article>
 
-    <div class="card revision">
-      <h2>{{ stats.revisados }}</h2>
+    <article class="card revision">
       <span>En revisión</span>
-    </div>
+      <h2>{{ stats.revisados }}</h2>
+      <p>Documentos revisados</p>
+    </article>
 
-    <div class="card aprobado">
-      <h2>{{ stats.aprobados }}</h2>
+    <article class="card aprobado">
       <span>Aprobados</span>
-    </div>
+      <h2>{{ stats.aprobados }}</h2>
+      <p>Procesos finalizados</p>
+    </article>
 
+  </section>
+
+  <section class="panel">
+    <h2>Acciones rápidas</h2>
+    <p>Desde recepción puede revisar, descargar, aprobar o rechazar documentos firmados.</p>
+
+    <button routerLink="/recepcion/revision-documentos">
+      Ir a revisión de documentos
+    </button>
   </section>
 
 </div>

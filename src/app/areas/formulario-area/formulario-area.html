@@ -1,39 +1,106 @@
 <div class="page">
 
-  <h1>Formulario Área</h1>
+  <header class="header">
+    <div>
+      <h1>Formulario Área</h1>
+      <p>Complete la validación correspondiente a su área.</p>
+    </div>
 
-  <div *ngIf="cargando">Cargando...</div>
+    <div class="user-card" *ngIf="usuario">
+      <strong>{{ usuario.nombres || usuario.usuario }}</strong>
+      <span>{{ usuario.area || 'Área no asignada' }}</span>
+    </div>
+  </header>
 
-  <div *ngIf="error" class="error">
+  <section class="card loading" *ngIf="cargando">
+    Cargando solicitud pendiente...
+  </section>
+
+  <section class="error" *ngIf="error">
     {{ error }}
-  </div>
+  </section>
 
-  <div *ngIf="area">
+  <section class="success" *ngIf="mensaje">
+    {{ mensaje }}
+  </section>
 
-    <h2>Área: {{ area.area }}</h2>
-    <p><strong>Funcionario:</strong> {{ area.nombres }} {{ area.apellidos }}</p>
+  <section *ngIf="!cargando && area" class="card">
 
-    <form>
+    <div class="info-grid">
+      <div>
+        <span>Área</span>
+        <strong>{{ area.area }}</strong>
+      </div>
 
-      <label>Responsable</label>
-      <input [(ngModel)]="form.responsable" name="responsable">
+      <div>
+        <span>Funcionario</span>
+        <strong>{{ area.nombres }} {{ area.apellidos }}</strong>
+      </div>
 
-      <label>Detalle</label>
-      <textarea [(ngModel)]="form.detalle" name="detalle"></textarea>
+      <div>
+        <span>Solicitud</span>
+        <strong>#{{ area.solicitud_id }}</strong>
+      </div>
 
-      <label>Observación</label>
-      <textarea [(ngModel)]="form.observacion" name="observacion"></textarea>
+      <div>
+        <span>Estado</span>
+        <strong
+          class="estado"
+          [class.completado]="area.estado === 'COMPLETADO'"
+          [class.pendiente]="area.estado === 'PENDIENTE'">
+          {{ getEstadoLabel(area.estado) }}
+        </strong>
+      </div>
+    </div>
 
-      <button type="button" (click)="guardar()">
-        Guardar validación
+    <form class="form">
+
+      <div class="field">
+        <label>Responsable</label>
+        <input
+          [(ngModel)]="form.responsable"
+          name="responsable"
+          placeholder="Nombre del responsable"
+          [disabled]="area.estado === 'COMPLETADO'">
+      </div>
+
+      <div class="field">
+        <label>Detalle</label>
+        <textarea
+          [(ngModel)]="form.detalle"
+          name="detalle"
+          placeholder="Ingrese el detalle de la validación"
+          [disabled]="area.estado === 'COMPLETADO'">
+        </textarea>
+      </div>
+
+      <div class="field">
+        <label>Observación</label>
+        <textarea
+          [(ngModel)]="form.observacion"
+          name="observacion"
+          placeholder="Observación adicional"
+          [disabled]="area.estado === 'COMPLETADO'">
+        </textarea>
+      </div>
+
+      <button
+        type="button"
+        (click)="guardar()"
+        [disabled]="guardando || area.estado === 'COMPLETADO'">
+        {{ guardando ? 'Guardando...' : 'Guardar validación' }}
       </button>
+
+      <p class="done" *ngIf="area.estado === 'COMPLETADO'">
+        ✔ Esta área ya fue completada.
+      </p>
 
     </form>
 
-  </div>
+  </section>
 
-  <div *ngIf="mensaje" class="success">
-    {{ mensaje }}
-  </div>
+  <section class="empty" *ngIf="!cargando && !area && !error">
+    No existen solicitudes pendientes para esta área.
+  </section>
 
 </div>

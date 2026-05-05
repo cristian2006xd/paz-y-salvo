@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { RouterLink } from '@angular/router';
+import { CommonModule, Location } from '@angular/common';
+import { Router, RouterLink } from '@angular/router';
 import { SolicitudesService } from '../../services/solicitudes';
 
 @Component({
@@ -19,24 +19,22 @@ export class Dashboard implements OnInit {
   cargando = true;
   error = '';
 
-  constructor(private solicitudesService: SolicitudesService) {}
+  constructor(
+    private solicitudesService: SolicitudesService,
+    private router: Router,
+    private location: Location
+  ) {}
 
   ngOnInit(): void {
     this.obtenerUsuario();
     this.cargarSolicitud();
   }
 
-  // =========================
-  // USUARIO
-  // =========================
   obtenerUsuario(): void {
     const data = localStorage.getItem('usuario');
     this.usuario = data ? JSON.parse(data) : null;
   }
 
-  // =========================
-  // SOLICITUD
-  // =========================
   cargarSolicitud(): void {
     if (!this.usuario?.id) {
       this.error = 'No se encontró el usuario en la sesión.';
@@ -62,9 +60,19 @@ export class Dashboard implements OnInit {
       });
   }
 
-  // =========================
-  // MÉTRICAS
-  // =========================
+  getEstadoLabel(estado: string): string {
+    switch (estado) {
+      case 'PENDIENTE': return 'Pendiente';
+      case 'EN_PROCESO': return 'En proceso';
+      case 'EN_REVISION': return 'En revisión';
+      case 'APROBADO': return 'Aprobado';
+      case 'NEGADO': return 'Negado';
+      case 'FINALIZADO': return 'Finalizado';
+      case 'COMPLETADO': return 'Completado';
+      default: return estado || 'Sin estado';
+    }
+  }
+
   totalAreas(): number {
     return this.areas.length;
   }
@@ -78,10 +86,35 @@ export class Dashboard implements OnInit {
     return Math.round((this.areasCompletadas() / this.totalAreas()) * 100);
   }
 
-  // =========================
-  // VALIDACIONES UI
-  // =========================
+  estadoAreaClase(estado: string): string {
+    if (estado === 'COMPLETADO') return 'completado';
+    if (estado === 'NEGADO') return 'negado';
+    return 'pendiente';
+  }
+
+  iconoArea(estado: string): string {
+    if (estado === 'COMPLETADO') return '✔';
+    if (estado === 'NEGADO') return '✖';
+    return '⏳';
+  }
+
   puedeVerDocumento(): boolean {
-    return this.solicitud?.estado === 'APROBADO';
+    return this.solicitud?.estado === 'APROBADO' || this.solicitud?.estado === 'FINALIZADO';
+  }
+
+  descargarPDF(): void {
+    if (!this.solicitud?.id || !this.puedeVerDocumento()) return;
+
+    const url = `http://localhost:5000/api/solicitudes/${this.solicitud.id}/pdf`;
+    window.open(url, '_blank');
+  }
+
+  volver(): void {
+    this.location.back();
+  }
+
+  logout(): void {
+    localStorage.clear();
+    this.router.navigate(['/']);
   }
 }

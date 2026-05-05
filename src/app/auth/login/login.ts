@@ -26,40 +26,41 @@ export class Login {
   login(): void {
     this.error = '';
 
-    if (!this.usuario.trim() || !this.password.trim()) {
-      this.error = 'Ingrese usuario y contraseña';
+    const usuario = this.usuario.trim();
+    const password = this.password.trim();
+
+    if (!usuario || !password) {
+      this.error = 'Ingrese usuario y contraseña.';
       return;
     }
 
     this.cargando = true;
 
-    this.authService.login({
-      usuario: this.usuario,
-      password: this.password
-    }).subscribe({
-      next: (res) => {
+    this.authService.login({ usuario, password }).subscribe({
+      next: (res: any) => {
         this.authService.guardarSesion(res);
 
-        const rol = res.usuario.rol;
+        const rol = res.usuario?.rol;
 
-        if (rol === 'admin') {
-          this.router.navigate(['/admin/dashboard']);
-        } else if (rol === 'talento_humano') {
-          this.router.navigate(['/talento-humano/dashboard']);
-        } else if (rol === 'ex_funcionario') {
-          this.router.navigate(['/ex-funcionario/dashboard']);
-        } else if (rol === 'area') {
-          this.router.navigate(['/areas/formulario-area']);
-        } else if (rol === 'recepcion') {
-          this.router.navigate(['/recepcion/dashboard']);
-        } else {
-          this.error = 'Rol no reconocido';
+        const rutas: any = {
+          admin: '/admin/dashboard',
+          talento_humano: '/talento-humano/dashboard',
+          ex_funcionario: '/ex-funcionario/dashboard',
+          area: '/areas/formulario-area',
+          recepcion: '/recepcion/dashboard'
+        };
+
+        if (!rutas[rol]) {
+          this.error = 'Rol no reconocido.';
           this.cargando = false;
+          return;
         }
+
+        this.router.navigate([rutas[rol]]);
       },
-      error: (err) => {
+      error: (err: any) => {
+        this.error = err.error?.mensaje || 'Usuario o contraseña incorrectos.';
         this.cargando = false;
-        this.error = err.error?.mensaje || 'Error al iniciar sesión';
       }
     });
   }

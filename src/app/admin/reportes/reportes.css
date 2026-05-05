@@ -1,21 +1,24 @@
 .page {
   min-height: 100vh;
-  padding: 32px;
-  background: #f1f5f9;
+  padding: 36px;
+  background:
+    radial-gradient(circle at top left, #dbeafe, transparent 35%),
+    linear-gradient(135deg, #f8fafc, #eef2ff);
   font-family: Arial, sans-serif;
+  color: #0f172a;
 }
 
 .header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 24px;
+  margin-bottom: 28px;
 }
 
 .header h1 {
   margin: 0 0 8px;
-  color: #0f172a;
-  font-size: 32px;
+  font-size: 36px;
+  font-weight: 900;
 }
 
 .header p {
@@ -29,17 +32,19 @@
 }
 
 button {
-  padding: 12px 18px;
+  padding: 13px 18px;
   border: none;
   border-radius: 14px;
   cursor: pointer;
   color: white;
   background: #2563eb;
-  font-weight: 800;
+  font-weight: 900;
+  transition: .2s ease;
 }
 
 button:hover {
-  background: #1e40af;
+  transform: translateY(-2px);
+  background: #1d4ed8;
 }
 
 .secondary {
@@ -51,34 +56,48 @@ button:hover {
 }
 
 .loading,
-.error {
-  padding: 24px;
-  border-radius: 20px;
+.error,
+.panel,
+.card,
+.report-title {
   background: white;
-  box-shadow: 0 12px 30px rgba(15, 23, 42, 0.08);
+  border-radius: 26px;
+  padding: 28px;
+  box-shadow: 0 18px 45px rgba(15, 23, 42, .10);
+  border: 1px solid rgba(226, 232, 240, .9);
+  margin-bottom: 22px;
+}
+
+.loading {
+  color: #1d4ed8;
+  background: #eff6ff;
+  font-weight: 900;
 }
 
 .error {
   color: #991b1b;
   background: #fee2e2;
-  font-weight: 700;
+  font-weight: 900;
 }
 
 .report-title {
-  margin-bottom: 22px;
-  padding: 24px;
-  border-radius: 22px;
-  background: white;
-  box-shadow: 0 12px 30px rgba(15, 23, 42, 0.08);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
 .report-title h2 {
-  margin: 0 0 8px;
-  color: #0f172a;
+  margin: 0;
 }
 
 .report-title span {
   color: #64748b;
+  font-size: 13px;
+}
+
+.report-title strong {
+  font-size: 14px;
+  color: #334155;
 }
 
 .grid {
@@ -88,16 +107,16 @@ button:hover {
 }
 
 .card {
-  padding: 24px;
-  border-radius: 22px;
-  background: white;
-  box-shadow: 0 12px 30px rgba(15, 23, 42, 0.08);
-  border-left: 6px solid #64748b;
+  transition: .2s ease;
+}
+
+.card:hover {
+  transform: translateY(-4px);
 }
 
 .card span {
   display: block;
-  margin-bottom: 12px;
+  margin-bottom: 10px;
   color: #64748b;
   font-size: 13px;
   font-weight: 900;
@@ -105,59 +124,109 @@ button:hover {
 }
 
 .card strong {
-  display: block;
-  margin-bottom: 12px;
-  color: #0f172a;
-  font-size: 42px;
+  font-size: 34px;
 }
 
 .card p {
-  margin: 0;
+  margin: 6px 0 0;
+  color: #94a3b8;
+}
+
+/* Colores por tipo */
+.card.blue {
+  border-left: 6px solid #2563eb;
+}
+
+.card.purple {
+  border-left: 6px solid #7c3aed;
+}
+
+.card.warning {
+  border-left: 6px solid #f59e0b;
+}
+
+.card.process {
+  border-left: 6px solid #0ea5e9;
+}
+
+.card.success {
+  border-left: 6px solid #16a34a;
+}
+
+.card.document {
+  border-left: 6px solid #475569;
+}
+
+/* Barra de progreso */
+.panel h2 {
+  margin-bottom: 16px;
+}
+
+.progress-row {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 10px;
+}
+
+.progress-row span {
   color: #64748b;
+  font-weight: 800;
 }
 
-.warning {
-  border-left-color: #f59e0b;
+.progress-row strong {
+  color: #2563eb;
+  font-size: 18px;
 }
 
-.process {
-  border-left-color: #2563eb;
+.bar {
+  height: 14px;
+  background: #e2e8f0;
+  border-radius: 999px;
+  overflow: hidden;
 }
 
-.success {
-  border-left-color: #16a34a;
+.fill {
+  height: 100%;
+  background: linear-gradient(90deg, #2563eb, #16a34a);
+  border-radius: 999px;
 }
 
+/* Responsive */
 @media (max-width: 900px) {
+  .grid {
+    grid-template-columns: 1fr;
+  }
+
   .header {
-    align-items: flex-start;
     flex-direction: column;
+    align-items: flex-start;
     gap: 16px;
   }
 
   .actions {
     width: 100%;
-    flex-direction: column;
   }
 
-  .grid {
-    grid-template-columns: 1fr;
+  button {
+    width: 100%;
   }
 }
 
+/* PRINT */
 @media print {
   .no-print {
     display: none;
   }
 
   .page {
-    background: white;
     padding: 0;
+    background: white;
   }
 
   .card,
+  .panel,
   .report-title {
     box-shadow: none;
-    border: 1px solid #e2e8f0;
+    border: none;
   }
 }

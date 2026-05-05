@@ -23,7 +23,7 @@ export class FormularioArea implements OnInit {
   mensaje = '';
   error = '';
   cargando = true;
-
+  guardando = false;
   usuario: any = null;
 
   constructor(private http: HttpClient) {}
@@ -33,7 +33,7 @@ export class FormularioArea implements OnInit {
     this.usuario = data ? JSON.parse(data) : null;
 
     if (!this.usuario?.area) {
-      this.error = 'No se pudo identificar el área.';
+      this.error = 'No se pudo identificar el área del usuario.';
       this.cargando = false;
       return;
     }
@@ -42,38 +42,77 @@ export class FormularioArea implements OnInit {
   }
 
   cargarArea(): void {
-    const url = `http://localhost:5000/api/areas/pendiente/${this.usuario.area}`;
+    this.cargando = true;
+    this.error = '';
+    this.mensaje = '';
+
+    const areaUrl = encodeURIComponent(this.usuario.area);
+    const url = `http://localhost:5000/api/areas/pendiente/${areaUrl}`;
 
     this.http.get<any>(url).subscribe({
-      next: (res) => {
+      next: (res: any) => {
         this.area = res;
+
+        this.form = {
+          responsable: res.responsable || this.usuario?.nombres || this.usuario?.usuario || '',
+          detalle: res.detalle || '',
+          observacion: res.observacion || ''
+        };
+
         this.cargando = false;
       },
-      error: (err) => {
-        this.error = err.error?.mensaje || 'No hay solicitudes pendientes.';
+      error: (err: any) => {
+        this.area = null;
+        this.error = err.error?.mensaje || 'No hay solicitudes pendientes para esta área.';
         this.cargando = false;
       }
     });
+  }
+
+  getEstadoLabel(estado: string): string {
+    switch (estado) {
+      case 'PENDIENTE': return 'Pendiente';
+      case 'COMPLETADO': return 'Completado';
+      case 'NEGADO': return 'Negado';
+      default: return estado || 'Sin estado';
+    }
   }
 
   guardar(): void {
     this.mensaje = '';
     this.error = '';
 
-    if (!this.form.responsable || !this.form.detalle) {
-      this.error = 'Complete los campos obligatorios';
+    if (!this.area?.id) {
+      this.error = 'No hay una solicitud de área seleccionada.';
       return;
     }
 
+    if (!this.form.responsable.trim() || !this.form.detalle.trim()) {
+      this.error = 'Responsable y detalle son obligatorios.';
+      return;
+    }
+
+    this.guardando = true;
+
+    const body = {
+      responsable: this.form.responsable.trim(),
+      detalle: this.form.detalle.trim(),
+      observacion: this.form.observacion.trim(),
+      usuario: this.usuario?.usuario || 'area',
+      rol: this.usuario?.rol || 'area'
+    };
+
     const url = `http://localhost:5000/api/areas/formulario/${this.area.id}`;
 
-    this.http.put(url, this.form).subscribe({
+    this.http.put<any>(url, body).subscribe({
       next: (res: any) => {
-        this.mensaje = res.mensaje;
+        this.mensaje = res.mensaje || 'Validación guardada correctamente.';
+        this.guardando = false;
         this.cargarArea();
       },
-      error: (err) => {
-        this.error = err.error?.mensaje || 'Error al guardar';
+      error: (err: any) => {
+        this.error = err.error?.mensaje || 'Error al guardar formulario del área.';
+        this.guardando = false;
       }
     });
   }

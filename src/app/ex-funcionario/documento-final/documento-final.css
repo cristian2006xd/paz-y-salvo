@@ -1,21 +1,24 @@
 .page {
   min-height: 100vh;
-  padding: 32px;
-  background: #f1f5f9;
+  padding: 36px;
+  background:
+    radial-gradient(circle at top left, #dbeafe, transparent 35%),
+    linear-gradient(135deg, #f8fafc, #eef2ff);
   font-family: Arial, sans-serif;
+  color: #0f172a;
 }
 
 .header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 24px;
+  margin-bottom: 28px;
 }
 
 .header h1 {
   margin: 0 0 8px;
-  color: #0f172a;
-  font-size: 32px;
+  font-size: 36px;
+  font-weight: 900;
 }
 
 .header p {
@@ -23,89 +26,218 @@
   color: #64748b;
 }
 
+.header-actions,
+.button-row {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
 button {
-  padding: 13px 18px;
+  padding: 14px 20px;
   border: none;
   border-radius: 14px;
   color: white;
   background: #2563eb;
-  font-weight: 800;
+  font-weight: 900;
   cursor: pointer;
+  transition: .2s ease;
+}
+
+button:hover {
+  transform: translateY(-2px);
+  background: #1d4ed8;
 }
 
 button:disabled {
-  opacity: 0.5;
+  opacity: .45;
   cursor: not-allowed;
+  transform: none;
+}
+
+.secondary {
+  background: #475569;
+}
+
+.danger {
+  background: #dc2626;
+}
+
+.print {
+  background: #7c3aed;
+}
+
+.success-btn {
+  background: #16a34a;
 }
 
 .card,
 .error-card,
-.document {
-  padding: 32px;
-  border-radius: 24px;
-  background: white;
-  box-shadow: 0 12px 30px rgba(15, 23, 42, 0.08);
+.document,
+.upload-card,
+.summary {
+  padding: 30px;
+  border-radius: 26px;
+  background: rgba(255, 255, 255, .94);
+  box-shadow: 0 18px 45px rgba(15, 23, 42, .10);
+  border: 1px solid rgba(226, 232, 240, .9);
+  margin-bottom: 24px;
 }
 
 .error-card {
   color: #991b1b;
   background: #fee2e2;
-  font-weight: 700;
+  font-weight: 800;
+}
+
+.summary {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 18px;
+}
+
+.summary div {
+  padding: 20px;
+  border-radius: 18px;
+  background: #f8fafc;
+}
+
+.summary span {
+  display: block;
+  margin-bottom: 8px;
+  color: #64748b;
+  font-size: 12px;
+  font-weight: 900;
+  text-transform: uppercase;
+}
+
+.summary strong {
+  font-size: 26px;
+  color: #2563eb;
 }
 
 .document {
-  max-width: 950px;
-  margin: auto;
-  color: #0f172a;
+  max-width: 1000px;
+  margin: 0 auto 24px;
   line-height: 1.7;
 }
 
 .document h2 {
   text-align: center;
-  margin-bottom: 28px;
+  margin-bottom: 30px;
+  font-size: 28px;
+  letter-spacing: .06em;
 }
 
 .status {
-  margin: 22px 0;
+  margin: 24px 0;
   padding: 16px;
-  border-radius: 14px;
-  background: #f8fafc;
-  font-weight: 700;
+  border-radius: 16px;
+  background: #eff6ff;
+  color: #1d4ed8;
+  font-weight: 900;
 }
 
 table {
   width: 100%;
   margin-top: 24px;
   border-collapse: collapse;
+  border-radius: 16px;
+  overflow: hidden;
 }
 
 th,
 td {
-  padding: 12px;
+  padding: 14px;
   border: 1px solid #cbd5e1;
   text-align: left;
+  font-size: 14px;
 }
 
 th {
-  background: #f1f5f9;
+  background: #1e293b;
+  color: white;
+}
+
+td {
+  background: #f8fafc;
+}
+
+.badge {
+  display: inline-block;
+  padding: 7px 12px;
+  border-radius: 999px;
+  background: #fef3c7;
+  color: #92400e;
+  font-size: 12px;
+  font-weight: 900;
+}
+
+.badge.ok {
+  background: #dcfce7;
+  color: #166534;
 }
 
 .firma {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  gap: 60px;
-  margin-top: 70px;
+  gap: 70px;
+  margin-top: 80px;
   text-align: center;
 }
 
 .firma span {
   display: block;
-  border-top: 1px solid #0f172a;
+  border-top: 2px solid #0f172a;
+  margin-bottom: 10px;
+}
+
+.upload-card {
+  max-width: 1000px;
+  margin: 24px auto 0;
+}
+
+.upload-card h2,
+.upload-card h3 {
+  margin-top: 0;
+}
+
+.upload-card p {
+  color: #64748b;
+}
+
+input[type="file"] {
+  display: block;
+  width: 100%;
+  margin: 18px 0;
+  padding: 16px;
+  box-sizing: border-box;
+  border: 2px dashed #cbd5e1;
+  border-radius: 16px;
+  background: #f8fafc;
+}
+
+.success,
+.blocked {
+  margin-top: 16px;
+  padding: 14px 16px;
+  border-radius: 14px;
+  font-weight: 900;
+}
+
+.success {
+  color: #166534;
+  background: #dcfce7;
+}
+
+.blocked {
+  color: #92400e;
+  background: #fef3c7;
 }
 
 @media print {
   .no-print {
-    display: none;
+    display: none !important;
   }
 
   .page {
@@ -115,6 +247,55 @@ th {
 
   .document {
     box-shadow: none;
+    border: none;
     border-radius: 0;
+    max-width: 100%;
   }
+}
+
+@media (max-width: 850px) {
+  .page {
+    padding: 20px;
+  }
+
+  .header {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .summary {
+    grid-template-columns: 1fr;
+  }
+
+  .firma {
+    grid-template-columns: 1fr;
+  }
+
+  table {
+    display: block;
+    overflow-x: auto;
+  }
+
+  .button-row,
+  .header-actions {
+    flex-direction: column;
+    width: 100%;
+  }
+
+  button {
+    width: 100%;
+  }
+  .finalizado-card {
+  margin-bottom: 24px;
+  padding: 18px 20px;
+  border-radius: 18px;
+  color: #166534;
+  background: #dcfce7;
+  font-weight: 900;
+}
+
+.finalizado-text {
+  color: #16a34a !important;
+}
 }

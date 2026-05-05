@@ -1,4 +1,5 @@
 <div class="page">
+
   <header class="header">
     <div>
       <h1>Datos Personales</h1>
@@ -7,17 +8,48 @@
   </header>
 
   <section class="card">
+    <h2>Información del ex funcionario</h2>
+
     <div class="form-grid">
-      <input [(ngModel)]="datos.cedula" placeholder="Cédula">
-      <input [(ngModel)]="datos.telefono" placeholder="Teléfono">
-      <input [(ngModel)]="datos.correo" placeholder="Correo personal">
-      <input [(ngModel)]="datos.direccion" placeholder="Dirección">
-      <input [(ngModel)]="datos.cargo" placeholder="Cargo que desempeñaba">
-      <input [(ngModel)]="datos.unidad" placeholder="Unidad / área">
+      <div class="field">
+        <label>Cédula</label>
+        <input [(ngModel)]="datos.cedula" placeholder="Ingrese su cédula">
+      </div>
+
+      <div class="field">
+        <label>Teléfono</label>
+        <input [(ngModel)]="datos.telefono" placeholder="Ingrese su teléfono">
+      </div>
+
+      <div class="field">
+        <label>Correo personal</label>
+        <input [(ngModel)]="datos.correo" placeholder="correo@ejemplo.com">
+      </div>
+
+      <div class="field">
+        <label>Dirección</label>
+        <input [(ngModel)]="datos.direccion" placeholder="Ingrese su dirección">
+      </div>
+
+      <div class="field">
+        <label>Cargo</label>
+        <input [(ngModel)]="datos.cargo" placeholder="Cargo que desempeñaba">
+      </div>
+
+      <div class="field">
+        <label>Unidad / Área</label>
+        <input [(ngModel)]="datos.unidad" placeholder="Unidad o área">
+      </div>
     </div>
 
-    <button (click)="guardar()">Guardar datos</button>
+    <div class="actions">
+      <button (click)="guardar()">
+        Guardar datos
+      </button>
+    </div>
 
     <p class="success" *ngIf="mensaje">{{ mensaje }}</p>
+    <p class="error" *ngIf="error">{{ error }}</p>
   </section>
+
 </div>

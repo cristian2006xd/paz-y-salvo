@@ -1,17 +1,19 @@
 <div class="page">
+
   <header class="header no-print">
     <div>
       <h1>Documento Final</h1>
-      <p>Genere, firme y suba el documento final de paz y salvo.</p>
+      <p>Genere, descargue y suba el documento final firmado.</p>
     </div>
 
-    <button (click)="imprimirPDF()" [disabled]="!puedeDescargar()">
-      Imprimir / Guardar PDF
-    </button>
+    <div class="header-actions">
+      <button class="secondary" (click)="volver()">Volver</button>
+      <button class="danger" (click)="logout()">Salir</button>
+    </div>
   </header>
 
   <section class="card" *ngIf="cargando">
-    Cargando documento...
+    Cargando documento final...
   </section>
 
   <section class="error-card" *ngIf="!cargando && error">
@@ -20,8 +22,31 @@
 
   <ng-container *ngIf="!cargando && !error">
 
+    <section class="finalizado-card no-print" *ngIf="yaFinalizado()">
+      ✅ Proceso finalizado correctamente. El documento ya fue aprobado por recepción.
+    </section>
+
+    <section class="summary no-print">
+      <div>
+        <span>Estado de solicitud</span>
+        <strong [class.finalizado-text]="yaFinalizado()">
+          {{ solicitud?.estado }}
+        </strong>
+      </div>
+
+      <div>
+        <span>Progreso</span>
+        <strong>{{ porcentaje() }}%</strong>
+      </div>
+
+      <div>
+        <span>Solicitud</span>
+        <strong>#{{ solicitud?.id }}</strong>
+      </div>
+    </section>
+
     <section class="document">
-      <h2>PAZ Y SALVO INSTITUCIONAL</h2>
+      <h2>CERTIFICADO DE PAZ Y SALVO</h2>
 
       <p>
         Se certifica que el/la ex funcionario/a
@@ -49,7 +74,11 @@
         <tbody>
           <tr *ngFor="let a of areas">
             <td>{{ a.area }}</td>
-            <td>{{ a.estado }}</td>
+            <td>
+              <span class="badge" [class.ok]="a.estado === 'COMPLETADO'">
+                {{ a.estado }}
+              </span>
+            </td>
             <td>{{ a.responsable || 'Pendiente' }}</td>
             <td>{{ a.detalle || 'Pendiente' }}</td>
           </tr>
@@ -70,28 +99,45 @@
     </section>
 
     <section class="upload-card no-print">
-      <h2>Subir documento firmado</h2>
-      <p>Una vez firmado electrónicamente, suba el archivo en formato PDF.</p>
+      <h2>Acciones del documento</h2>
+
+      <div class="button-row">
+        <button
+          (click)="descargarPDFBackend()"
+          [disabled]="!puedeDescargar()">
+          Descargar PDF oficial
+        </button>
+
+        <button
+          class="print"
+          (click)="imprimirPDF()"
+          [disabled]="!puedeDescargar()">
+          Imprimir / Guardar PDF
+        </button>
+      </div>
+
+      <p class="blocked" *ngIf="!puedeDescargar() && !yaFinalizado()">
+        El documento se habilitará cuando la solicitud esté APROBADA.
+      </p>
+
+      <h3>Subir documento firmado</h3>
+      <p>Seleccione el PDF firmado para enviarlo a revisión.</p>
 
       <input
         type="file"
         accept="application/pdf"
         (change)="seleccionarArchivo($event)"
-        [disabled]="!puedeDescargar()"
+        [disabled]="!puedeSubir()"
       />
 
       <button
+        class="success-btn"
         (click)="subirDocumentoFirmado()"
-        [disabled]="subiendo || !puedeDescargar()"
-      >
+        [disabled]="subiendo || !puedeSubir()">
         {{ subiendo ? 'Subiendo...' : 'Subir documento firmado' }}
       </button>
 
       <p class="success" *ngIf="mensaje">{{ mensaje }}</p>
-
-      <p class="blocked" *ngIf="!puedeDescargar()">
-        El documento solo se puede subir cuando la solicitud esté APROBADA.
-      </p>
     </section>
 
   </ng-container>

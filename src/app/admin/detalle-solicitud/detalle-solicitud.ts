@@ -34,27 +34,61 @@ export class DetalleSolicitud implements OnInit {
     this.usuarioActual = usuarioStorage ? JSON.parse(usuarioStorage) : null;
 
     const id = Number(this.route.snapshot.paramMap.get('id'));
+
+    if (!id) {
+      this.error = 'ID de solicitud inválido.';
+      this.cargando = false;
+      return;
+    }
+
     this.cargarDetalle(id);
   }
 
   cargarDetalle(id: number): void {
     this.cargando = true;
+    this.error = '';
+    this.mensaje = '';
 
     this.solicitudesService.obtenerDetalle(id).subscribe({
-      next: (res) => {
+      next: (res: any) => {
         this.solicitud = res.solicitud;
         this.areas = res.areas || [];
-        this.observacion = this.solicitud.observacion || '';
+        this.observacion = this.solicitud?.observacion || '';
         this.cargando = false;
       },
-      error: (err) => {
+      error: (err: any) => {
         this.error = err.error?.mensaje || 'Error al cargar detalle.';
         this.cargando = false;
       }
     });
   }
 
+  getEstadoLabel(estado: string): string {
+    switch (estado) {
+      case 'PENDIENTE': return 'Pendiente';
+      case 'EN_PROCESO': return 'En proceso';
+      case 'EN_REVISION': return 'En revisión';
+      case 'APROBADO': return 'Aprobado';
+      case 'NEGADO': return 'Negado';
+      case 'FINALIZADO': return 'Finalizado';
+      case 'COMPLETADO': return 'Completado';
+      default: return estado || 'Sin estado';
+    }
+  }
+
+  estadoClase(estado: string): string {
+    if (estado === 'APROBADO' || estado === 'FINALIZADO' || estado === 'COMPLETADO') return 'ok';
+    if (estado === 'NEGADO') return 'bad';
+    if (estado === 'EN_REVISION') return 'review';
+    return 'pending';
+  }
+
   aprobar(): void {
+    if (!this.todasCompletadas()) {
+      this.error = 'No se puede aprobar hasta que todas las áreas estén completadas.';
+      return;
+    }
+
     this.cambiarEstado('APROBADO');
   }
 
@@ -72,22 +106,24 @@ export class DetalleSolicitud implements OnInit {
   }
 
   cambiarEstado(estado: string): void {
+    if (!this.solicitud?.id) return;
+
     this.mensaje = '';
     this.error = '';
     this.guardando = true;
 
     this.solicitudesService.cambiarEstado(this.solicitud.id, {
       estado,
-      observacion: this.observacion,
-      usuario: this.usuarioActual?.usuario,
-      rol: this.usuarioActual?.rol
+      observacion: this.observacion.trim(),
+      usuario: this.usuarioActual?.usuario || 'admin',
+      rol: this.usuarioActual?.rol || 'admin'
     }).subscribe({
-      next: (res) => {
-        this.mensaje = res.mensaje;
+      next: (res: any) => {
+        this.mensaje = res.mensaje || 'Estado actualizado correctamente.';
         this.guardando = false;
         this.cargarDetalle(this.solicitud.id);
       },
-      error: (err) => {
+      error: (err: any) => {
         this.error = err.error?.mensaje || 'Error al actualizar estado.';
         this.guardando = false;
       }

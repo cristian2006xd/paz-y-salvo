@@ -1,21 +1,24 @@
 .page {
   min-height: 100vh;
-  padding: 32px;
-  background: #f1f5f9;
+  padding: 36px;
+  background:
+    radial-gradient(circle at top left, #dbeafe, transparent 35%),
+    linear-gradient(135deg, #f8fafc, #eef2ff);
   font-family: Arial, sans-serif;
+  color: #0f172a;
 }
 
 .header {
   display: flex;
-  align-items: center;
   justify-content: space-between;
+  align-items: center;
   margin-bottom: 28px;
 }
 
 .header h1 {
   margin: 0 0 8px;
-  color: #0f172a;
-  font-size: 32px;
+  font-size: 36px;
+  font-weight: 900;
 }
 
 .header p {
@@ -23,11 +26,21 @@
   color: #64748b;
 }
 
-.user-card {
-  padding: 14px 18px;
-  border-radius: 16px;
+.user-card,
+.card,
+.success,
+.error,
+.empty {
   background: white;
-  box-shadow: 0 12px 30px rgba(15, 23, 42, 0.08);
+  border-radius: 26px;
+  padding: 28px;
+  box-shadow: 0 18px 45px rgba(15, 23, 42, .10);
+  border: 1px solid rgba(226, 232, 240, .9);
+  margin-bottom: 20px;
+}
+
+.user-card {
+  padding: 16px 20px;
 }
 
 .user-card strong,
@@ -36,22 +49,9 @@
 }
 
 .user-card span {
+  margin-top: 4px;
   color: #64748b;
   font-size: 13px;
-}
-
-.card,
-.error-card {
-  padding: 26px;
-  border-radius: 24px;
-  background: white;
-  box-shadow: 0 12px 30px rgba(15, 23, 42, 0.08);
-}
-
-.error-card {
-  color: #991b1b;
-  background: #fee2e2;
-  font-weight: 700;
 }
 
 .info-grid {
@@ -63,7 +63,7 @@
 
 .info-grid div {
   padding: 18px;
-  border-radius: 16px;
+  border-radius: 18px;
   background: #f8fafc;
 }
 
@@ -71,17 +71,26 @@
   display: block;
   margin-bottom: 8px;
   color: #64748b;
-  font-size: 13px;
-  font-weight: 800;
+  font-size: 12px;
+  font-weight: 900;
   text-transform: uppercase;
 }
 
-.info-grid strong {
-  color: #0f172a;
+.estado {
+  padding: 7px 12px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 900;
 }
 
 .completado {
-  color: #16a34a !important;
+  color: #166534;
+  background: #dcfce7;
+}
+
+.pendiente {
+  color: #92400e;
+  background: #fef3c7;
 }
 
 .form {
@@ -93,20 +102,22 @@
   display: block;
   margin-bottom: 8px;
   color: #334155;
-  font-size: 14px;
-  font-weight: 800;
+  font-weight: 900;
 }
 
 .field input,
 .field textarea {
   width: 100%;
+  box-sizing: border-box;
   padding: 14px;
   border: 1px solid #cbd5e1;
-  border-radius: 14px;
-  outline: none;
-  color: #0f172a;
+  border-radius: 16px;
   background: #f8fafc;
-  font-size: 15px;
+  outline: none;
+}
+
+.field textarea {
+  min-height: 120px;
   resize: vertical;
 }
 
@@ -114,45 +125,68 @@
 .field textarea:focus {
   border-color: #2563eb;
   background: white;
-  box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.12);
+  box-shadow: 0 0 0 4px rgba(37, 99, 235, .12);
 }
 
-.success,
-.error {
-  margin: 0;
-  padding: 13px 15px;
-  border-radius: 12px;
-  font-weight: 700;
+.field input:disabled,
+.field textarea:disabled {
+  opacity: .65;
+  cursor: not-allowed;
+}
+
+button {
+  width: fit-content;
+  padding: 14px 22px;
+  border: none;
+  border-radius: 14px;
+  background: #2563eb;
+  color: white;
+  font-weight: 900;
+  cursor: pointer;
+  transition: .2s ease;
+}
+
+button:hover {
+  transform: translateY(-2px);
+  background: #1d4ed8;
+}
+
+button:disabled {
+  opacity: .5;
+  cursor: not-allowed;
+  transform: none;
 }
 
 .success {
   color: #166534;
   background: #dcfce7;
+  font-weight: 900;
 }
 
 .error {
   color: #991b1b;
   background: #fee2e2;
-}
-
-button {
-  width: fit-content;
-  padding: 14px 20px;
-  border: none;
-  border-radius: 14px;
-  cursor: pointer;
-  color: white;
-  background: #2563eb;
   font-weight: 900;
 }
 
-button:hover {
-  background: #1e40af;
+.loading {
+  color: #1d4ed8;
+  background: #eff6ff;
+  font-weight: 900;
 }
 
-button:disabled {
-  opacity: 0.65;
-  cursor: not-allowed;
+.done {
+  padding: 14px;
+  border-radius: 14px;
+  color: #166534;
+  background: #dcfce7;
+  font-weight: 900;
+}
+
+.empty {
+  color: #64748b;
+  text-align: center;
+  font-weight: 800;
 }
 
 @media (max-width: 900px) {
@@ -164,5 +198,9 @@ button:disabled {
 
   .info-grid {
     grid-template-columns: 1fr;
+  }
+
+  button {
+    width: 100%;
   }
 }

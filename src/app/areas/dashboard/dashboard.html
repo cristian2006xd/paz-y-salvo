@@ -1,63 +1,84 @@
-<div class="container">
+<div class="page">
 
-  <div class="header">
-    <h1>Panel de Áreas</h1>
+  <header class="header">
+    <div>
+      <h1>Panel de Áreas</h1>
+      <p>Gestione la validación pendiente de su área.</p>
+    </div>
 
     <div class="actions">
       <button class="secondary" (click)="volver()">Volver</button>
       <button class="danger" (click)="logout()">Salir</button>
     </div>
-  </div>
+  </header>
 
-  <!-- MENSAJES -->
-  <p class="success" *ngIf="mensaje">{{ mensaje }}</p>
-  <p class="error" *ngIf="error">{{ error }}</p>
+  <section class="message success" *ngIf="mensaje">
+    {{ mensaje }}
+  </section>
 
-  <!-- LOADING -->
-  <p *ngIf="cargando">Cargando áreas...</p>
+  <section class="message error" *ngIf="error">
+    {{ error }}
+  </section>
 
-  <!-- GRID -->
-  <div class="grid" *ngIf="!cargando">
+  <section class="message loading" *ngIf="cargando">
+    Cargando solicitudes pendientes...
+  </section>
 
-    <div class="card" *ngFor="let a of areas">
+  <section class="grid" *ngIf="!cargando && areas.length > 0">
 
-      <h2>{{ a.area }}</h2>
+    <article class="card" *ngFor="let a of areas">
 
-      <p>
-        Estado:
-        <strong 
-          [class.ok]="a.estado === 'COMPLETADO'"
-          [class.pending]="a.estado === 'PENDIENTE'">
-          {{ a.estado }}
-        </strong>
-      </p>
+      <header class="card-header">
+        <div>
+          <h2>{{ a.area }}</h2>
+          <p>Solicitud #{{ a.solicitud_id || a.id }}</p>
+        </div>
 
-      <!-- INPUT PARA COMENTARIO -->
-      <textarea
-        [(ngModel)]="a.comentario"
-        placeholder="Comentario del área">
-      </textarea>
+        <span
+          class="badge"
+          [ngClass]="{
+            'ok': a.estado === 'COMPLETADO',
+            'pending': a.estado === 'PENDIENTE',
+            'bad': a.estado === 'NEGADO'
+          }">
+          {{ getEstadoLabel(a.estado) }}
+        </span>
+      </header>
 
-      <!-- BOTÓN -->
-      <button 
-        class="primary"
-        (click)="completar(a)" 
-        *ngIf="a.estado === 'PENDIENTE'">
-        Completar Área
-      </button>
+      <div class="card-body">
 
-      <!-- YA COMPLETADO -->
-      <p class="ok-text" *ngIf="a.estado === 'COMPLETADO'">
-        ✔ Área completada
-      </p>
+        <div class="info" *ngIf="a.nombres || a.apellidos">
+          <span>Funcionario</span>
+          <strong>{{ a.nombres }} {{ a.apellidos }}</strong>
+        </div>
 
-    </div>
+        <label>Comentario del área</label>
+        <textarea
+          [(ngModel)]="a.comentario"
+          placeholder="Ingrese observaciones o validaciones del área"
+          [disabled]="a.estado === 'COMPLETADO' || procesando">
+        </textarea>
 
-  </div>
+        <button
+          class="primary"
+          (click)="completar(a)"
+          [disabled]="procesando"
+          *ngIf="a.estado === 'PENDIENTE'">
+          {{ procesando ? 'Guardando...' : 'Completar Área' }}
+        </button>
 
-  <!-- SIN DATOS -->
-  <div *ngIf="areas.length === 0 && !cargando">
-    <p>No hay áreas registradas.</p>
-  </div>
+        <div class="status-ok" *ngIf="a.estado === 'COMPLETADO'">
+          ✔ Área completada correctamente
+        </div>
+
+      </div>
+
+    </article>
+
+  </section>
+
+  <section class="empty" *ngIf="areas.length === 0 && !cargando">
+    No existen solicitudes pendientes para esta área.
+  </section>
 
 </div>

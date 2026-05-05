@@ -33,48 +33,64 @@
       </div>
     </header>
 
-    <section class="cards-grid">
-      <article class="card">
-        <span>Solicitudes totales</span>
-        <h3>0</h3>
-        <p>Procesos registrados</p>
-      </article>
-
-      <article class="card">
-        <span>Pendientes</span>
-        <h3>0</h3>
-        <p>Áreas por completar</p>
-      </article>
-
-      <article class="card">
-        <span>Aprobadas</span>
-        <h3>0</h3>
-        <p>Procesos finalizados</p>
-      </article>
-
-      <article class="card">
-        <span>Usuarios activos</span>
-        <h3>0</h3>
-        <p>Accesos habilitados</p>
-      </article>
+    <section class="message loading" *ngIf="cargando">
+      Cargando información del dashboard...
     </section>
 
-    <section class="panel">
-      <div class="panel-header">
-        <h2>Resumen del sistema</h2>
-        <button routerLink="/talento-humano/crear-solicitud">
-          Nueva solicitud
-        </button>
-      </div>
-
-      <div class="empty-state">
-        <h3>Sistema administrativo activo</h3>
-        <p>
-          Desde este panel se administran usuarios, solicitudes, auditoría,
-          reportes y control general del proceso de paz y salvo institucional.
-        </p>
-      </div>
+    <section class="message error" *ngIf="!cargando && error">
+      {{ error }}
     </section>
+
+    <ng-container *ngIf="!cargando && !error">
+
+      <section class="cards-grid">
+        <article class="card">
+          <span>Solicitudes totales</span>
+          <h3>{{ totalSolicitudes() }}</h3>
+          <p>Procesos registrados</p>
+        </article>
+
+        <article class="card">
+          <span>Pendientes</span>
+          <h3>{{ pendientes() }}</h3>
+          <p>Procesos en curso</p>
+        </article>
+
+        <article class="card">
+          <span>Aprobadas</span>
+          <h3>{{ aprobadas() }}</h3>
+          <p>Procesos aprobados/finalizados</p>
+        </article>
+
+        <article class="card">
+          <span>Usuarios activos</span>
+          <h3>{{ usuariosActivos() }}</h3>
+          <p>Accesos habilitados</p>
+        </article>
+      </section>
+
+      <section class="panel">
+        <div class="panel-header">
+          <div>
+            <h2>Resumen del sistema</h2>
+            <p>Supervise usuarios, solicitudes, auditoría y reportes.</p>
+          </div>
+
+          <button routerLink="/admin/solicitudes">
+            Gestionar solicitudes
+          </button>
+        </div>
+
+        <div class="empty-state">
+          <h3>Sistema administrativo activo</h3>
+          <p>
+            Desde este panel se administran usuarios, solicitudes, auditoría,
+            reportes y control general del proceso de paz y salvo institucional.
+          </p>
+        </div>
+      </section>
+
+    </ng-container>
   </main>
 
 </div>

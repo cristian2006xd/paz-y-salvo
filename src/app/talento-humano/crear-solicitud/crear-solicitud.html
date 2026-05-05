@@ -13,7 +13,12 @@
   </header>
 
   <section class="form-card">
-    <h2>Nueva solicitud</h2>
+    <div class="section-header">
+      <div>
+        <h2>Nueva solicitud</h2>
+        <p>Seleccione el ex funcionario para iniciar el proceso.</p>
+      </div>
+    </div>
 
     <div class="form-grid">
       <div class="field">
@@ -30,19 +35,21 @@
         <label>Creado por</label>
         <input
           type="text"
-          [value]="usuarioActual?.nombres + ' ' + usuarioActual?.apellidos"
-          disabled
-        />
+          [value]="(usuarioActual?.nombres || '') + ' ' + (usuarioActual?.apellidos || '')"
+          disabled>
       </div>
     </div>
 
-    <div class="messages">
-      <p class="success" *ngIf="mensaje">{{ mensaje }}</p>
-      <p class="error" *ngIf="error">{{ error }}</p>
-    </div>
+    <section class="message success" *ngIf="mensaje">
+      {{ mensaje }}
+    </section>
 
-    <button (click)="crearSolicitud()" [disabled]="cargando">
-      {{ cargando ? 'Creando solicitud...' : 'Crear Solicitud' }}
+    <section class="message error" *ngIf="error">
+      {{ error }}
+    </section>
+
+    <button class="primary" (click)="crearSolicitud()" [disabled]="cargando">
+      {{ cargando ? 'Creando solicitud...' : 'Crear solicitud' }}
     </button>
   </section>
 
@@ -52,10 +59,12 @@
         <h2>Solicitudes registradas</h2>
         <p>Listado general de procesos de paz y salvo.</p>
       </div>
+
+      <span>{{ solicitudes.length }} registro(s)</span>
     </div>
 
     <div class="table-wrapper">
-      <table>
+      <table *ngIf="solicitudes.length > 0">
         <thead>
           <tr>
             <th>ID</th>
@@ -69,25 +78,23 @@
 
         <tbody>
           <tr *ngFor="let s of solicitudes">
-            <td>{{ s.id }}</td>
+            <td>#{{ s.id }}</td>
             <td>{{ s.nombres }} {{ s.apellidos }}</td>
             <td>{{ s.usuario }}</td>
             <td>{{ s.area || 'Sin área' }}</td>
             <td>
               <span class="badge" [ngClass]="s.estado">
-                {{ s.estado }}
+                {{ getEstadoLabel(s.estado) }}
               </span>
             </td>
-            <td>{{ s.fecha_creacion }}</td>
-          </tr>
-
-          <tr *ngIf="solicitudes.length === 0">
-            <td colspan="6" class="empty">
-              No existen solicitudes registradas.
-            </td>
+            <td>{{ s.fecha_creacion | date:'dd/MM/yyyy HH:mm' }}</td>
           </tr>
         </tbody>
       </table>
+
+      <div class="empty" *ngIf="solicitudes.length === 0">
+        No existen solicitudes registradas.
+      </div>
     </div>
   </section>
 

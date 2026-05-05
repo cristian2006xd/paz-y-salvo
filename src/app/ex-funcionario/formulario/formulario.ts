@@ -11,63 +11,196 @@ import { FormsModule } from '@angular/forms';
 })
 export class Formulario {
 
-  datos = {
-    nombre: '',
-    cedula: '',
-    cargo: '',
-    unidad: '',
-    fechaIngreso: '',
-    fechaSalida: '',
-    motivoSalida: '',
-    correo: '',
-    telefono: '',
+  form: any = this.getInitialForm();
 
-    direccionAdministrativa: '',
-    bienes: '',
-    observacionBienes: '',
+  getInitialForm(): any {
+    return {
+      fechaDocumento: '',
 
-    tecnologias: '',
-    usuarioCorreo: '',
-    equiposTecnologicos: '',
-    observacionTics: '',
+      nombres: '',
+      cedula: '',
+      fechaIngreso: '',
+      fechaSalida: '',
+      direccion: '',
+      celular: '',
+      emergencia: '',
+      email1: '',
+      email2: '',
+      provincia: '',
+      canton: '',
+      unidad: '',
+      cargo: '',
+      grupoOcupacional: '',
+      jefeInmediato: '',
 
-    financiera: '',
-    valoresPendientes: '',
-    observacionFinanciera: '',
+      modPermanente: false,
+      modProvisional: false,
+      modOcasional: false,
+      modTrabajo: false,
 
-    talentoHumano: '',
-    documentosEntregados: '',
-    observacionTH: '',
+      lugarPlanta: false,
+      lugarDesconcentrados: false,
 
-    recepcion: '',
-    observacionRecepcion: '',
+      responsableAdministrativa: '',
+      responsableTics: '',
+      responsableFinanciera: '',
+      responsableTalentoHumano: '',
+      responsableSeguridad: '',
+      responsableRecepcion: '',
 
-    autorizacion: '',
-    fechaFormulario: ''
-  };
+      obsAdministrativa: '',
+      obsTics: '',
+      obsFinanciera: '',
 
-  mensaje = '';
+      infoFinSi: false,
+      infoFinNo: false,
+      infoFinResp: '',
+
+      fePresentacionSi: false,
+      fePresentacionNo: false,
+      fePresentacionResp: '',
+
+      archivoSi: false,
+      archivoNo: false,
+      archivoResp: '',
+
+      adminContratoSi: false,
+      adminContratoNo: false,
+      descripcionContrato: '',
+      memoAdministrador: '',
+
+      bienesSi: false,
+      bienesNo: false,
+      numeroActaBienes: '',
+
+      deduciblesSi: false,
+      deduciblesNo: false,
+      valorDeducibles: '',
+
+      pasajesSi: false,
+      pasajesNo: false,
+      valorPasajes: '',
+
+      quipuxSi: false,
+      quipuxNo: false,
+      quipuxRecibe: '',
+
+      clavesSi: false,
+      clavesNo: false,
+      actaClavesSi: false,
+      actaClavesNo: false,
+      obsClaves: '',
+
+      ticEquipoSi: false,
+      ticEquipoNo: false,
+      ticIpSi: false,
+      ticIpNo: false,
+      ticRetiroSi: false,
+      ticRetiroNo: false,
+      ticBackupSi: false,
+      ticBackupNo: false,
+      rutaBackup: '',
+
+      ticCorreoSi: false,
+      ticCorreoNo: false,
+      ticEsigefSi: false,
+      ticEsigefNo: false,
+      ticSprynSi: false,
+      ticSprynNo: false,
+      ticQuipuxSi: false,
+      ticQuipuxNo: false,
+      ticEsbyeSi: false,
+      ticEsbyeNo: false,
+      ticTarjetaSi: false,
+      ticTarjetaNo: false,
+      obsCuentas: '',
+
+      finSaldosSi: false,
+      finSaldosNo: false,
+      finSaldosValor: '',
+      finSaldosObs: '',
+
+      finAnticipoSi: false,
+      finAnticipoNo: false,
+      finAnticipoValor: '',
+      finAnticipoObs: '',
+
+      finRecuperacionSi: false,
+      finRecuperacionNo: false,
+      finRecuperacionValor: '',
+      finRecuperacionObs: '',
+
+      finMueblesSi: false,
+      finMueblesNo: false,
+      finMueblesValor: '',
+      finMueblesObs: '',
+
+      directorFinanciero: '',
+
+      segDigitalesSi: false,
+      segDigitalesNo: false,
+      segInformeSi: false,
+      segInformeNo: false,
+      segFisicosSi: false,
+      segFisicosNo: false,
+      segVerificacionSi: false,
+      segVerificacionNo: false,
+      oficialSeguridad: '',
+
+      rhCursosSi: false,
+      rhCursosNo: false,
+      rhEvalSi: false,
+      rhEvalNo: false,
+      rhViajesSi: false,
+      rhViajesNo: false,
+      rhSiithSi: false,
+      rhSiithNo: false,
+
+      diasVacaciones: '',
+      certificadoVacaciones: '',
+
+      rhDeclaracionSi: false,
+      rhDeclaracionNo: false,
+      numeroDeclaracion: '',
+
+      rhCredencialSi: false,
+      rhCredencialNo: false,
+      rhCdSi: false,
+      rhCdNo: false,
+      rhRopaSi: false,
+      rhRopaNo: false,
+
+      actaBienesCustodio: '',
+      directorTalentoHumano: '',
+
+      fechaRecepcion: '',
+      hojasRecibidas: '',
+      cargoRecepcion: ''
+    };
+  }
 
   guardar(): void {
-    localStorage.setItem('formulario_paz_salvo', JSON.stringify(this.datos));
-    this.mensaje = 'Formulario guardado correctamente.';
+    localStorage.setItem('formulario_paz_salvo', JSON.stringify(this.form));
+    alert('Formulario guardado correctamente.');
   }
 
   cargar(): void {
     const data = localStorage.getItem('formulario_paz_salvo');
-    if (data) {
-      this.datos = JSON.parse(data);
-      this.mensaje = 'Datos cargados correctamente.';
+
+    if (!data) {
+      alert('No hay datos guardados.');
+      return;
     }
+
+    this.form = JSON.parse(data);
+    alert('Datos cargados correctamente.');
   }
 
   limpiar(): void {
-    if (confirm('¿Seguro que desea limpiar el formulario?')) {
-      Object.keys(this.datos).forEach(key => {
-        (this.datos as any)[key] = '';
-      });
-      this.mensaje = 'Formulario limpiado.';
-    }
+    if (!confirm('¿Seguro que deseas limpiar el formulario?')) return;
+
+    this.form = this.getInitialForm();
+    localStorage.removeItem('formulario_paz_salvo');
   }
 
   imprimir(): void {

@@ -1,44 +1,62 @@
 <div class="page">
 
   <header class="header">
-    <h1>Historial de Solicitudes</h1>
-    <p>Registro completo de solicitudes realizadas.</p>
+    <div>
+      <h1>Historial de Solicitudes</h1>
+      <p>Registro completo de solicitudes realizadas.</p>
+    </div>
   </header>
 
-  <section *ngIf="cargando">Cargando...</section>
+  <section class="message loading" *ngIf="cargando">
+    Cargando historial...
+  </section>
 
-  <section class="error" *ngIf="error">
+  <section class="message error" *ngIf="error">
     {{ error }}
   </section>
 
   <section class="card" *ngIf="!cargando && !error">
 
-    <table>
-      <thead>
-        <tr>
-          <th>ID</th>
-          <th>Funcionario</th>
-          <th>Usuario</th>
-          <th>Área</th>
-          <th>Estado</th>
-        </tr>
-      </thead>
+    <div class="table-header">
+      <div>
+        <h2>Solicitudes registradas</h2>
+        <p>Consulta del historial general del proceso.</p>
+      </div>
 
-      <tbody>
-        <tr *ngFor="let s of solicitudes">
-          <td>{{ s.id }}</td>
-          <td>{{ s.nombres }} {{ s.apellidos }}</td>
-          <td>{{ s.usuario }}</td>
-          <td>{{ s.area }}</td>
-          <td>
-            <span [class]="claseEstado(s.estado)">
-              {{ s.estado }}
-            </span>
-          </td>
-        </tr>
-      </tbody>
+      <span>{{ solicitudes.length }} registro(s)</span>
+    </div>
 
-    </table>
+    <div class="table-wrapper">
+      <table *ngIf="solicitudes.length > 0">
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Funcionario</th>
+            <th>Usuario</th>
+            <th>Área</th>
+            <th>Estado</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          <tr *ngFor="let s of solicitudes">
+            <td>#{{ s.id }}</td>
+            <td>{{ s.nombres }} {{ s.apellidos }}</td>
+            <td>{{ s.usuario }}</td>
+            <td>{{ s.area || 'Sin área' }}</td>
+            <td>
+              <span class="badge" [ngClass]="claseEstado(s.estado)">
+                {{ getEstadoLabel(s.estado) }}
+              </span>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="empty" *ngIf="solicitudes.length === 0">
+        No existen solicitudes registradas.
+      </div>
+    </div>
 
   </section>
 

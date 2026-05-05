@@ -16,6 +16,7 @@ export class Dashboard implements OnInit {
 
   areas: any[] = [];
   cargando = false;
+  procesando = false;
   mensaje = '';
   error = '';
   usuario: any = null;
@@ -48,8 +49,8 @@ export class Dashboard implements OnInit {
 
     this.http.get<any>(`http://localhost:5000/api/areas/pendiente/${area}`)
       .subscribe({
-        next: (data) => {
-          this.areas = [data];
+        next: (data: any) => {
+          this.areas = data ? [data] : [];
           this.cargando = false;
         },
         error: () => {
@@ -60,25 +61,44 @@ export class Dashboard implements OnInit {
       });
   }
 
-  completar(area: any): void {
-  this.mensaje = '';
-  this.error = '';
-
-  const body = {
-    estado: 'COMPLETADO' as const,
-    comentario: area.comentario || 'Validado correctamente'
-  };
-
-  this.areasService.actualizarArea(area.id, body).subscribe({
-    next: () => {
-      this.mensaje = 'Área completada correctamente.';
-      this.cargarPendientePorArea();
-    },
-    error: () => {
-      this.error = 'Error al completar el área.';
+  getEstadoLabel(estado: string): string {
+    switch (estado) {
+      case 'PENDIENTE': return 'Pendiente';
+      case 'COMPLETADO': return 'Completado';
+      case 'NEGADO': return 'Negado';
+      default: return estado || 'Sin estado';
     }
-  });
-}
+  }
+
+  completar(area: any): void {
+    this.mensaje = '';
+    this.error = '';
+
+    if (!area?.id) {
+      this.error = 'No se encontró el registro del área.';
+      return;
+    }
+
+    this.procesando = true;
+
+    const body = {
+      estado: 'COMPLETADO' as const,
+      comentario: area.comentario?.trim() || 'Validado correctamente',
+      responsable: this.usuario?.usuario || this.usuario?.nombres || 'Área'
+    };
+
+    this.areasService.actualizarArea(area.id, body).subscribe({
+      next: (res: any) => {
+        this.mensaje = res.mensaje || 'Área completada correctamente.';
+        this.procesando = false;
+        this.cargarPendientePorArea();
+      },
+      error: (err: any) => {
+        this.error = err.error?.mensaje || 'Error al completar el área.';
+        this.procesando = false;
+      }
+    });
+  }
 
   volver(): void {
     this.location.back();

@@ -13,9 +13,11 @@ import { DocumentosService } from '../../services/documentos';
 export class RevisionDocumentos implements OnInit {
 
   documentos: any[] = [];
-  observacion = '';
+  documentoSeleccionado: any = null;
 
+  observacion = '';
   cargando = true;
+  procesando = false;
   mensaje = '';
   error = '';
 
@@ -27,52 +29,98 @@ export class RevisionDocumentos implements OnInit {
 
   cargarDocumentos(): void {
     this.cargando = true;
+    this.error = '';
+    this.mensaje = '';
 
     this.documentosService.listarDocumentos().subscribe({
-      next: (data) => {
-        this.documentos = data;
+      next: (res: any[]) => {
+        this.documentos = res || [];
         this.cargando = false;
       },
-      error: (err) => {
+      error: (err: any) => {
         this.error = err.error?.mensaje || 'Error al cargar documentos.';
         this.cargando = false;
       }
     });
   }
 
-  aprobar(doc: any): void {
+  getEstadoLabel(estado: string): string {
+    switch (estado) {
+      case 'PENDIENTE': return 'Pendiente';
+      case 'APROBADO': return 'Aprobado';
+      case 'RECHAZADO': return 'Rechazado';
+      case 'FINALIZADO': return 'Finalizado';
+      default: return estado || 'Sin estado';
+    }
+  }
+
+  estadoClase(estado: string): string {
+    if (estado === 'APROBADO') return 'aprobado';
+    if (estado === 'RECHAZADO') return 'rechazado';
+    return 'pendiente';
+  }
+
+  seleccionar(doc: any): void {
+    this.documentoSeleccionado = doc;
+    this.observacion = doc.observacion || '';
     this.mensaje = '';
     this.error = '';
+  }
+
+  descargar(doc: any): void {
+    if (!doc?.id) {
+      this.error = 'No se encontró el documento.';
+      return;
+    }
+
+    const url = this.documentosService.descargarDocumento(doc.id);
+    window.open(url, '_blank');
+  }
+
+  aprobar(doc: any): void {
+    if (!doc?.id) return;
+
+    this.procesando = true;
+    this.error = '';
+    this.mensaje = '';
 
     this.documentosService.aprobarDocumento(doc.id).subscribe({
-      next: (res) => {
-        this.mensaje = res.mensaje || 'Documento aprobado.';
+      next: (res: any) => {
+        this.mensaje = res.mensaje || 'Documento aprobado y proceso finalizado.';
+        this.procesando = false;
+        this.documentoSeleccionado = null;
         this.cargarDocumentos();
       },
-      error: (err) => {
+      error: (err: any) => {
         this.error = err.error?.mensaje || 'Error al aprobar documento.';
+        this.procesando = false;
       }
     });
   }
 
   rechazar(doc: any): void {
-    this.mensaje = '';
-    this.error = '';
+    if (!doc?.id) return;
 
-    const motivo = prompt('Ingrese la observación del rechazo:');
-
-    if (!motivo) {
+    if (!this.observacion.trim()) {
       this.error = 'La observación es obligatoria para rechazar.';
       return;
     }
 
-    this.documentosService.rechazarDocumento(doc.id, motivo).subscribe({
-      next: (res) => {
-        this.mensaje = res.mensaje || 'Documento rechazado.';
+    this.procesando = true;
+    this.error = '';
+    this.mensaje = '';
+
+    this.documentosService.rechazarDocumento(doc.id, this.observacion.trim()).subscribe({
+      next: (res: any) => {
+        this.mensaje = res.mensaje || 'Documento rechazado correctamente.';
+        this.procesando = false;
+        this.documentoSeleccionado = null;
+        this.observacion = '';
         this.cargarDocumentos();
       },
-      error: (err) => {
+      error: (err: any) => {
         this.error = err.error?.mensaje || 'Error al rechazar documento.';
+        this.procesando = false;
       }
     });
   }

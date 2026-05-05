@@ -1,32 +1,54 @@
 <div class="page">
 
   <header class="header">
-    <h1>Panel Talento Humano</h1>
-    <p>Gestión general del proceso de paz y salvo.</p>
+    <div>
+      <h1>Panel Talento Humano</h1>
+      <p>Gestión general del proceso de paz y salvo institucional.</p>
+    </div>
+
+    <button routerLink="/talento-humano/crear-solicitud">
+      Nueva solicitud
+    </button>
   </header>
 
   <section class="grid">
 
-    <div class="card total">
-      <h2>{{ stats.total }}</h2>
+    <article class="card total">
       <span>Total solicitudes</span>
-    </div>
+      <h2>{{ stats.total }}</h2>
+      <p>Procesos registrados en el sistema</p>
+    </article>
 
-    <div class="card pendiente">
-      <h2>{{ stats.pendientes }}</h2>
+    <article class="card pendiente">
       <span>Pendientes</span>
-    </div>
+      <h2>{{ stats.pendientes }}</h2>
+      <p>Solicitudes por iniciar</p>
+    </article>
 
-    <div class="card proceso">
-      <h2>{{ stats.proceso }}</h2>
+    <article class="card proceso">
       <span>En proceso</span>
-    </div>
+      <h2>{{ stats.proceso }}</h2>
+      <p>Validaciones en curso</p>
+    </article>
 
-    <div class="card aprobado">
-      <h2>{{ stats.aprobadas }}</h2>
+    <article class="card aprobado">
       <span>Aprobadas</span>
-    </div>
+      <h2>{{ stats.aprobadas }}</h2>
+      <p>Procesos finalizados</p>
+    </article>
 
+  </section>
+
+  <section class="panel">
+    <h2>Resumen del módulo</h2>
+    <p>
+      Desde este panel puedes gestionar solicitudes, crear nuevos procesos y dar seguimiento
+      al estado general del sistema de paz y salvo.
+    </p>
+
+    <button routerLink="/talento-humano/solicitudes">
+      Ver todas las solicitudes
+    </button>
   </section>
 
 </div>

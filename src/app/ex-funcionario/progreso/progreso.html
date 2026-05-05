@@ -1,4 +1,5 @@
 <div class="page">
+
   <header class="header">
     <div>
       <h1>Progreso de Solicitud</h1>
@@ -6,7 +7,7 @@
     </div>
   </header>
 
-  <section class="card" *ngIf="cargando">
+  <section class="card loading" *ngIf="cargando">
     Cargando progreso...
   </section>
 
@@ -15,6 +16,7 @@
   </section>
 
   <section class="card" *ngIf="!cargando && !error">
+
     <div class="summary">
       <div>
         <span>Solicitud</span>
@@ -23,7 +25,9 @@
 
       <div>
         <span>Estado</span>
-        <h2>{{ solicitud?.estado }}</h2>
+        <h2 class="estado">
+          {{ getEstadoLabel(solicitud?.estado) }}
+        </h2>
       </div>
 
       <div>
@@ -37,11 +41,25 @@
     </div>
 
     <div class="areas-grid">
-      <article class="area" *ngFor="let a of areas" [class.ok]="a.estado === 'COMPLETADO'">
-        <h3>{{ a.area }}</h3>
-        <strong>{{ a.estado }}</strong>
-        <p>{{ a.comentario || 'Pendiente de validación.' }}</p>
+      <article
+        class="area"
+        *ngFor="let a of areas"
+        [class.ok]="a.estado === 'COMPLETADO'">
+
+        <div class="area-header">
+          <h3>{{ a.area }}</h3>
+
+          <strong
+            [class.completado]="a.estado === 'COMPLETADO'"
+            [class.pendiente]="a.estado === 'PENDIENTE'">
+            {{ getEstadoLabel(a.estado) }}
+          </strong>
+        </div>
+
+        <p>{{ a.comentario || a.detalle || 'Pendiente de validación.' }}</p>
       </article>
     </div>
+
   </section>
+
 </div>

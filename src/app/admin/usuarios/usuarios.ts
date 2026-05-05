@@ -13,6 +13,10 @@ import { UsuariosService, Usuario } from '../../services/usuarios';
 export class Usuarios implements OnInit {
 
   usuarios: Usuario[] = [];
+  filtrados: Usuario[] = [];
+
+  search = '';
+  filtroRol = '';
 
   nuevo: Usuario = {
     nombres: '',
@@ -36,14 +40,37 @@ export class Usuarios implements OnInit {
   cargarUsuarios(): void {
     this.mensaje = '';
     this.error = '';
+    this.cargando = true;
 
     this.usuariosService.listar().subscribe({
-      next: (data) => {
-        this.usuarios = data;
+      next: (data: Usuario[]) => {
+        this.usuarios = data || [];
+        this.aplicarFiltros();
+        this.cargando = false;
       },
-      error: (err) => {
+      error: (err: any) => {
         this.error = err.error?.mensaje || 'Error al cargar usuarios.';
+        this.cargando = false;
       }
+    });
+  }
+
+  aplicarFiltros(): void {
+    const texto = this.search.toLowerCase().trim();
+
+    this.filtrados = this.usuarios.filter(u => {
+      const coincideTexto =
+        !texto ||
+        u.nombres?.toLowerCase().includes(texto) ||
+        u.apellidos?.toLowerCase().includes(texto) ||
+        u.usuario?.toLowerCase().includes(texto) ||
+        u.rol?.toLowerCase().includes(texto) ||
+        u.area?.toLowerCase().includes(texto) ||
+        u.estado?.toLowerCase().includes(texto);
+
+      const coincideRol = !this.filtroRol || u.rol === this.filtroRol;
+
+      return coincideTexto && coincideRol;
     });
   }
 
@@ -62,16 +89,25 @@ export class Usuarios implements OnInit {
       return;
     }
 
+    if (this.nuevo.rol === 'area' && !this.nuevo.area?.trim()) {
+      this.error = 'Debe ingresar el área para usuarios con rol Área.';
+      return;
+    }
+
+    if (this.nuevo.rol !== 'area') {
+      this.nuevo.area = '';
+    }
+
     this.cargando = true;
 
     this.usuariosService.crear(this.nuevo).subscribe({
-      next: (res) => {
+      next: (res: any) => {
         this.mensaje = res.mensaje || 'Usuario creado correctamente.';
         this.cargando = false;
         this.limpiarFormulario();
         this.cargarUsuarios();
       },
-      error: (err) => {
+      error: (err: any) => {
         this.error = err.error?.mensaje || 'Error al crear usuario.';
         this.cargando = false;
       }
@@ -89,6 +125,12 @@ export class Usuarios implements OnInit {
     };
   }
 
+  limpiarFiltros(): void {
+    this.search = '';
+    this.filtroRol = '';
+    this.aplicarFiltros();
+  }
+
   nombreRol(rol: string): string {
     const roles: any = {
       admin: 'Administrador',
@@ -99,5 +141,9 @@ export class Usuarios implements OnInit {
     };
 
     return roles[rol] || rol;
+  }
+
+  estadoClase(estado: string): string {
+    return estado === 'ACTIVO' ? 'activo' : 'inactivo';
   }
 }

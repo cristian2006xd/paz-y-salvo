@@ -5,31 +5,32 @@
   align-items: center;
   justify-content: center;
   background:
-    radial-gradient(circle at top left, rgba(37, 99, 235, 0.35), transparent 35%),
-    linear-gradient(135deg, #07111f, #0f172a 50%, #111827);
+    radial-gradient(circle at top left, rgba(37, 99, 235, .35), transparent 35%),
+    radial-gradient(circle at bottom right, rgba(56, 189, 248, .18), transparent 30%),
+    linear-gradient(135deg, #020617, #0f172a 55%, #111827);
   font-family: Arial, sans-serif;
 }
 
 .login-card {
   width: 100%;
-  max-width: 1050px;
-  min-height: 560px;
+  max-width: 1080px;
+  min-height: 580px;
   display: grid;
-  grid-template-columns: 1.1fr 0.9fr;
+  grid-template-columns: 1.1fr .9fr;
   overflow: hidden;
-  border-radius: 28px;
-  background: #ffffff;
-  box-shadow: 0 30px 80px rgba(0, 0, 0, 0.35);
+  border-radius: 30px;
+  background: white;
+  box-shadow: 0 35px 90px rgba(0, 0, 0, .38);
 }
 
 .login-info {
   display: flex;
   flex-direction: column;
   justify-content: center;
-  padding: 56px;
+  padding: 58px;
   color: white;
   background:
-    linear-gradient(rgba(15, 23, 42, 0.76), rgba(15, 23, 42, 0.92)),
+    linear-gradient(rgba(15, 23, 42, .72), rgba(15, 23, 42, .94)),
     linear-gradient(135deg, #2563eb, #0f172a);
 }
 
@@ -37,45 +38,56 @@
   width: 78px;
   height: 78px;
   margin-bottom: 28px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: 50%;
-  color: white;
+  display: grid;
+  place-items: center;
+  border-radius: 24px;
   background: linear-gradient(135deg, #38bdf8, #2563eb);
   font-size: 26px;
-  font-weight: 800;
-  letter-spacing: 1px;
-  box-shadow: 0 15px 35px rgba(56, 189, 248, 0.35);
+  font-weight: 900;
+  box-shadow: 0 18px 40px rgba(56, 189, 248, .35);
 }
 
 .login-info h1 {
   margin: 0 0 18px;
   font-size: 42px;
   line-height: 1.1;
+  font-weight: 900;
 }
 
 .login-info p {
-  max-width: 460px;
+  max-width: 470px;
   margin: 0;
   color: #dbeafe;
   font-size: 17px;
   line-height: 1.7;
 }
 
+.features {
+  margin: 28px 0 0;
+  padding: 0;
+  display: grid;
+  gap: 12px;
+  list-style: none;
+  color: #e0f2fe;
+  font-weight: 800;
+}
+
 .login-form {
   display: flex;
   flex-direction: column;
   justify-content: center;
-  padding: 56px;
+  padding: 58px;
 }
 
+.form-header h2,
 .login-form h2 {
   margin: 0 0 10px;
   color: #0f172a;
-  font-size: 32px;
+  font-size: 34px;
+  font-weight: 900;
 }
 
+.form-header p,
 .subtitle {
   margin: 0 0 34px;
   color: #64748b;
@@ -90,59 +102,69 @@
   margin-bottom: 9px;
   color: #334155;
   font-size: 14px;
-  font-weight: 700;
+  font-weight: 900;
 }
 
 .form-group input {
   width: 100%;
+  box-sizing: border-box;
   padding: 15px 16px;
   border: 1px solid #cbd5e1;
-  border-radius: 14px;
+  border-radius: 16px;
   outline: none;
   color: #0f172a;
   background: #f8fafc;
   font-size: 15px;
-  transition: 0.2s ease;
+  transition: .2s ease;
 }
 
 .form-group input:focus {
   border-color: #2563eb;
-  background: #ffffff;
-  box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.12);
+  background: white;
+  box-shadow: 0 0 0 4px rgba(37, 99, 235, .12);
 }
 
 .error {
   margin: 8px 0 18px;
-  padding: 13px 15px;
-  border-radius: 12px;
+  padding: 14px 16px;
+  border-radius: 14px;
   color: #991b1b;
   background: #fee2e2;
   font-size: 14px;
-  font-weight: 600;
+  font-weight: 900;
 }
 
 button {
   width: 100%;
   padding: 15px;
   border: none;
-  border-radius: 14px;
+  border-radius: 16px;
   cursor: pointer;
   color: white;
   background: linear-gradient(135deg, #2563eb, #1e40af);
   font-size: 16px;
-  font-weight: 800;
-  transition: 0.2s ease;
+  font-weight: 900;
+  transition: .2s ease;
 }
 
 button:hover {
-  transform: translateY(-1px);
-  box-shadow: 0 14px 28px rgba(37, 99, 235, 0.3);
+  transform: translateY(-2px);
+  box-shadow: 0 16px 32px rgba(37, 99, 235, .32);
 }
 
 button:disabled {
   cursor: not-allowed;
-  opacity: 0.7;
+  opacity: .65;
   transform: none;
+  box-shadow: none;
+}
+
+.footer {
+  margin: 22px 0 0;
+  color: #94a3b8;
+  font-size: 13px;
+  text-align: center;
+  font-weight: 800;
 }
 
 @media (max-width: 850px) {

@@ -22,19 +22,34 @@ export class Historial implements OnInit {
   }
 
   cargar(): void {
+    this.cargando = true;
+    this.error = '';
+
     this.solicitudesService.listar().subscribe({
-      next: (data) => {
-        this.solicitudes = data;
+      next: (data: any[]) => {
+        this.solicitudes = data || [];
         this.cargando = false;
       },
-      error: (err) => {
-        this.error = err.error?.mensaje || 'Error al cargar historial';
+      error: (err: any) => {
+        this.error = err.error?.mensaje || 'Error al cargar historial.';
         this.cargando = false;
       }
     });
   }
 
+  getEstadoLabel(estado: string): string {
+    switch (estado) {
+      case 'PENDIENTE': return 'Pendiente';
+      case 'EN_PROCESO': return 'En proceso';
+      case 'EN_REVISION': return 'En revisión';
+      case 'APROBADO': return 'Aprobado';
+      case 'FINALIZADO': return 'Finalizado';
+      case 'NEGADO': return 'Negado';
+      default: return estado || 'Sin estado';
+    }
+  }
+
   claseEstado(estado: string): string {
-    return estado;
+    return estado || 'PENDIENTE';
   }
 }

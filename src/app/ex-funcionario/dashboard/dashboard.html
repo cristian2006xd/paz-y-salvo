@@ -38,35 +38,41 @@
 
     <section class="actions-card">
       <h2>Acciones disponibles</h2>
-      <p>Complete el formulario oficial y consulte el avance del proceso.</p>
 
       <div class="actions-grid">
         <a class="action-btn primary" routerLink="/ex-funcionario/formulario">
-          Llenar formulario de Paz y Salvo
+          Llenar formulario
         </a>
 
         <a class="action-btn" routerLink="/ex-funcionario/progreso">
-          Ver progreso detallado
+          Ver progreso
         </a>
+
+        <button
+          type="button"
+          class="action-btn pdf"
+          (click)="descargarPDF()"
+          [disabled]="!puedeVerDocumento()">
+          Descargar PDF
+        </button>
 
         <a
           class="action-btn success"
           routerLink="/ex-funcionario/documento-final"
-          [class.disabled]="solicitud?.estado !== 'APROBADO'"
-        >
+          [class.disabled]="!puedeVerDocumento()">
           Documento final
         </a>
       </div>
 
-      <p class="hint" *ngIf="solicitud?.estado !== 'APROBADO'">
-        El documento final se habilitará cuando todas las áreas completen la validación.
+      <p class="hint" *ngIf="!puedeVerDocumento()">
+        El PDF y documento final se habilitarán cuando todas las áreas completen la validación.
       </p>
     </section>
 
     <section class="progress-card">
       <div class="progress-header">
         <h2>Progreso por áreas</h2>
-        <p>Visualización en tiempo real del avance de validación.</p>
+        <p>Estado actual de cada área.</p>
       </div>
 
       <div class="bar">
@@ -77,10 +83,10 @@
         <article
           class="area-card"
           *ngFor="let area of areas"
-          [class.completed]="area.estado === 'COMPLETADO'"
-        >
+          [ngClass]="estadoAreaClase(area.estado)">
+
           <div class="icon">
-            {{ area.estado === 'COMPLETADO' ? '✓' : '!' }}
+            {{ iconoArea(area.estado) }}
           </div>
 
           <h3>{{ area.area }}</h3>
@@ -90,11 +96,17 @@
           </span>
 
           <p>
-            {{ area.comentario || 'Pendiente de validación por el área correspondiente.' }}
+            {{ area.comentario || 'Pendiente de validación.' }}
           </p>
+
         </article>
       </div>
     </section>
+
+    <div class="bottom-actions">
+      <button type="button" (click)="volver()">Volver</button>
+      <button type="button" class="danger" (click)="logout()">Salir</button>
+    </div>
 
   </ng-container>
 

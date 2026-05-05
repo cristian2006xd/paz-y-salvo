@@ -1,65 +1,81 @@
 <div class="page">
 
   <header class="header">
-    <h1>Gestión de Solicitudes</h1>
-    <p>Panel administrativo de procesos de paz y salvo.</p>
+    <div>
+      <h1>Gestión de Solicitudes</h1>
+      <p>Panel administrativo de procesos de paz y salvo.</p>
+    </div>
+
+    <button (click)="cargar()">Refrescar</button>
   </header>
 
-  <div class="toolbar">
+  <section class="toolbar">
     <input
       type="text"
       placeholder="Buscar por funcionario, usuario, área o estado..."
       [(ngModel)]="search"
-      (input)="buscar()"
+      (input)="aplicarFiltros()"
     />
 
-    <button (click)="cargar()">Refrescar</button>
-  </div>
+    <select [(ngModel)]="filtroEstado" (change)="aplicarFiltros()">
+      <option value="">Todos los estados</option>
+      <option value="PENDIENTE">Pendiente</option>
+      <option value="EN_PROCESO">En proceso</option>
+      <option value="EN_REVISION">En revisión</option>
+      <option value="APROBADO">Aprobado</option>
+      <option value="NEGADO">Negado</option>
+      <option value="FINALIZADO">Finalizado</option>
+    </select>
 
-  <div *ngIf="cargando" class="loading">
+    <button class="secondary" (click)="limpiar()">Limpiar</button>
+  </section>
+
+  <section class="loading" *ngIf="cargando">
     Cargando solicitudes...
-  </div>
+  </section>
 
-  <div *ngIf="error" class="error">
+  <section class="error" *ngIf="error">
     {{ error }}
-  </div>
+  </section>
 
-  <table *ngIf="!cargando && filtradas.length > 0">
-    <thead>
-      <tr>
-        <th>ID</th>
-        <th>Funcionario</th>
-        <th>Usuario</th>
-        <th>Área</th>
-        <th>Estado</th>
-        <th>Fecha</th>
-        <th>Acciones</th>
-      </tr>
-    </thead>
+  <section class="table-card" *ngIf="!cargando && !error">
+    <table *ngIf="filtradas.length > 0">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Funcionario</th>
+          <th>Usuario</th>
+          <th>Área</th>
+          <th>Estado</th>
+          <th>Fecha</th>
+          <th>Acciones</th>
+        </tr>
+      </thead>
 
-    <tbody>
-      <tr *ngFor="let s of filtradas">
-        <td>{{ s.id }}</td>
-        <td>{{ s.nombres }} {{ s.apellidos }}</td>
-        <td>{{ s.usuario }}</td>
-        <td>{{ s.area || 'Sin área' }}</td>
-        <td>
-          <span class="badge" [class]="s.estado">
-            {{ s.estado }}
-          </span>
-        </td>
-        <td>{{ s.fecha_creacion | date:'short' }}</td>
-        <td>
-          <a class="btn-detail" [routerLink]="['/admin/solicitudes', s.id]">
-            Ver detalle
-          </a>
-        </td>
-      </tr>
-    </tbody>
-  </table>
+      <tbody>
+        <tr *ngFor="let s of filtradas">
+          <td>#{{ s.id }}</td>
+          <td>{{ s.nombres }} {{ s.apellidos }}</td>
+          <td>{{ s.usuario }}</td>
+          <td>{{ s.area || 'Sin área' }}</td>
+          <td>
+            <span class="badge" [ngClass]="s.estado">
+              {{ getEstadoLabel(s.estado) }}
+            </span>
+          </td>
+          <td>{{ s.fecha_creacion | date:'dd/MM/yyyy HH:mm' }}</td>
+          <td>
+            <a class="btn-detail" [routerLink]="['/admin/solicitudes', s.id]">
+              Ver detalle
+            </a>
+          </td>
+        </tr>
+      </tbody>
+    </table>
 
-  <div *ngIf="!cargando && filtradas.length === 0" class="empty">
-    No hay solicitudes registradas.
-  </div>
+    <div class="empty" *ngIf="filtradas.length === 0">
+      No hay solicitudes registradas.
+    </div>
+  </section>
 
 </div>

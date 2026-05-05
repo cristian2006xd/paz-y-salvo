@@ -41,7 +41,9 @@
 
       <div>
         <span>Estado</span>
-        <strong [class]="solicitud.estado">{{ solicitud.estado }}</strong>
+        <strong [class]="solicitud.estado">
+          {{ getEstadoLabel(solicitud.estado) }}
+        </strong>
       </div>
     </section>
 
@@ -58,9 +60,17 @@
       </div>
 
       <div class="areas-grid">
-        <article class="area" *ngFor="let a of areas" [class.ok]="a.estado === 'COMPLETADO'">
+        <article
+          class="area"
+          *ngFor="let a of areas"
+          [class.ok]="a.estado === 'COMPLETADO'">
+
           <h3>{{ a.area }}</h3>
-          <span>{{ a.estado }}</span>
+
+          <span>
+            {{ getEstadoLabel(a.estado) }}
+          </span>
+
           <p><strong>Responsable:</strong> {{ a.responsable || 'Pendiente' }}</p>
           <p><strong>Detalle:</strong> {{ a.detalle || 'Pendiente' }}</p>
           <p><strong>Observación:</strong> {{ a.observacion || 'Sin observación' }}</p>
@@ -74,31 +84,28 @@
       <textarea
         [(ngModel)]="observacion"
         placeholder="Observación administrativa"
-        rows="4"
-      ></textarea>
+        rows="4">
+      </textarea>
 
       <div class="actions">
         <button
           class="review"
           (click)="enviarRevision()"
-          [disabled]="guardando"
-        >
+          [disabled]="guardando">
           Enviar a revisión
         </button>
 
         <button
           class="approve"
           (click)="aprobar()"
-          [disabled]="guardando || !todasCompletadas()"
-        >
+          [disabled]="guardando || !todasCompletadas()">
           Aprobar
         </button>
 
         <button
           class="deny"
           (click)="negar()"
-          [disabled]="guardando"
-        >
+          [disabled]="guardando">
           Negar
         </button>
       </div>

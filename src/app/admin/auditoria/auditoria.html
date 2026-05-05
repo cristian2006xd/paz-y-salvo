@@ -3,7 +3,7 @@
   <header class="header">
     <div>
       <h1>Auditoría del Sistema</h1>
-      <p>Registro real de acciones realizadas dentro del sistema institucional.</p>
+      <p>Registro de acciones realizadas dentro del sistema institucional.</p>
     </div>
 
     <button (click)="cargarAuditoria()">Refrescar</button>
@@ -22,7 +22,7 @@
 
     <article class="stat">
       <span>Módulos auditados</span>
-      <strong>{{ registros.length ? 'Activo' : 'Sin datos' }}</strong>
+      <strong>{{ modulosUnicos().length }}</strong>
     </article>
   </section>
 
@@ -31,8 +31,22 @@
       type="text"
       placeholder="Buscar por usuario, rol, módulo, acción o detalle..."
       [(ngModel)]="search"
-      (input)="buscar()"
+      (input)="aplicarFiltros()"
     />
+
+    <select [(ngModel)]="filtroRol" (change)="aplicarFiltros()">
+      <option value="">Todos los roles</option>
+      <option *ngFor="let rol of rolesUnicos()" [value]="rol">
+        {{ rol }}
+      </option>
+    </select>
+
+    <select [(ngModel)]="filtroModulo" (change)="aplicarFiltros()">
+      <option value="">Todos los módulos</option>
+      <option *ngFor="let modulo of modulosUnicos()" [value]="modulo">
+        {{ modulo }}
+      </option>
+    </select>
 
     <button class="secondary" (click)="limpiarBusqueda()">Limpiar</button>
   </section>
@@ -61,15 +75,11 @@
 
       <tbody>
         <tr *ngFor="let r of filtrados">
-          <td>{{ r.id }}</td>
+          <td>#{{ r.id }}</td>
           <td>{{ r.usuario }}</td>
-          <td>
-            <span class="role">{{ r.rol }}</span>
-          </td>
+          <td><span class="role">{{ r.rol }}</span></td>
           <td>{{ r.modulo }}</td>
-          <td>
-            <span class="action">{{ r.accion }}</span>
-          </td>
+          <td><span class="action">{{ r.accion }}</span></td>
           <td>{{ r.detalle }}</td>
           <td>{{ r.fecha | date:'short' }}</td>
         </tr>

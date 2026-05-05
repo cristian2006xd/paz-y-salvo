@@ -1,20 +1,36 @@
 <div class="login-page">
+
   <div class="login-card">
+
+    <!-- LADO IZQUIERDO -->
     <section class="login-info">
       <div class="logo">PS</div>
 
-      <h1>Sistema de Paz y Salvo Institucional</h1>
+      <h1>Paz y Salvo Institucional</h1>
+
       <p>
-        Plataforma para gestionar solicitudes, validaciones por áreas,
-        documentos firmados y auditoría institucional.
+        Sistema integral para la gestión de solicitudes, validaciones por áreas,
+        control documental y auditoría institucional.
       </p>
+
+      <ul class="features">
+        <li>✔ Gestión de solicitudes</li>
+        <li>✔ Validación por áreas</li>
+        <li>✔ Documentos firmados</li>
+        <li>✔ Auditoría completa</li>
+      </ul>
     </section>
 
+    <!-- LADO DERECHO -->
     <section class="login-form">
-      <h2>Iniciar sesión</h2>
-      <p class="subtitle">Ingrese sus credenciales para continuar</p>
+
+      <div class="form-header">
+        <h2>Iniciar sesión</h2>
+        <p>Ingrese sus credenciales para acceder al sistema</p>
+      </div>
 
       <form (ngSubmit)="login()">
+
         <div class="form-group">
           <label>Usuario</label>
           <input
@@ -22,6 +38,7 @@
             name="usuario"
             [(ngModel)]="usuario"
             placeholder="Ej: admin"
+            autocomplete="username"
           />
         </div>
 
@@ -32,6 +49,7 @@
             name="password"
             [(ngModel)]="password"
             placeholder="Ingrese su contraseña"
+            autocomplete="current-password"
           />
         </div>
 
@@ -42,7 +60,15 @@
         <button type="submit" [disabled]="cargando">
           {{ cargando ? 'Ingresando...' : 'Ingresar' }}
         </button>
+
       </form>
+
+      <p class="footer">
+        Sistema institucional • Talento Humano
+      </p>
+
     </section>
+
   </div>
+
 </div>

@@ -3,74 +3,116 @@
   <header class="header">
     <div>
       <h1>Revisión de Documentos</h1>
-      <p>Validación final del documento firmado por el ex funcionario.</p>
+      <p>Apruebe, rechace o descargue documentos firmados.</p>
     </div>
   </header>
 
-  <section class="card" *ngIf="cargando">
+  <section class="message loading" *ngIf="cargando">
     Cargando documentos...
   </section>
 
-  <section class="error-card" *ngIf="error">
+  <section class="message error" *ngIf="error">
     {{ error }}
   </section>
 
-  <section class="success-card" *ngIf="mensaje">
+  <section class="message success" *ngIf="mensaje">
     {{ mensaje }}
   </section>
 
-  <section class="card" *ngIf="!cargando">
+  <section class="layout" *ngIf="!cargando">
 
-    <table>
-      <thead>
-        <tr>
-          <th>ID</th>
-          <th>Ex Funcionario</th>
-          <th>Usuario</th>
-          <th>Solicitud</th>
-          <th>Archivo</th>
-          <th>Estado</th>
-          <th>Observación</th>
-          <th>Acciones</th>
-        </tr>
-      </thead>
+    <div class="card table-card">
+      <h2>Documentos recibidos</h2>
 
-      <tbody>
-        <tr *ngFor="let d of documentos">
-          <td>{{ d.id }}</td>
-          <td>{{ d.nombres }} {{ d.apellidos }}</td>
-          <td>{{ d.usuario }}</td>
-          <td>#{{ d.solicitud_id }}</td>
-          <td>{{ d.nombre_archivo }}</td>
-          <td>
-            <span
-              class="badge"
-              [class.ok]="d.estado === 'APROBADO'"
-              [class.bad]="d.estado === 'RECHAZADO'"
-            >
-              {{ d.estado }}
-            </span>
-          </td>
-          <td>{{ d.observacion || 'Sin observación' }}</td>
-          <td>
-            <button (click)="aprobar(d)" [disabled]="d.estado === 'APROBADO'">
-              Aprobar
-            </button>
+      <table *ngIf="documentos.length > 0">
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Funcionario</th>
+            <th>Archivo</th>
+            <th>Estado</th>
+            <th>Fecha subida</th>
+            <th>Acciones</th>
+          </tr>
+        </thead>
 
-            <button class="danger" (click)="rechazar(d)" [disabled]="d.estado === 'RECHAZADO'">
-              Rechazar
-            </button>
-          </td>
-        </tr>
+        <tbody>
+          <tr *ngFor="let doc of documentos">
+            <td>#{{ doc.id }}</td>
+            <td>{{ doc.nombres }} {{ doc.apellidos }}</td>
+            <td>{{ doc.nombre_archivo }}</td>
+            <td>
+              <span class="badge" [ngClass]="estadoClase(doc.estado)">
+                {{ getEstadoLabel(doc.estado) }}
+              </span>
+            </td>
+            <td>{{ doc.fecha_subida }}</td>
+            <td>
+              <div class="table-actions">
+                <button class="download" (click)="descargar(doc)">
+                  Descargar
+                </button>
 
-        <tr *ngIf="documentos.length === 0">
-          <td colspan="8" class="empty">
-            No existen documentos cargados.
-          </td>
-        </tr>
-      </tbody>
+                <button class="view" (click)="seleccionar(doc)">
+                  Revisar
+                </button>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
 
-    </table>
+      <div class="empty" *ngIf="documentos.length === 0">
+        No existen documentos cargados.
+      </div>
+    </div>
+
+    <div class="card detail-card" *ngIf="documentoSeleccionado">
+      <h2>Detalle del documento</h2>
+
+      <div class="info">
+        <span>Funcionario</span>
+        <strong>
+          {{ documentoSeleccionado.nombres }} {{ documentoSeleccionado.apellidos }}
+        </strong>
+      </div>
+
+      <div class="info">
+        <span>Archivo</span>
+        <strong>{{ documentoSeleccionado.nombre_archivo }}</strong>
+      </div>
+
+      <div class="info">
+        <span>Estado actual</span>
+        <strong>{{ getEstadoLabel(documentoSeleccionado.estado) }}</strong>
+      </div>
+
+      <button class="download full" (click)="descargar(documentoSeleccionado)">
+        Descargar documento firmado
+      </button>
+
+      <label>Observación para rechazo</label>
+      <textarea
+        [(ngModel)]="observacion"
+        placeholder="Escriba el motivo si va a rechazar el documento">
+      </textarea>
+
+      <div class="actions">
+        <button
+          class="approve"
+          (click)="aprobar(documentoSeleccionado)"
+          [disabled]="procesando">
+          Aprobar
+        </button>
+
+        <button
+          class="reject"
+          (click)="rechazar(documentoSeleccionado)"
+          [disabled]="procesando">
+          Rechazar
+        </button>
+      </div>
+    </div>
 
   </section>
 

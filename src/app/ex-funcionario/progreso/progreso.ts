@@ -10,6 +10,7 @@ import { SolicitudesService } from '../../services/solicitudes';
   styleUrl: './progreso.css'
 })
 export class Progreso implements OnInit {
+
   usuario: any = null;
   solicitud: any = null;
   areas: any[] = [];
@@ -23,26 +24,44 @@ export class Progreso implements OnInit {
     const data = localStorage.getItem('usuario');
     this.usuario = data ? JSON.parse(data) : null;
 
-    if (this.usuario?.id) {
-      this.cargarProgreso();
-    } else {
+    if (!this.usuario?.id) {
       this.error = 'No se pudo identificar al usuario.';
       this.cargando = false;
+      return;
     }
+
+    this.cargarProgreso();
   }
 
   cargarProgreso(): void {
-    this.solicitudesService.obtenerSolicitudExFuncionario(this.usuario.id).subscribe({
-      next: (res) => {
-        this.solicitud = res.solicitud;
-        this.areas = res.areas;
-        this.cargando = false;
-      },
-      error: (err) => {
-        this.error = err.error?.mensaje || 'No existe solicitud activa.';
-        this.cargando = false;
-      }
-    });
+    this.cargando = true;
+    this.error = '';
+
+    this.solicitudesService.obtenerSolicitudExFuncionario(Number(this.usuario.id))
+      .subscribe({
+        next: (res: any) => {
+          this.solicitud = res.solicitud;
+          this.areas = res.areas || [];
+          this.cargando = false;
+        },
+        error: (err: any) => {
+          this.error = err.error?.mensaje || 'No existe solicitud activa.';
+          this.cargando = false;
+        }
+      });
+  }
+
+  getEstadoLabel(estado: string): string {
+    switch (estado) {
+      case 'PENDIENTE': return 'Pendiente';
+      case 'EN_PROCESO': return 'En proceso';
+      case 'EN_REVISION': return 'En revisión';
+      case 'APROBADO': return 'Aprobado';
+      case 'FINALIZADO': return 'Finalizado';
+      case 'COMPLETADO': return 'Completado';
+      case 'NEGADO': return 'Negado';
+      default: return estado || 'Sin estado';
+    }
   }
 
   completadas(): number {
@@ -50,7 +69,7 @@ export class Progreso implements OnInit {
   }
 
   porcentaje(): number {
-    if (this.areas.length === 0) return 0;
+    if (!this.areas.length) return 0;
     return Math.round((this.completadas() / this.areas.length) * 100);
   }
 }

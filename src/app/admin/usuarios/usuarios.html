@@ -1,8 +1,15 @@
-<div class="usuarios-container">
+<div class="page">
 
-  <h1>Gestión de Usuarios</h1>
+  <header class="header">
+    <div>
+      <h1>Gestión de Usuarios</h1>
+      <p>Administre usuarios, roles, áreas y estados del sistema.</p>
+    </div>
 
-  <div class="form-card">
+    <button (click)="cargarUsuarios()">Refrescar</button>
+  </header>
+
+  <section class="form-card">
     <h2>Crear usuario</h2>
 
     <div class="form-grid">
@@ -12,31 +19,38 @@
       <input [(ngModel)]="nuevo.password" type="password" placeholder="Contraseña">
 
       <select [(ngModel)]="nuevo.rol">
-        <option value="admin">Admin</option>
+        <option value="admin">Administrador</option>
         <option value="talento_humano">Talento Humano</option>
         <option value="ex_funcionario">Ex Funcionario</option>
         <option value="area">Área</option>
         <option value="recepcion">Recepción</option>
       </select>
 
-      <input [(ngModel)]="nuevo.area" placeholder="Área">
+      <input
+        [(ngModel)]="nuevo.area"
+        placeholder="Área"
+        [disabled]="nuevo.rol !== 'area'">
     </div>
 
     <button (click)="crearUsuario()" [disabled]="cargando">
-      {{ cargando ? 'Guardando...' : 'Crear Usuario' }}
+      {{ cargando ? 'Guardando...' : 'Crear usuario' }}
     </button>
 
-    <p class="mensaje">{{ mensaje }}</p>
-  </div>
+    <p class="mensaje" *ngIf="mensaje">{{ mensaje }}</p>
+    <p class="error" *ngIf="error">{{ error }}</p>
+  </section>
 
-  <div class="tabla-card">
-    <h2>Lista de usuarios</h2>
+  <section class="tabla-card">
+    <div class="table-header">
+      <h2>Lista de usuarios</h2>
+      <span>{{ usuarios.length }} usuario(s)</span>
+    </div>
 
-    <table>
+    <table *ngIf="usuarios.length > 0">
       <thead>
         <tr>
           <th>ID</th>
-          <th>Nombres</th>
+          <th>Nombre completo</th>
           <th>Usuario</th>
           <th>Rol</th>
           <th>Área</th>
@@ -46,19 +60,25 @@
 
       <tbody>
         <tr *ngFor="let u of usuarios">
-          <td>{{ u.id }}</td>
+          <td>#{{ u.id }}</td>
           <td>{{ u.nombres }} {{ u.apellidos }}</td>
           <td>{{ u.usuario }}</td>
-          <td>{{ u.rol }}</td>
-          <td>{{ u.area }}</td>
           <td>
-            <span [class.activo]="u.estado === 'ACTIVO'">
-              {{ u.estado }}
+            <span class="role">{{ nombreRol(u.rol) }}</span>
+          </td>
+          <td>{{ u.area || 'No aplica' }}</td>
+          <td>
+            <span class="badge" [class.activo]="u.estado === 'ACTIVO'">
+              {{ u.estado || 'ACTIVO' }}
             </span>
           </td>
         </tr>
       </tbody>
     </table>
-  </div>
+
+    <div class="empty" *ngIf="usuarios.length === 0">
+      No hay usuarios registrados.
+    </div>
+  </section>
 
 </div>

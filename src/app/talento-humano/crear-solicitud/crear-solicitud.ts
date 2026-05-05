@@ -47,30 +47,32 @@ export class CrearSolicitud implements OnInit {
     this.cargandoDatos = true;
     this.error = '';
 
-    this.cargarExFuncionarios();
-    this.cargarSolicitudes();
+    let pendientes = 2;
 
-    this.cargandoDatos = false;
-  }
+    const finalizar = () => {
+      pendientes--;
+      if (pendientes === 0) this.cargandoDatos = false;
+    };
 
-  cargarExFuncionarios(): void {
     this.solicitudesService.listarExFuncionarios().subscribe({
-      next: (data) => {
-        this.exFuncionarios = data;
+      next: (data: any[]) => {
+        this.exFuncionarios = data || [];
+        finalizar();
       },
-      error: (err) => {
+      error: (err: any) => {
         this.error = err.error?.mensaje || 'Error al cargar ex funcionarios.';
+        finalizar();
       }
     });
-  }
 
-  cargarSolicitudes(): void {
     this.solicitudesService.listar().subscribe({
-      next: (data) => {
-        this.solicitudes = data;
+      next: (data: any[]) => {
+        this.solicitudes = data || [];
+        finalizar();
       },
-      error: (err) => {
+      error: (err: any) => {
         this.error = err.error?.mensaje || 'Error al cargar solicitudes.';
+        finalizar();
       }
     });
   }
@@ -97,17 +99,40 @@ export class CrearSolicitud implements OnInit {
     };
 
     this.solicitudesService.crear(payload).subscribe({
-      next: (res) => {
+      next: (res: any) => {
         this.mensaje = res.mensaje || 'Solicitud creada correctamente.';
         this.cargando = false;
         this.nuevaSolicitud.ex_funcionario_id = 0;
         this.cargarSolicitudes();
       },
-      error: (err) => {
+      error: (err: any) => {
         this.error = err.error?.mensaje || 'Error al crear la solicitud.';
         this.cargando = false;
       }
     });
+  }
+
+  cargarSolicitudes(): void {
+    this.solicitudesService.listar().subscribe({
+      next: (data: any[]) => {
+        this.solicitudes = data || [];
+      },
+      error: (err: any) => {
+        this.error = err.error?.mensaje || 'Error al cargar solicitudes.';
+      }
+    });
+  }
+
+  getEstadoLabel(estado: string): string {
+    switch (estado) {
+      case 'PENDIENTE': return 'Pendiente';
+      case 'EN_PROCESO': return 'En proceso';
+      case 'EN_REVISION': return 'En revisión';
+      case 'APROBADO': return 'Aprobado';
+      case 'FINALIZADO': return 'Finalizado';
+      case 'NEGADO': return 'Negado';
+      default: return estado || 'Sin estado';
+    }
   }
 
   claseEstado(estado: string): string {

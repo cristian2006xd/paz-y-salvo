@@ -23,18 +23,22 @@
   <ng-container *ngIf="!cargando && !error && resumen">
 
     <section class="report-title">
-      <h2>Reporte General</h2>
-      <span>Generado desde el sistema</span>
+      <div>
+        <h2>Reporte General</h2>
+        <span>Generado desde el sistema institucional</span>
+      </div>
+
+      <strong>{{ fechaActual | date:'dd/MM/yyyy HH:mm' }}</strong>
     </section>
 
     <section class="grid">
-      <article class="card">
+      <article class="card blue">
         <span>Usuarios</span>
         <strong>{{ resumen.usuarios }}</strong>
         <p>Total de usuarios registrados.</p>
       </article>
 
-      <article class="card">
+      <article class="card purple">
         <span>Solicitudes</span>
         <strong>{{ resumen.solicitudes }}</strong>
         <p>Total de solicitudes creadas.</p>
@@ -55,14 +59,27 @@
       <article class="card success">
         <span>Aprobadas</span>
         <strong>{{ resumen.aprobadas }}</strong>
-        <p>Solicitudes finalizadas.</p>
+        <p>Solicitudes aprobadas o finalizadas.</p>
       </article>
 
-      <article class="card">
+      <article class="card document">
         <span>Documentos</span>
         <strong>{{ resumen.documentos }}</strong>
         <p>Documentos firmados cargados.</p>
       </article>
+    </section>
+
+    <section class="panel">
+      <h2>Estado general</h2>
+
+      <div class="progress-row">
+        <span>Avance de solicitudes aprobadas</span>
+        <strong>{{ porcentajeAprobadas() }}%</strong>
+      </div>
+
+      <div class="bar">
+        <div class="fill" [style.width.%]="porcentajeAprobadas()"></div>
+      </div>
     </section>
 
   </ng-container>

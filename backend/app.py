@@ -1,3 +1,7 @@
+from reportlab.lib.pagesizes import letter
+from reportlab.pdfgen import canvas
+from flask import send_file
+import io
 from flask import Flask, request, jsonify
 from flask_cors import CORS
 import mysql.connector
@@ -846,6 +850,38 @@ def guardar_formulario_area(id):
 # =========================
 # DOCUMENTOS
 # =========================
+@app.route("/api/documentos/<int:id>/descargar", methods=["GET"])
+def descargar_documento(id):
+    try:
+        conn = get_connection()
+        cursor = conn.cursor(dictionary=True)
+
+        cursor.execute("""
+            SELECT ruta_archivo, nombre_archivo
+            FROM documentos
+            WHERE id = %s
+        """, (id,))
+
+        documento = cursor.fetchone()
+
+        cursor.close()
+        conn.close()
+
+        if not documento:
+            return jsonify({"mensaje": "Documento no encontrado"}), 404
+
+        return send_file(
+            documento["ruta_archivo"],
+            as_attachment=True,
+            download_name=documento["nombre_archivo"]
+        )
+
+    except Exception as e:
+        return jsonify({
+            "mensaje": "Error al descargar documento",
+            "error": str(e)
+        }), 500
+    
 @app.route("/api/documentos/subir", methods=["POST"])
 def subir_documento():
     solicitud_id = request.form.get("solicitud_id")
@@ -945,6 +981,20 @@ def aprobar_documento(id):
         conn = get_connection()
         cursor = conn.cursor()
 
+        # 1. Obtener solicitud_id
+        cursor.execute("""
+            SELECT solicitud_id
+            FROM documentos
+            WHERE id = %s
+        """, (id,))
+        result = cursor.fetchone()
+
+        if not result:
+            return jsonify({"mensaje": "Documento no encontrado"}), 404
+
+        solicitud_id = result[0]
+
+        # 2. Aprobar documento
         cursor.execute("""
             UPDATE documentos
             SET estado = 'APROBADO',
@@ -952,6 +1002,13 @@ def aprobar_documento(id):
                 fecha_revision = CURRENT_TIMESTAMP
             WHERE id = %s
         """, (id,))
+
+        # 3. 🔥 FINALIZAR SOLICITUD
+        cursor.execute("""
+            UPDATE solicitudes
+            SET estado = 'FINALIZADO'
+            WHERE id = %s
+        """, (solicitud_id,))
 
         conn.commit()
         cursor.close()
@@ -962,11 +1019,11 @@ def aprobar_documento(id):
             "recepcion",
             "Documentos",
             "Aprobar documento",
-            f"Documento #{id} aprobado"
+            f"Documento #{id} aprobado y solicitud #{solicitud_id} finalizada"
         )
 
         return jsonify({
-            "mensaje": "Documento aprobado correctamente"
+            "mensaje": "Documento aprobado y proceso finalizado"
         }), 200
 
     except Exception as e:
@@ -1239,6 +1296,99 @@ def eliminar_usuario(id):
             "mensaje": "No se pudo eliminar. Puede estar relacionado con solicitudes.",
             "error": str(e)
         }), 500
+    
+
+
+@app.route("/api/solicitudes/<int:id>/pdf", methods=["GET"])
+def generar_pdf(id):
+    try:
+        conn = get_connection()
+        cursor = conn.cursor(dictionary=True)
+
+        # Obtener solicitud + usuario
+        cursor.execute("""
+            SELECT s.*, u.nombres, u.apellidos, u.usuario
+            FROM solicitudes s
+            INNER JOIN usuarios u ON s.ex_funcionario_id = u.id
+            WHERE s.id = %s
+        """, (id,))
+        solicitud = cursor.fetchone()
+
+        if not solicitud:
+            return jsonify({"mensaje": "Solicitud no encontrada"}), 404
+
+        # Obtener áreas
+        cursor.execute("""
+            SELECT area, estado, comentario
+            FROM solicitudes_areas
+            WHERE solicitud_id = %s
+        """, (id,))
+        areas = cursor.fetchall()
+
+        cursor.close()
+        conn.close()
+
+        # Crear PDF en memoria
+        buffer = io.BytesIO()
+        pdf = canvas.Canvas(buffer, pagesize=letter)
+
+        y = 750
+
+        # Título
+        pdf.setFont("Helvetica-Bold", 16)
+        pdf.drawString(180, y, "PAZ Y SALVO INSTITUCIONAL")
+        y -= 40
+
+        # Datos del funcionario
+        pdf.setFont("Helvetica", 12)
+        pdf.drawString(50, y, f"Funcionario: {solicitud['nombres']} {solicitud['apellidos']}")
+        y -= 20
+        pdf.drawString(50, y, f"Usuario: {solicitud['usuario']}")
+        y -= 20
+        pdf.drawString(50, y, f"Estado: {solicitud['estado']}")
+        y -= 30
+
+        # Áreas
+        pdf.setFont("Helvetica-Bold", 12)
+        pdf.drawString(50, y, "Estado por áreas:")
+        y -= 20
+
+        pdf.setFont("Helvetica", 11)
+
+        for area in areas:
+            pdf.drawString(60, y, f"{area['area']} - {area['estado']}")
+            y -= 15
+
+            if area['comentario']:
+                pdf.drawString(70, y, f"Obs: {area['comentario']}")
+                y -= 15
+
+            y -= 5
+
+            # Salto de página si se llena
+            if y < 100:
+                pdf.showPage()
+                pdf.setFont("Helvetica", 11)
+                y = 750
+
+        pdf.save()
+        buffer.seek(0)
+
+        return send_file(
+            buffer,
+            as_attachment=True,
+            download_name=f"paz_salvo_{id}.pdf",
+            mimetype="application/pdf"
+        )
+
+    except Exception as e:
+        return jsonify({
+            "mensaje": "Error al generar PDF",
+            "error": str(e)
+        }), 500
+
+
+    
 # 🔥 SIEMPRE AL FINAL
 if __name__ == "__main__":
     app.run(debug=True, port=5000)
