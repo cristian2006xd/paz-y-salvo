@@ -2,9 +2,9 @@
 
   <aside class="sidebar">
     <div class="brand">
-      <div class="brand-logo">PS</div>
+      <div class="brand-icon">PS</div>
       <div>
-        <h2>Paz y Salvo</h2>
+        <h2>INAMHI</h2>
         <span>Panel administrador</span>
       </div>
     </div>
@@ -23,13 +23,19 @@
   <main class="content">
     <header class="topbar">
       <div>
+        <span class="eyebrow">Sistema institucional</span>
         <h1>Dashboard Administrativo</h1>
         <p>Gestión general del sistema institucional de paz y salvo.</p>
       </div>
 
       <div class="user-box">
-        <strong>{{ usuario?.nombres || 'Administrador' }}</strong>
-        <span>{{ usuario?.rol || 'admin' }}</span>
+        <div class="avatar">
+          {{ (usuario?.nombres || 'A').charAt(0) }}
+        </div>
+        <div>
+          <strong>{{ usuario?.nombres || 'Administrador' }}</strong>
+          <span>{{ usuario?.rol || 'admin' }}</span>
+        </div>
       </div>
     </header>
 
@@ -44,29 +50,83 @@
     <ng-container *ngIf="!cargando && !error">
 
       <section class="cards-grid">
-        <article class="card">
+        <article class="card blue">
           <span>Solicitudes totales</span>
           <h3>{{ totalSolicitudes() }}</h3>
           <p>Procesos registrados</p>
         </article>
 
-        <article class="card">
+        <article class="card orange">
           <span>Pendientes</span>
           <h3>{{ pendientes() }}</h3>
           <p>Procesos en curso</p>
         </article>
 
-        <article class="card">
+        <article class="card green">
           <span>Aprobadas</span>
           <h3>{{ aprobadas() }}</h3>
-          <p>Procesos aprobados/finalizados</p>
+          <p>Procesos finalizados</p>
         </article>
 
-        <article class="card">
+        <article class="card purple">
           <span>Usuarios activos</span>
           <h3>{{ usuariosActivos() }}</h3>
           <p>Accesos habilitados</p>
         </article>
+      </section>
+
+      <section class="dashboard-grid">
+
+        <article class="panel chart-panel">
+          <div class="panel-header">
+            <div>
+              <h2>Estado de solicitudes</h2>
+              <p>Resumen visual del flujo institucional.</p>
+            </div>
+          </div>
+
+          <div class="donut-wrap">
+            <div class="donut"></div>
+
+            <div class="legend">
+              <div><span class="dot pending"></span>Pendientes: {{ pendientes() }}</div>
+              <div><span class="dot approved"></span>Aprobadas: {{ aprobadas() }}</div>
+              <div><span class="dot total"></span>Total: {{ totalSolicitudes() }}</div>
+            </div>
+          </div>
+        </article>
+
+        <article class="panel bars-panel">
+          <div class="panel-header">
+            <div>
+              <h2>Actividad general</h2>
+              <p>Indicadores principales del sistema.</p>
+            </div>
+          </div>
+
+          <div class="bars">
+            <div class="bar-item">
+              <span>Solicitudes</span>
+              <div class="bar"><div style="width: 92%;"></div></div>
+            </div>
+
+            <div class="bar-item">
+              <span>Pendientes</span>
+              <div class="bar"><div style="width: 58%;"></div></div>
+            </div>
+
+            <div class="bar-item">
+              <span>Aprobadas</span>
+              <div class="bar"><div style="width: 76%;"></div></div>
+            </div>
+
+            <div class="bar-item">
+              <span>Usuarios</span>
+              <div class="bar"><div style="width: 64%;"></div></div>
+            </div>
+          </div>
+        </article>
+
       </section>
 
       <section class="panel">
@@ -75,10 +135,6 @@
             <h2>Resumen del sistema</h2>
             <p>Supervise usuarios, solicitudes, auditoría y reportes.</p>
           </div>
-
-          <button routerLink="/admin/solicitudes">
-            Gestionar solicitudes
-          </button>
         </div>
 
         <div class="empty-state">

@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { SolicitudesService, Solicitud } from '../../services/solicitudes';
+import { SolicitudesService } from '../../services/solicitudes';
 
 @Component({
   selector: 'app-crear-solicitud',
@@ -15,11 +15,12 @@ export class CrearSolicitud implements OnInit {
   exFuncionarios: any[] = [];
   solicitudes: any[] = [];
 
-  nuevaSolicitud: Solicitud = {
-    ex_funcionario_id: 0,
-    creado_por: 0
+  nuevaSolicitud: any = {
+    ex_funcionario_id: '',
+    creado_por: ''
   };
 
+  errores: any = {};
   usuarioActual: any = null;
 
   mensaje = '';
@@ -37,10 +38,34 @@ export class CrearSolicitud implements OnInit {
   obtenerUsuarioActual(): void {
     const usuarioStorage = localStorage.getItem('usuario');
     this.usuarioActual = usuarioStorage ? JSON.parse(usuarioStorage) : null;
+  }
 
-    if (this.usuarioActual?.id) {
-      this.nuevaSolicitud.creado_por = Number(this.usuarioActual.id);
+  soloLetrasCreadoPor(): void {
+    this.nuevaSolicitud.creado_por = String(this.nuevaSolicitud.creado_por || '')
+      .replace(/[^A-Za-zÁÉÍÓÚáéíóúÑñ\s]/g, '')
+      .slice(0, 60);
+
+    this.validarSolicitud();
+  }
+
+  validarSolicitud(): boolean {
+    this.errores = {};
+
+    if (!this.nuevaSolicitud.ex_funcionario_id) {
+      this.errores.ex_funcionario_id = 'Seleccione un ex funcionario.';
     }
+
+    const creadoPor = String(this.nuevaSolicitud.creado_por || '').trim();
+
+    if (!creadoPor) {
+      this.errores.creado_por = 'Ingrese el nombre del encargado.';
+    } else if (creadoPor.length < 3) {
+      this.errores.creado_por = 'Mínimo 3 caracteres.';
+    } else if (!/^[A-Za-zÁÉÍÓÚáéíóúÑñ\s]+$/.test(creadoPor)) {
+      this.errores.creado_por = 'Solo se permiten letras.';
+    }
+
+    return Object.keys(this.errores).length === 0;
   }
 
   cargarDatosIniciales(): void {
@@ -81,28 +106,29 @@ export class CrearSolicitud implements OnInit {
     this.mensaje = '';
     this.error = '';
 
-    if (!this.nuevaSolicitud.ex_funcionario_id || Number(this.nuevaSolicitud.ex_funcionario_id) <= 0) {
-      this.error = 'Seleccione un ex funcionario.';
-      return;
-    }
-
-    if (!this.nuevaSolicitud.creado_por || Number(this.nuevaSolicitud.creado_por) <= 0) {
-      this.error = 'No se pudo identificar el usuario creador.';
+    if (!this.validarSolicitud()) {
+      this.error = 'Complete correctamente todos los campos.';
       return;
     }
 
     this.cargando = true;
 
-    const payload: Solicitud = {
+    const payload: any = {
       ex_funcionario_id: Number(this.nuevaSolicitud.ex_funcionario_id),
-      creado_por: Number(this.nuevaSolicitud.creado_por)
+      creado_por: String(this.nuevaSolicitud.creado_por).trim()
     };
 
     this.solicitudesService.crear(payload).subscribe({
       next: (res: any) => {
         this.mensaje = res.mensaje || 'Solicitud creada correctamente.';
         this.cargando = false;
-        this.nuevaSolicitud.ex_funcionario_id = 0;
+
+        this.nuevaSolicitud = {
+          ex_funcionario_id: '',
+          creado_por: ''
+        };
+
+        this.errores = {};
         this.cargarSolicitudes();
       },
       error: (err: any) => {

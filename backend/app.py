@@ -352,14 +352,14 @@ def listar_solicitudes():
 
 @app.route("/api/solicitudes", methods=["POST"])
 def crear_solicitud():
-    data = request.get_json()
+    data = request.get_json() or {}
 
     ex_funcionario_id = data.get("ex_funcionario_id")
-    creado_por = data.get("creado_por")
+    creado_por = str(data.get("creado_por", "")).strip()
 
     if not ex_funcionario_id or not creado_por:
         return jsonify({
-            "mensaje": "Ex funcionario y usuario creador son obligatorios"
+            "mensaje": "Ex funcionario y nombre del encargado son obligatorios"
         }), 400
 
     try:
@@ -371,7 +371,7 @@ def crear_solicitud():
             (ex_funcionario_id, creado_por, estado, observacion)
             VALUES (%s, %s, %s, %s)
         """, (
-            ex_funcionario_id,
+            int(ex_funcionario_id),
             creado_por,
             "PENDIENTE",
             ""
@@ -415,8 +415,6 @@ def crear_solicitud():
             ))
 
         conn.commit()
-        cursor.close()
-        conn.close()
 
         registrar_auditoria(
             creado_por,
@@ -426,12 +424,22 @@ def crear_solicitud():
             f"Se creó la solicitud #{solicitud_id} con flujo por áreas"
         )
 
+        cursor.close()
+        conn.close()
+
         return jsonify({
             "mensaje": "Solicitud creada correctamente",
             "solicitud_id": solicitud_id
         }), 201
 
     except Exception as e:
+        try:
+            conn.rollback()
+            cursor.close()
+            conn.close()
+        except:
+            pass
+
         return jsonify({
             "mensaje": "Error al crear solicitud",
             "error": str(e)

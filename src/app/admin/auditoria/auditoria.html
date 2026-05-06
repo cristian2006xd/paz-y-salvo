@@ -6,7 +6,7 @@
       <p>Registro de acciones realizadas dentro del sistema institucional.</p>
     </div>
 
-    <button (click)="cargarAuditoria()">Refrescar</button>
+    <button (click)="irDashboard()">VOLVER</button>
   </header>
 
   <section class="stats">
@@ -20,10 +20,6 @@
       <strong>{{ filtrados.length }}</strong>
     </article>
 
-    <article class="stat">
-      <span>Módulos auditados</span>
-      <strong>{{ modulosUnicos().length }}</strong>
-    </article>
   </section>
 
   <section class="toolbar">
@@ -41,12 +37,6 @@
       </option>
     </select>
 
-    <select [(ngModel)]="filtroModulo" (change)="aplicarFiltros()">
-      <option value="">Todos los módulos</option>
-      <option *ngFor="let modulo of modulosUnicos()" [value]="modulo">
-        {{ modulo }}
-      </option>
-    </select>
 
     <button class="secondary" (click)="limpiarBusqueda()">Limpiar</button>
   </section>

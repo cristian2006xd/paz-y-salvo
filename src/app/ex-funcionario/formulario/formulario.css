@@ -1,270 +1,394 @@
-/* =======================================================
-   1. BASE GENERAL
-======================================================= */
 * {
   box-sizing: border-box;
 }
 
 body {
   margin: 0;
+  background: #eef2f7;
   font-family: Arial, Helvetica, sans-serif;
-  background: #f1f5f9;
 }
 
 .paz-salvo-page {
-  width: 100%;
+  min-height: 100vh;
+  padding: 28px;
+  background:
+    radial-gradient(circle at top left, #dbeafe, transparent 35%),
+    linear-gradient(135deg, #f8fafc, #e2e8f0);
 }
 
-/* =======================================================
-   2. FORMULARIO SUPERIOR (EDITOR)
-======================================================= */
+/* FORMULARIO SUPERIOR */
 .editor {
-  background: #ffffff;
-  padding: 2rem;
-  border-radius: 12px;
-  margin-bottom: 2rem;
-  box-shadow: 0 6px 12px rgba(0,0,0,0.08);
+  max-width: 1250px;
+  margin: 0 auto 32px;
+  padding: 30px;
+  border-radius: 30px;
+  background: rgba(255, 255, 255, 0.96);
+  box-shadow: 0 26px 70px rgba(15, 23, 42, 0.18);
+  border: 1px solid #dbe3ef;
+  animation: fadeUp 0.45s ease;
+}
+
+@keyframes fadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(18px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 .editor-header {
   display: flex;
   justify-content: space-between;
-  align-items: center;
-  margin-bottom: 2rem;
+  gap: 24px;
+  align-items: flex-start;
+  margin-bottom: 24px;
+  padding-bottom: 20px;
+  border-bottom: 1px solid #e2e8f0;
 }
 
 .editor-header h2 {
-  margin: 0;
-  font-size: 1.5rem;
+  margin: 0 0 8px;
+  color: #0f172a;
+  font-size: 31px;
+  font-weight: 900;
 }
 
 .editor-header p {
   margin: 0;
   color: #64748b;
+  font-weight: 600;
 }
 
 .editor-actions {
   display: flex;
+  flex-wrap: wrap;
   gap: 10px;
 }
 
 .editor-actions button {
-  padding: 8px 14px;
-  border-radius: 8px;
+  padding: 12px 17px;
   border: none;
+  border-radius: 15px;
+  color: white;
+  font-weight: 900;
   cursor: pointer;
-  font-weight: 600;
-}
-
-.editor-actions button:hover {
-  opacity: 0.9;
+  transition: 0.22s ease;
+  background: linear-gradient(135deg, #2563eb, #1d4ed8);
 }
 
 .editor-actions .secondary {
-  background: #64748b;
-  color: white;
+  background: linear-gradient(135deg, #64748b, #334155);
 }
 
 .editor-actions .danger {
-  background: #dc2626;
-  color: white;
+  background: linear-gradient(135deg, #ef4444, #b91c1c);
 }
 
 .editor-actions .print {
-  background: #2563eb;
-  color: white;
+  background: linear-gradient(135deg, #22c55e, #15803d);
+}
+
+.editor-actions button:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 28px rgba(15, 23, 42, 0.2);
+}
+
+.editor-actions button:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+.validation-banner {
+  margin-bottom: 22px;
+  padding: 14px 18px;
+  border-radius: 18px;
+  background: #fff7ed;
+  color: #9a3412;
+  border: 1px solid #fed7aa;
+  font-weight: 900;
 }
 
 .editor-section {
-  margin-bottom: 2rem;
+  margin-top: 22px;
+  padding: 24px;
+  border-radius: 24px;
+  background: linear-gradient(180deg, #f8fafc, #f1f5f9);
+  border: 1px solid #e2e8f0;
 }
 
 .editor-section h3 {
-  margin-bottom: 1rem;
-  font-size: 1.1rem;
-  border-bottom: 1px solid #e2e8f0;
-  padding-bottom: 5px;
+  margin: 0 0 18px;
+  color: #0f172a;
+  font-size: 19px;
+  font-weight: 900;
 }
 
 .editor-grid {
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 12px;
-}
-
-.editor-grid.three {
   grid-template-columns: repeat(3, 1fr);
+  gap: 17px;
 }
 
-.editor-grid label {
+.editor label {
   display: flex;
   flex-direction: column;
-  font-size: 0.85rem;
-  font-weight: 600;
+  gap: 7px;
   color: #334155;
+  font-size: 13px;
+  font-weight: 900;
 }
 
-.editor-grid input,
-.editor-grid textarea {
-  margin-top: 4px;
-  padding: 6px 8px;
+.editor input,
+.editor textarea,
+.editor select {
+  width: 100%;
+  padding: 13px 14px;
   border: 1px solid #cbd5e1;
-  border-radius: 6px;
-  font-size: 0.85rem;
+  border-radius: 15px;
+  outline: none;
+  background: white;
+  color: #0f172a;
+  font-size: 14px;
+  transition: 0.18s ease;
 }
 
-.editor-grid textarea {
-  resize: none;
-  height: 70px;
+.editor select {
+  cursor: pointer;
+  appearance: none;
+  background-image:
+    linear-gradient(45deg, transparent 50%, #334155 50%),
+    linear-gradient(135deg, #334155 50%, transparent 50%);
+  background-position:
+    calc(100% - 18px) 50%,
+    calc(100% - 12px) 50%;
+  background-size: 6px 6px;
+  background-repeat: no-repeat;
+  padding-right: 38px;
 }
 
-/* =======================================================
-   3. DOCUMENTO A4
-======================================================= */
+.editor input:focus,
+.editor textarea:focus,
+.editor select:focus {
+  border-color: #2563eb;
+  box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.14);
+}
+
+.input-error {
+  border-color: #dc2626 !important;
+  background: #fef2f2 !important;
+}
+
+.error-text {
+  color: #dc2626;
+  font-size: 12px;
+  font-weight: 900;
+}
+
+.span-3 {
+  grid-column: span 3;
+}
+
+/* DOCUMENTO */
 .documento {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 2rem;
+  gap: 28px;
 }
 
 .hoja {
-  width: 210mm;
-  min-height: 297mm;
-  background: #fff;
-  padding: 12mm;
-  box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+  width: 21cm;
+  min-height: 29.7cm;
+  padding: 1.2cm;
+  background: white;
+  color: #000;
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.24);
+  page-break-after: always;
 }
 
-/* =======================================================
-   4. TABLAS
-======================================================= */
 .tabla {
   width: 100%;
   border-collapse: collapse;
-  font-size: 10px;
-  margin-bottom: 6px;
+  table-layout: fixed;
+  margin-bottom: 7px;
+  font-size: 8.5pt;
+  line-height: 1.2;
 }
 
 .tabla th,
 .tabla td {
   border: 1px solid #000;
-  padding: 4px 6px;
+  padding: 4px 5px;
   vertical-align: middle;
+}
+
+.encabezado td {
+  height: 25px;
+}
+
+.logo-box {
+  width: 24%;
+  text-align: center;
+}
+
+.logo {
+  max-width: 125px;
+  max-height: 62px;
+  object-fit: contain;
+}
+
+.titulo-doc {
+  width: 48%;
+  text-align: center;
+  font-size: 10.5pt;
+  font-weight: 900;
+  text-transform: uppercase;
+}
+
+.meta-label {
+  width: 12%;
+  background: #f2f2f2;
+  font-weight: 900;
+}
+
+.meta-value {
+  width: 16%;
+  text-align: center;
 }
 
 .section-title {
   background: #e5e7eb;
-  font-weight: bold;
-  text-align: left;
+  font-weight: 900;
+  text-align: center;
+  text-transform: uppercase;
+}
+
+.subsection-title,
+.grid-header td {
+  background: #f3f4f6;
+  font-weight: 900;
+  text-align: center;
 }
 
 .label {
-  font-weight: bold;
+  background: #f5f5f5;
+  font-weight: 900;
+  text-transform: uppercase;
 }
 
 .center {
   text-align: center;
 }
 
-.num {
-  width: 25px;
+.legal-text {
+  padding: 10px !important;
+  text-align: justify;
+  font-size: 8.5pt;
+  line-height: 1.35;
+}
+
+.signature-box {
+  height: 90px;
   text-align: center;
-}
-
-.check {
-  width: 40px;
-  text-align: center;
-}
-
-/* =======================================================
-   5. ENCABEZADO DOCUMENTO
-======================================================= */
-.encabezado .logo-box {
-  width: 70px;
-  text-align: center;
-}
-
-.logo {
-  max-width: 60px;
-}
-
-.titulo-doc {
-  text-align: center;
-  font-weight: bold;
-  font-size: 11px;
-}
-
-.meta-label {
-  font-weight: bold;
-  width: 60px;
-}
-
-.meta-value {
-  text-align: center;
-}
-
-/* =======================================================
-   6. FIRMAS
-======================================================= */
-.firma-area {
-  height: 60px;
+  vertical-align: bottom;
+  font-weight: 900;
 }
 
 .linea-firma {
+  width: 75%;
+  height: 42px;
+  margin: 0 auto 8px;
   border-bottom: 1px solid #000;
-  height: 40px;
-  margin-bottom: 5px;
 }
 
-.firmas-finales td {
-  text-align: center;
-  padding: 20px;
-}
-
-/* =======================================================
-   7. CLAUSULA
-======================================================= */
-.clausula {
-  margin-top: 10px;
-  font-size: 9px;
-  text-align: justify;
-}
-
-/* =======================================================
-   8. CHECKBOXES ESTILO PDF
-======================================================= */
 input[type="checkbox"] {
-  transform: scale(0.8);
-  cursor: pointer;
+  width: 13px;
+  height: 13px;
+  accent-color: #111827;
 }
 
-/* =======================================================
-   9. IMPRESIÓN (CLAVE)
-======================================================= */
-@media print {
+.documento input[type="checkbox"] {
+  pointer-events: none;
+  cursor: default;
+}
 
-  body {
-    background: white;
+.w-5 { width: 5%; }
+.w-10 { width: 10%; }
+.w-20 { width: 20%; }
+.w-25 { width: 25%; }
+.w-30 { width: 30%; }
+.w-40 { width: 40%; }
+.w-45 { width: 45%; }
+.w-50 { width: 50%; }
+
+@media print {
+  @page {
+    size: A4;
+    margin: 0;
   }
 
-  .no-print {
+  .no-print,
+  .editor {
     display: none !important;
   }
 
-  .hoja {
-    box-shadow: none;
+  body,
+  .paz-salvo-page {
     margin: 0;
-    page-break-after: always;
+    padding: 0;
+    background: white;
   }
 
   .documento {
     gap: 0;
   }
 
-  input,
-  textarea {
-    border: none !important;
-    background: transparent !important;
+  .hoja {
+    width: 21cm;
+    min-height: 29.7cm;
+    margin: 0;
+    padding: 1.2cm;
+    box-shadow: none;
+    page-break-after: always;
+  }
+
+  .tabla th,
+  .tabla td {
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+}
+
+@media (max-width: 950px) {
+  .paz-salvo-page {
+    padding: 16px;
+  }
+
+  .editor-header {
+    flex-direction: column;
+  }
+
+  .editor-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .span-3 {
+    grid-column: span 1;
+  }
+
+  .editor-actions {
+    width: 100%;
+  }
+
+  .editor-actions button {
+    width: 100%;
+  }
+
+  .hoja {
+    width: 100%;
+    overflow-x: auto;
   }
 }

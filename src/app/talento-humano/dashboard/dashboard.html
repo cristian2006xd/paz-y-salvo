@@ -2,53 +2,103 @@
 
   <header class="header">
     <div>
+      <span class="eyebrow">Talento Humano</span>
       <h1>Panel Talento Humano</h1>
       <p>Gestión general del proceso de paz y salvo institucional.</p>
     </div>
 
-    <button routerLink="/talento-humano/crear-solicitud">
-      Nueva solicitud
-    </button>
+  
   </header>
 
-  <section class="grid">
+  <section class="summary">
+    <article class="hero-card">
+      <div>
+        <span>Resumen general</span>
+        <h2>{{ stats.total }}</h2>
+        <p>Total de solicitudes registradas en el sistema.</p>
+      </div>
 
-    <article class="card total">
-      <span>Total solicitudes</span>
-      <h2>{{ stats.total }}</h2>
-      <p>Procesos registrados en el sistema</p>
+      <div class="circle-chart">
+        <span>{{ stats.aprobadas }}</span>
+        <small>Aprobadas</small>
+      </div>
     </article>
 
-    <article class="card pendiente">
+    <article class="mini-card pendiente">
       <span>Pendientes</span>
-      <h2>{{ stats.pendientes }}</h2>
-      <p>Solicitudes por iniciar</p>
+      <strong>{{ stats.pendientes }}</strong>
+      <p>Por iniciar</p>
     </article>
 
-    <article class="card proceso">
+    <article class="mini-card proceso">
       <span>En proceso</span>
-      <h2>{{ stats.proceso }}</h2>
-      <p>Validaciones en curso</p>
+      <strong>{{ stats.proceso }}</strong>
+      <p>Validaciones activas</p>
     </article>
 
-    <article class="card aprobado">
+    <article class="mini-card aprobado">
       <span>Aprobadas</span>
-      <h2>{{ stats.aprobadas }}</h2>
-      <p>Procesos finalizados</p>
+      <strong>{{ stats.aprobadas }}</strong>
+      <p>Finalizadas correctamente</p>
     </article>
-
   </section>
 
-  <section class="panel">
-    <h2>Resumen del módulo</h2>
-    <p>
-      Desde este panel puedes gestionar solicitudes, crear nuevos procesos y dar seguimiento
-      al estado general del sistema de paz y salvo.
-    </p>
+  <section class="dashboard-grid">
 
-    <button routerLink="/talento-humano/solicitudes">
-      Ver todas las solicitudes
-    </button>
+    <article class="panel">
+      <div class="panel-header">
+        <h2>Estado de solicitudes</h2>
+        <span>{{ stats.total }} total</span>
+      </div>
+
+      <div class="bars">
+        <div class="bar-item">
+          <div class="bar-label">
+            <span>Pendientes</span>
+            <strong>{{ stats.pendientes }}</strong>
+          </div>
+          <div class="bar-track">
+            <div class="bar fill-pendiente"
+              [style.width.%]="stats.total ? (stats.pendientes / stats.total) * 100 : 0">
+            </div>
+          </div>
+        </div>
+
+        <div class="bar-item">
+          <div class="bar-label">
+            <span>En proceso</span>
+            <strong>{{ stats.proceso }}</strong>
+          </div>
+          <div class="bar-track">
+            <div class="bar fill-proceso"
+              [style.width.%]="stats.total ? (stats.proceso / stats.total) * 100 : 0">
+            </div>
+          </div>
+        </div>
+
+        <div class="bar-item">
+          <div class="bar-label">
+            <span>Aprobadas</span>
+            <strong>{{ stats.aprobadas }}</strong>
+          </div>
+          <div class="bar-track">
+            <div class="bar fill-aprobado"
+              [style.width.%]="stats.total ? (stats.aprobadas / stats.total) * 100 : 0">
+            </div>
+          </div>
+        </div>
+      </div>
+    </article>
+
+    <article class="panel actions-panel">
+      <h2>Acciones rápidas</h2>
+      <p>Inicie nuevos procesos o revise el estado general.</p>
+
+      <button routerLink="/talento-humano/crear-solicitud">
+        Crear nueva solicitud
+      </button>
+    </article>
+
   </section>
 
 </div>

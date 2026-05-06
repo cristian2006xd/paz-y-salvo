@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-reportes',
@@ -17,10 +18,18 @@ export class Reportes implements OnInit {
   cargando = true;
   error = '';
 
-  constructor(private http: HttpClient) {}
+  constructor(
+    private http: HttpClient,
+    private router: Router
+  ) {}
 
   ngOnInit(): void {
     this.cargarResumen();
+  }
+
+  // 🔥 BOTÓN VOLVER
+  irDashboard(): void {
+    this.router.navigate(['/admin/dashboard']);
   }
 
   cargarResumen(): void {

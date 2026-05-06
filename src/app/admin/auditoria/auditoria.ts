@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { Router } from '@angular/router';
 import { AuditoriaService, AuditoriaRegistro } from '../../services/auditoria';
 
 @Component({
@@ -11,7 +12,6 @@ import { AuditoriaService, AuditoriaRegistro } from '../../services/auditoria';
   styleUrl: './auditoria.css'
 })
 export class Auditoria implements OnInit {
-
   registros: AuditoriaRegistro[] = [];
   filtrados: AuditoriaRegistro[] = [];
 
@@ -22,10 +22,17 @@ export class Auditoria implements OnInit {
   cargando = true;
   error = '';
 
-  constructor(private auditoriaService: AuditoriaService) {}
+  constructor(
+    private auditoriaService: AuditoriaService,
+    private router: Router
+  ) {}
 
   ngOnInit(): void {
     this.cargarAuditoria();
+  }
+
+  irDashboard(): void {
+    this.router.navigate(['/admin/dashboard']);
   }
 
   cargarAuditoria(): void {

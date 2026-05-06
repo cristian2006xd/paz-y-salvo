@@ -22,21 +22,38 @@
 
     <div class="form-grid">
       <div class="field">
-        <label>Ex funcionario</label>
-        <select [(ngModel)]="nuevaSolicitud.ex_funcionario_id">
+        <label>Ex funcionario *</label>
+        <select
+          [(ngModel)]="nuevaSolicitud.ex_funcionario_id"
+          name="ex_funcionario_id"
+          (change)="validarSolicitud()"
+          [class.input-error]="errores.ex_funcionario_id">
+
           <option value="">Seleccione un ex funcionario</option>
           <option *ngFor="let ex of exFuncionarios" [value]="ex.id">
             {{ ex.nombres }} {{ ex.apellidos }} - {{ ex.usuario }}
           </option>
         </select>
+
+        <span class="error-text" *ngIf="errores.ex_funcionario_id">
+          {{ errores.ex_funcionario_id }}
+        </span>
       </div>
 
       <div class="field">
-        <label>Creado por</label>
+        <label>Creado por *</label>
         <input
           type="text"
-          [value]="(usuarioActual?.nombres || '') + ' ' + (usuarioActual?.apellidos || '')"
-          disabled>
+          [(ngModel)]="nuevaSolicitud.creado_por"
+          name="creado_por"
+          placeholder="Nombre del encargado"
+          maxlength="60"
+          (input)="soloLetrasCreadoPor()"
+          [class.input-error]="errores.creado_por">
+
+        <span class="error-text" *ngIf="errores.creado_por">
+          {{ errores.creado_por }}
+        </span>
       </div>
     </div>
 
@@ -47,8 +64,16 @@
     <section class="message error" *ngIf="error">
       {{ error }}
     </section>
+    <br>
+    <br>
 
-    <button class="primary" (click)="crearSolicitud()" [disabled]="cargando">
+    
+
+    <button
+      class="primary"
+      type="button"
+      (click)="crearSolicitud()"
+      [disabled]="cargando">
       {{ cargando ? 'Creando solicitud...' : 'Crear solicitud' }}
     </button>
   </section>

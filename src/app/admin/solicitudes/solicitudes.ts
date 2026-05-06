@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { RouterLink } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { SolicitudesService } from '../../services/solicitudes';
 
 @Component({
@@ -21,10 +21,18 @@ export class SolicitudesAdmin implements OnInit {
   cargando = true;
   error = '';
 
-  constructor(private solicitudesService: SolicitudesService) {}
+  constructor(
+    private solicitudesService: SolicitudesService,
+    private router: Router
+  ) {}
 
   ngOnInit(): void {
     this.cargar();
+  }
+
+  // 🔥 BOTÓN VOLVER
+  irDashboard(): void {
+    this.router.navigate(['/admin/dashboard']);
   }
 
   cargar(): void {

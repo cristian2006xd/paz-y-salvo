@@ -1,40 +1,74 @@
 <div class="page">
-
   <header class="header">
     <div>
       <h1>Gestión de Usuarios</h1>
       <p>Administre usuarios, roles, áreas y estados del sistema.</p>
     </div>
 
-    <button (click)="cargarUsuarios()">Refrescar</button>
+  <button type="button" (click)="irDashboard()">VOLVER</button>
   </header>
 
   <section class="form-card">
-    <h2>Crear usuario</h2>
+    <h2>{{ editando ? 'Editar usuario' : 'Crear usuario' }}</h2>
 
-    <div class="form-grid">
-      <input [(ngModel)]="nuevo.nombres" placeholder="Nombres">
-      <input [(ngModel)]="nuevo.apellidos" placeholder="Apellidos">
-      <input [(ngModel)]="nuevo.usuario" placeholder="Usuario">
-      <input [(ngModel)]="nuevo.password" type="password" placeholder="Contraseña">
-
-      <select [(ngModel)]="nuevo.rol">
-        <option value="admin">Administrador</option>
-        <option value="talento_humano">Talento Humano</option>
-        <option value="ex_funcionario">Ex Funcionario</option>
-        <option value="area">Área</option>
-        <option value="recepcion">Recepción</option>
-      </select>
-
-      <input
-        [(ngModel)]="nuevo.area"
-        placeholder="Área"
-        [disabled]="nuevo.rol !== 'area'">
+    <div class="validation-banner" *ngIf="tieneErrores()">
+      Complete correctamente todos los campos obligatorios.
     </div>
 
-    <button (click)="crearUsuario()" [disabled]="cargando">
-      {{ cargando ? 'Guardando...' : 'Crear usuario' }}
-    </button>
+    <div class="form-grid">
+      <label>Nombres *
+        <input [(ngModel)]="nuevo.nombres" name="nombres" placeholder="Nombres" maxlength="45"
+          (input)="soloLetrasInput('nombres')" [class.input-error]="errores.nombres">
+        <span class="error-text" *ngIf="errores.nombres">{{ errores.nombres }}</span>
+      </label>
+
+      <label>Apellidos *
+        <input [(ngModel)]="nuevo.apellidos" name="apellidos" placeholder="Apellidos" maxlength="45"
+          (input)="soloLetrasInput('apellidos')" [class.input-error]="errores.apellidos">
+        <span class="error-text" *ngIf="errores.apellidos">{{ errores.apellidos }}</span>
+      </label>
+
+      <label>Usuario *
+        <input [(ngModel)]="nuevo.usuario" name="usuario" placeholder="Se genera automáticamente" maxlength="30"
+          readonly [class.input-error]="errores.usuario">
+        <span class="error-text" *ngIf="errores.usuario">{{ errores.usuario }}</span>
+      </label>
+
+      <label>Contraseña *
+        <input [(ngModel)]="nuevo.password" name="password" type="password" placeholder="Contraseña" maxlength="30"
+          (input)="validarFormulario()" [class.input-error]="errores.password">
+        <span class="error-text" *ngIf="errores.password">{{ errores.password }}</span>
+      </label>
+
+      <label>Rol *
+        <select [(ngModel)]="nuevo.rol" name="rol" (change)="cambiarRol()" [class.input-error]="errores.rol">
+          <option value="">Seleccione un rol</option>
+          <option value="admin">Administrador</option>
+          <option value="talento_humano">Talento Humano</option>
+          <option value="ex_funcionario">Ex Funcionario</option>
+          <option value="area">Área</option>
+          <option value="recepcion">Recepción</option>
+        </select>
+        <span class="error-text" *ngIf="errores.rol">{{ errores.rol }}</span>
+      </label>
+
+      <label>Área
+        <input [(ngModel)]="nuevo.area" name="area" placeholder="Área" maxlength="45" [disabled]="nuevo.rol !== 'area'"
+          (input)="soloLetrasInput('area')" [class.input-error]="errores.area">
+        <span class="error-text" *ngIf="errores.area">{{ errores.area }}</span>
+      </label>
+    </div>
+
+    <div class="form-actions">
+      <button type="button" (click)="editando ? actualizarUsuario() : crearUsuario()"
+        [disabled]="cargando || !formularioValido()">
+        {{ cargando ? 'Guardando...' : (editando ? 'Actualizar usuario' : 'Crear usuario') }}
+      </button>
+
+      <button type="button" class="btn-cancelar" *ngIf="editando" (click)="cancelarEdicion()">
+        Cancelar
+      </button>
+    </div>
 
     <p class="mensaje" *ngIf="mensaje">{{ mensaje }}</p>
     <p class="error" *ngIf="error">{{ error }}</p>
@@ -43,10 +77,10 @@
   <section class="tabla-card">
     <div class="table-header">
       <h2>Lista de usuarios</h2>
-      <span>{{ usuarios.length }} usuario(s)</span>
+      <span>{{ filtrados.length }} usuario(s)</span>
     </div>
 
-    <table *ngIf="usuarios.length > 0">
+    <table *ngIf="filtrados.length > 0">
       <thead>
         <tr>
           <th>ID</th>
@@ -55,30 +89,47 @@
           <th>Rol</th>
           <th>Área</th>
           <th>Estado</th>
+          <th>Acciones</th>
         </tr>
       </thead>
 
       <tbody>
-        <tr *ngFor="let u of usuarios">
+        <tr *ngFor="let u of filtrados">
           <td>#{{ u.id }}</td>
           <td>{{ u.nombres }} {{ u.apellidos }}</td>
           <td>{{ u.usuario }}</td>
-          <td>
-            <span class="role">{{ nombreRol(u.rol) }}</span>
-          </td>
+          <td><span class="role">{{ nombreRol(u.rol) }}</span></td>
           <td>{{ u.area || 'No aplica' }}</td>
           <td>
             <span class="badge" [class.activo]="u.estado === 'ACTIVO'">
               {{ u.estado || 'ACTIVO' }}
             </span>
           </td>
+          <td class="acciones">
+            <button type="button" class="btn-editar" (click)="editarUsuario(u)">
+              Editar
+            </button>
+
+            <button type="button" class="btn-desactivar" *ngIf="u.estado === 'ACTIVO'"
+              (click)="desactivarUsuario(u.id!)">
+              Desactivar
+            </button>
+
+            <button type="button" class="btn-activar" *ngIf="u.estado === 'INHABILITADO'"
+              (click)="activarUsuario(u.id!)">
+              Activar
+            </button>
+
+            <button type="button" class="btn-eliminar" (click)="eliminarUsuario(u.id!)">
+              Eliminar
+            </button>
+          </td>
         </tr>
       </tbody>
     </table>
 
-    <div class="empty" *ngIf="usuarios.length === 0">
+    <div class="empty" *ngIf="filtrados.length === 0">
       No hay usuarios registrados.
     </div>
   </section>
-
 </div>
