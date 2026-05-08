@@ -40,6 +40,12 @@
   font-weight: 600;
 }
 
+.header-actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
 button {
   border: none;
   border-radius: 16px;
@@ -54,6 +60,15 @@ button {
 
 button:hover {
   transform: translateY(-2px);
+}
+
+.btn-logout {
+  background: linear-gradient(135deg, #dc2626, #991b1b);
+  box-shadow: 0 12px 24px rgba(220, 38, 38, .25);
+}
+
+.btn-logout:hover {
+  box-shadow: 0 16px 30px rgba(220, 38, 38, .35);
 }
 
 .summary {
@@ -240,6 +255,7 @@ button:hover {
     align-items: flex-start;
   }
 
+  .header-actions,
   button {
     width: 100%;
   }

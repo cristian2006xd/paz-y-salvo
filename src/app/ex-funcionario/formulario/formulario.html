@@ -9,20 +9,10 @@
     </div>
 
     <div class="editor-actions">
-      <button type="button" (click)="validarFormulario()">Validar</button>
-
-      <button type="button" (click)="guardar()" [disabled]="!formularioCompleto()">
-        Guardar
-      </button>
-
-
-      <button type="button" class="danger" (click)="limpiar()">
-        Limpiar
-      </button>
-
-      <button type="button" class="print" (click)="imprimir()" [disabled]="!formularioCompleto()">
-        Imprimir / PDF
-      </button>
+      <button type="button" class="btn-volver" (click)="irPanelExFuncionario()">← Volver</button>
+      <button type="button" (click)="guardar()" [disabled]="!formularioCompleto()">Guardar</button>
+      <button type="button" class="danger" (click)="limpiar()">Limpiar</button>
+      <button type="button" class="print" (click)="imprimir()" [disabled]="!formularioCompleto()">Imprimir / PDF</button>
     </div>
   </div>
 
@@ -35,759 +25,1238 @@
 
     <div class="editor-grid">
       <label>Apellidos y nombres *
-  <input [(ngModel)]="form.nombres" name="nombres" maxlength="200"
-         (input)="soloLetrasInput('nombres')"
-         [class.input-error]="errores.nombres">
-  <span class="error-text" *ngIf="errores.nombres">{{ errores.nombres }}</span>
-</label>
+        <input [(ngModel)]="form.nombres" name="nombres" maxlength="200"
+          (input)="soloLetrasInput('nombres')" [class.input-error]="errores.nombres">
+        <span class="error-text" *ngIf="errores.nombres">{{ errores.nombres }}</span>
+      </label>
 
-<label>Cédula / Pasaporte *
-  <input [(ngModel)]="form.cedula" name="cedula" maxlength="10"
-         inputmode="numeric"
-         (input)="soloNumerosInput('cedula', 10)"
-         [class.input-error]="errores.cedula">
-  <span class="error-text" *ngIf="errores.cedula">{{ errores.cedula }}</span>
-</label>
+      <label>Cédula / Pasaporte *
+        <input [(ngModel)]="form.cedula" name="cedula" maxlength="10" inputmode="numeric"
+          (input)="soloNumerosInput('cedula', 10)" [class.input-error]="errores.cedula">
+        <span class="error-text" *ngIf="errores.cedula">{{ errores.cedula }}</span>
+      </label>
 
-<label>Fecha ingreso *
-  <input type="date" [(ngModel)]="form.fechaIngreso" name="fechaIngreso"
-         (change)="validarFormulario()"
-         [class.input-error]="errores.fechaIngreso">
-  <span class="error-text" *ngIf="errores.fechaIngreso">{{ errores.fechaIngreso }}</span>
-</label>
+      <label>Fecha ingreso *
+        <input type="date" [(ngModel)]="form.fechaIngreso" name="fechaIngreso"
+          (change)="validarFormulario()" [class.input-error]="errores.fechaIngreso">
+        <span class="error-text" *ngIf="errores.fechaIngreso">{{ errores.fechaIngreso }}</span>
+      </label>
 
-<label>Fecha salida *
-  <input type="date" [(ngModel)]="form.fechaSalida" name="fechaSalida"
-         (change)="validarFormulario()"
-         [class.input-error]="errores.fechaSalida">
-  <span class="error-text" *ngIf="errores.fechaSalida">{{ errores.fechaSalida }}</span>
-</label>
+      <label>Fecha salida *
+        <input type="date" [(ngModel)]="form.fechaSalida" name="fechaSalida"
+          (change)="validarFormulario()" [class.input-error]="errores.fechaSalida">
+        <span class="error-text" *ngIf="errores.fechaSalida">{{ errores.fechaSalida }}</span>
+      </label>
 
-<label>Dirección domiciliaria *
-  <input [(ngModel)]="form.direccion" name="direccion" maxlength="120"
-         (input)="validarFormulario()"
-         [class.input-error]="errores.direccion">
-  <span class="error-text" *ngIf="errores.direccion">{{ errores.direccion }}</span>
-</label>
+      <label>Dirección domiciliaria *
+        <input [(ngModel)]="form.direccion" name="direccion" maxlength="120"
+          (input)="validarFormulario()" [class.input-error]="errores.direccion">
+        <span class="error-text" *ngIf="errores.direccion">{{ errores.direccion }}</span>
+      </label>
 
-<label>Celular *
-  <input [(ngModel)]="form.celular" name="celular" maxlength="10"
-         inputmode="numeric"
-         (input)="soloNumerosInput('celular', 10)"
-         [class.input-error]="errores.celular">
-  <span class="error-text" *ngIf="errores.celular">{{ errores.celular }}</span>
-</label>
+      <label>Celular *
+        <input [(ngModel)]="form.celular" name="celular" maxlength="10" inputmode="numeric"
+          (input)="soloNumerosInput('celular', 10)" [class.input-error]="errores.celular">
+        <span class="error-text" *ngIf="errores.celular">{{ errores.celular }}</span>
+      </label>
 
-<label>Contacto emergencia *
-  <input [(ngModel)]="form.emergencia" name="emergencia" maxlength="10"
-         inputmode="numeric"
-         (input)="soloNumerosInput('emergencia', 10)"
-         [class.input-error]="errores.emergencia">
-  <span class="error-text" *ngIf="errores.emergencia">{{ errores.emergencia }}</span>
-</label>
+      <label>Contacto emergencia *
+        <input [(ngModel)]="form.emergencia" name="emergencia" maxlength="10" inputmode="numeric"
+          (input)="soloNumerosInput('emergencia', 10)" [class.input-error]="errores.emergencia">
+        <span class="error-text" *ngIf="errores.emergencia">{{ errores.emergencia }}</span>
+      </label>
 
-<label>Email 1 *
-  <input type="email" [(ngModel)]="form.email1" name="email1" maxlength="30"
-         (input)="validarFormulario()"
-         [class.input-error]="errores.email1">
-  <span class="error-text" *ngIf="errores.email1">{{ errores.email1 }}</span>
-</label>
+      <label>Email 1 *
+        <input type="email" [(ngModel)]="form.email1" name="email1" maxlength="30"
+          (input)="validarFormulario()" [class.input-error]="errores.email1">
+        <span class="error-text" *ngIf="errores.email1">{{ errores.email1 }}</span>
+      </label>
 
-<label>Email 2 *
-  <input type="email" [(ngModel)]="form.email2" name="email2" maxlength="30"
-         (input)="validarFormulario()"
-         [class.input-error]="errores.email2">
-  <span class="error-text" *ngIf="errores.email2">{{ errores.email2 }}</span>
-</label>
+      <label>Email 2 *
+        <input type="email" [(ngModel)]="form.email2" name="email2" maxlength="30"
+          (input)="validarFormulario()" [class.input-error]="errores.email2">
+        <span class="error-text" *ngIf="errores.email2">{{ errores.email2 }}</span>
+      </label>
 
-<label>Provincia *
-  <input [(ngModel)]="form.provincia" name="provincia" maxlength="200"
-         (input)="soloLetrasInput('provincia')"
-         [class.input-error]="errores.provincia">
-  <span class="error-text" *ngIf="errores.provincia">{{ errores.provincia }}</span>
-</label>
+      <label>Provincia *
+        <input [(ngModel)]="form.provincia" name="provincia" maxlength="200"
+          (input)="soloLetrasInput('provincia')" [class.input-error]="errores.provincia">
+        <span class="error-text" *ngIf="errores.provincia">{{ errores.provincia }}</span>
+      </label>
 
-<label>Cantón *
-  <input [(ngModel)]="form.canton" name="canton" maxlength="200"
-         (input)="soloLetrasInput('canton')"
-         [class.input-error]="errores.canton">
-  <span class="error-text" *ngIf="errores.canton">{{ errores.canton }}</span>
-</label>
+      <label>Cantón *
+        <input [(ngModel)]="form.canton" name="canton" maxlength="200"
+          (input)="soloLetrasInput('canton')" [class.input-error]="errores.canton">
+        <span class="error-text" *ngIf="errores.canton">{{ errores.canton }}</span>
+      </label>
 
-<label class="span-3">Modalidad laboral *
-  <select
-    [(ngModel)]="form.modalidadLaboral"
-    name="modalidadLaboral"
-    (change)="seleccionarModalidadSelect()"
-    [class.input-error]="errores.modalidad"
-  >
-    <option value="">Seleccione una opción</option>
-    <option value="modPermanente">NOMBRAMIENTO PERMANENTE</option>
-    <option value="modProvisional">NOMBRAMIENTO PROVISIONAL</option>
-    <option value="modOcasional">CONTRATO OCASIONAL</option>
-    <option value="modTrabajo">CONTRATO DE TRABAJO</option>
-  </select>
+      <label class="span-3">Modalidad laboral *
+        <select [(ngModel)]="form.modalidadLaboral" name="modalidadLaboral"
+          (change)="seleccionarModalidadSelect()" [class.input-error]="errores.modalidad">
+          <option value="">Seleccione una opción</option>
+          <option value="modPermanente">NOMBRAMIENTO PERMANENTE</option>
+          <option value="modProvisional">NOMBRAMIENTO PROVISIONAL</option>
+          <option value="modOcasional">CONTRATO OCASIONAL</option>
+          <option value="modTrabajo">CONTRATO DE TRABAJO</option>
+        </select>
+        <span class="error-text" *ngIf="errores.modalidad">{{ errores.modalidad }}</span>
+      </label>
 
-  <span class="error-text" *ngIf="errores.modalidad">
-    {{ errores.modalidad }}
-  </span>
-</label>
+      <label>Unidad *
+        <input [(ngModel)]="form.unidad" name="unidad" maxlength="80"
+          (input)="validarFormulario()" [class.input-error]="errores.unidad">
+        <span class="error-text" *ngIf="errores.unidad">{{ errores.unidad }}</span>
+      </label>
 
-<label>Unidad *
-  <input [(ngModel)]="form.unidad" name="unidad" maxlength="80"
-         (input)="validarFormulario()"
-         [class.input-error]="errores.unidad">
-  <span class="error-text" *ngIf="errores.unidad">{{ errores.unidad }}</span>
-</label>
+      <label>Cargo *
+        <input [(ngModel)]="form.cargo" name="cargo" maxlength="80"
+          (input)="validarFormulario()" [class.input-error]="errores.cargo">
+        <span class="error-text" *ngIf="errores.cargo">{{ errores.cargo }}</span>
+      </label>
 
-<label>Cargo *
-  <input [(ngModel)]="form.cargo" name="cargo" maxlength="80"
-         (input)="validarFormulario()"
-         [class.input-error]="errores.cargo">
-  <span class="error-text" *ngIf="errores.cargo">{{ errores.cargo }}</span>
-</label>
+      <label>Grupo ocupacional *
+        <input [(ngModel)]="form.grupoOcupacional" name="grupoOcupacional" maxlength="60"
+          (input)="validarFormulario()" [class.input-error]="errores.grupoOcupacional">
+        <span class="error-text" *ngIf="errores.grupoOcupacional">{{ errores.grupoOcupacional }}</span>
+      </label>
 
-<label>Grupo ocupacional *
-  <input [(ngModel)]="form.grupoOcupacional" name="grupoOcupacional" maxlength="60"
-         (input)="validarFormulario()"
-         [class.input-error]="errores.grupoOcupacional">
-  <span class="error-text" *ngIf="errores.grupoOcupacional">{{ errores.grupoOcupacional }}</span>
-</label>
-
-<label>Jefe inmediato *
-  <input [(ngModel)]="form.jefeInmediato" name="jefeInmediato" maxlength="80"
-         (input)="validarFormulario()"
-         [class.input-error]="errores.jefeInmediato">
-  <span class="error-text" *ngIf="errores.jefeInmediato">{{ errores.jefeInmediato }}</span>
-</label>
+      <label>Jefe inmediato *
+        <input [(ngModel)]="form.jefeInmediato" name="jefeInmediato" maxlength="80"
+          (input)="validarFormulario()" [class.input-error]="errores.jefeInmediato">
+        <span class="error-text" *ngIf="errores.jefeInmediato">{{ errores.jefeInmediato }}</span>
+      </label>
     </div>
   </div>
 
+  <div class="editor-section">
+    <h3>Datos de la dirección / unidad que prestó sus servicios</h3>
+
+    <div class="editor-grid">
+      <label class="span-3">Lugar de trabajo *
+        <select [(ngModel)]="form.lugarTrabajo" name="lugarTrabajo"
+          (change)="seleccionarLugarTrabajo()" [class.input-error]="errores.lugarTrabajo">
+          <option value="">Seleccione una opción</option>
+          <option value="lugarPlanta">PLANTA CENTRAL</option>
+          <option value="lugarDesconcentrados">PROCESOS DESCONCENTRADOS</option>
+        </select>
+        <span class="error-text" *ngIf="errores.lugarTrabajo">{{ errores.lugarTrabajo }}</span>
+      </label>
+
+      <label>Informe fin de gestión *
+        <select [(ngModel)]="form.infoFinOpcion" name="infoFinOpcion"
+          (change)="seleccionarSiNo('infoFin')" [class.input-error]="errores.infoFinOpcion">
+          <option value="">Seleccione</option>
+          <option value="si">SI</option>
+          <option value="no">NO</option>
+        </select>
+        <span class="error-text" *ngIf="errores.infoFinOpcion">{{ errores.infoFinOpcion }}</span>
+      </label>
+
+      <label>Responsable informe *
+        <input [(ngModel)]="form.infoFinResp" name="infoFinResp" maxlength="80"
+          (input)="soloLetrasInput('infoFinResp')" [class.input-error]="errores.infoFinResp">
+        <span class="error-text" *ngIf="errores.infoFinResp">{{ errores.infoFinResp }}</span>
+      </label>
+
+      <label>Fe presentación *
+        <select [(ngModel)]="form.fePresentacionOpcion" name="fePresentacionOpcion"
+          (change)="seleccionarSiNo('fePresentacion')" [class.input-error]="errores.fePresentacionOpcion">
+          <option value="">Seleccione</option>
+          <option value="si">SI</option>
+          <option value="no">NO</option>
+        </select>
+        <span class="error-text" *ngIf="errores.fePresentacionOpcion">{{ errores.fePresentacionOpcion }}</span>
+      </label>
+
+      <label>Responsable presentación *
+        <input [(ngModel)]="form.fePresentacionResp" name="fePresentacionResp" maxlength="80"
+          (input)="soloLetrasInput('fePresentacionResp')" [class.input-error]="errores.fePresentacionResp">
+        <span class="error-text" *ngIf="errores.fePresentacionResp">{{ errores.fePresentacionResp }}</span>
+      </label>
+
+      <label>Entrega archivo físico/digital *
+        <select [(ngModel)]="form.archivoOpcion" name="archivoOpcion"
+          (change)="seleccionarSiNo('archivo')" [class.input-error]="errores.archivoOpcion">
+          <option value="">Seleccione</option>
+          <option value="si">SI</option>
+          <option value="no">NO</option>
+        </select>
+        <span class="error-text" *ngIf="errores.archivoOpcion">{{ errores.archivoOpcion }}</span>
+      </label>
+
+      <label>Responsable archivo *
+        <input [(ngModel)]="form.archivoResp" name="archivoResp" maxlength="80"
+          (input)="soloLetrasInput('archivoResp')" [class.input-error]="errores.archivoResp">
+        <span class="error-text" *ngIf="errores.archivoResp">{{ errores.archivoResp }}</span>
+      </label>
+
+      <label>Administrador de contrato *
+        <select [(ngModel)]="form.adminContratoOpcion" name="adminContratoOpcion"
+          (change)="seleccionarSiNo('adminContrato')" [class.input-error]="errores.adminContratoOpcion">
+          <option value="">Seleccione</option>
+          <option value="si">SI</option>
+          <option value="no">NO</option>
+        </select>
+        <span class="error-text" *ngIf="errores.adminContratoOpcion">{{ errores.adminContratoOpcion }}</span>
+      </label>
+
+      <label>Descripción del contrato
+        <input [(ngModel)]="form.descripcionContrato" name="descripcionContrato" maxlength="120"
+          (input)="validarFormulario()">
+      </label>
+
+      <label class="span-3">Número de memorando designación de nuevo administrador
+        <input [(ngModel)]="form.memoAdministrador" name="memoAdministrador" maxlength="80"
+          (input)="validarFormulario()">
+      </label>
+    </div>
+  </div>
 </section>
 
   <!-- DOCUMENTO -->
-<main class="documento">
+  <div class="dashboard-container">
 
-  <!-- HOJA 1 -->
-  <section class="hoja">
+  <div class="header-section no-print">
+    <div class="header-titles">
+      <h2>Bienvenido, {{ usuarioActual?.nombres }}</h2>
+      <p>Proceso de emisión de Paz y Salvo Institucional</p>
+    </div>
 
-    <table class="tabla encabezado">
+    <button class="btn-logout" (click)="cerrarSesion()">
+      Salir
+    </button>
+  </div>
+
+  <div class="status-card no-print">
+    <h3>Estado Actual de su Trámite</h3>
+
+    <div class="status-indicator">
+      <span class="badge" [ngClass]="{
+        'badge-pendiente': estadoSolicitud === 'PENDIENTE',
+        'badge-revision': estadoSolicitud === 'EN_REVISION',
+        'badge-aprobado': estadoSolicitud === 'APROBADO',
+        'badge-negado': estadoSolicitud === 'NEGADO'
+      }">
+        {{ estadoSolicitud }}
+      </span>
+
+      <p *ngIf="estadoSolicitud === 'PENDIENTE'" class="status-text">
+        Debe completar su información personal para iniciar las validaciones.
+      </p>
+
+      <p *ngIf="estadoSolicitud === 'EN_REVISION'" class="status-text">
+        Sus datos fueron enviados. Las áreas están validando su información.
+      </p>
+
+      <p *ngIf="estadoSolicitud === 'APROBADO'" class="status-text">
+        Su proceso ha finalizado con éxito.
+      </p>
+    </div>
+  </div>
+
+  <div class="progress-card no-print" *ngIf="estadoSolicitud !== 'PENDIENTE'">
+    <div class="form-title">
+      <h3>Avance de Validación por Áreas</h3>
+    </div>
+
+    <div class="areas-grid">
+      <div class="area-item">
+        <div>
+          <div class="area-name">Gestión de TICS</div>
+          <div class="subtitle">Equipos e Información</div>
+        </div>
+        <span class="badge" [ngClass]="{
+          'badge-aprobado': estadoAreas.tics === 'COMPLETADO',
+          'badge-pendiente': estadoAreas.tics !== 'COMPLETADO'
+        }">
+          {{ estadoAreas.tics }}
+        </span>
+      </div>
+
+      <div class="area-item">
+        <div>
+          <div class="area-name">Gestión Financiera</div>
+          <div class="subtitle">Saldos y Anticipos</div>
+        </div>
+        <span class="badge" [ngClass]="{
+          'badge-aprobado': estadoAreas.financiero === 'COMPLETADO',
+          'badge-pendiente': estadoAreas.financiero !== 'COMPLETADO'
+        }">
+          {{ estadoAreas.financiero }}
+        </span>
+      </div>
+
+      <div class="area-item">
+        <div>
+          <div class="area-name">Gestión Administrativa</div>
+          <div class="subtitle">Bienes y Pasajes</div>
+        </div>
+        <span class="badge" [ngClass]="{
+          'badge-aprobado': estadoAreas.administrativo === 'COMPLETADO',
+          'badge-pendiente': estadoAreas.administrativo !== 'COMPLETADO'
+        }">
+          {{ estadoAreas.administrativo }}
+        </span>
+      </div>
+
+      <div class="area-item">
+        <div>
+          <div class="area-name">Seguridad de la Información</div>
+          <div class="subtitle">Accesos y Archivos</div>
+        </div>
+        <span class="badge" [ngClass]="{
+          'badge-aprobado': estadoAreas.seguridad === 'COMPLETADO',
+          'badge-pendiente': estadoAreas.seguridad !== 'COMPLETADO'
+        }">
+          {{ estadoAreas.seguridad }}
+        </span>
+      </div>
+
+      <div class="area-item">
+        <div>
+          <div class="area-name">Recursos Humanos</div>
+          <div class="subtitle">Cierre Final</div>
+        </div>
+        <span class="badge" [ngClass]="{
+          'badge-aprobado': estadoAreas.recursos_humanos === 'COMPLETADO',
+          'badge-pendiente': estadoAreas.recursos_humanos !== 'COMPLETADO'
+        }">
+          {{ estadoAreas.recursos_humanos }}
+        </span>
+      </div>
+    </div>
+  </div>
+
+  <div class="upload-card no-print"
+       *ngIf="estadoAreas.recursos_humanos === 'COMPLETADO' && estadoSolicitud !== 'APROBADO'">
+    <div class="form-title">
+      <h3>Subir Documento Firmado</h3>
+      <p>El proceso ha sido validado por todas las áreas. Descargue el PDF, fírmelo y súbalo aquí.</p>
+    </div>
+
+    <div class="upload-section">
+      <input
+        type="file"
+        class="file-input"
+        (change)="seleccionarArchivo($event)"
+        accept=".pdf">
+
+      <button
+        class="btn-primary"
+        style="background:#2563eb;color:white;padding:0.6rem 1.2rem;border-radius:8px;border:none;font-weight:700;cursor:pointer;"
+        (click)="subirDocumento()"
+        [disabled]="!archivoSeleccionado || cargando">
+        {{ cargando ? 'Subiendo...' : 'Enviar Documento' }}
+      </button>
+    </div>
+  </div>
+
+  <div class="upload-card no-print" *ngIf="estadoSolicitud === 'APROBADO'">
+    <div class="form-title" style="border:none;margin:0;text-align:center;">
+      <h3 style="color:#15803d;font-size:1.5rem;">
+        ¡Trámite Completado Exitosamente!
+      </h3>
+      <p style="margin-top:1rem;">
+        Su documento Paz y Salvo ha sido aprobado y finalizado.
+      </p>
+    </div>
+  </div>
+
+  <div style="margin-top:2rem;">
+
+    <div class="solicitud-header no-print">
+      <div class="header-info">
+        <h2>Documento Oficial</h2>
+        <p>Complete sus datos para continuar el proceso</p>
+      </div>
+
+      <div class="header-actions">
+        <button class="btn-clear" (click)="limpiarFormulario()" *ngIf="estadoSolicitud === 'PENDIENTE'">
+          Limpiar
+        </button>
+
+        <button
+          class="btn-pdf"
+          style="background:#2563eb;"
+          (click)="guardarDatos()"
+          [disabled]="cargando"
+          *ngIf="estadoSolicitud === 'PENDIENTE'">
+          {{ cargando ? 'Guardando...' : 'Iniciar Trámite' }}
+        </button>
+
+        <button class="btn-pdf" (click)="exportarPDF()" [disabled]="exportando">
+          {{ exportando ? 'Exportando...' : 'Exportar a PDF' }}
+        </button>
+      </div>
+    </div>
+
+    <div class="pdf-preview-wrapper" [ngClass]="{'readonly-wrapper': estadoSolicitud !== 'PENDIENTE'}">
+      <div class="pdf-content" #pdfContent>
+
+        <section class="pdf-page-a4">
+          <div class="page-inner paz-salvo-page">
+
+            <table class="ps-header-table">
+              <tr>
+                <td class="ps-logo-cell" rowspan="3">
+                  <img src="/img/logo.png" alt="INAMHI" style="max-height:40px;">
+                </td>
+                <td class="ps-title-main">
+                  INSTITUTO NACIONAL DE METEOROLOGÍA E HIDROLOGÍA
+                </td>
+              </tr>
+              <tr>
+                <td class="ps-title-sub">
+                  DIRECCIÓN DE ADMINISTRACIÓN DE RECURSOS HUMANOS
+                </td>
+              </tr>
+              <tr>
+                <td class="ps-title-doc">
+                  FORMULARIO PAZ Y SALVO PARA EL PAGO DE LIQUIDACIÓN DE HABERES
+                </td>
+              </tr>
+            </table>
+
+            <table class="ps-table">
+              <tr>
+                <th colspan="4" class="ps-section-title">DATOS PERSONALES</th>
+              </tr>
+
+              <tr>
+                <td class="ps-label w-25">NOMBRES Y APELLIDOS:</td>
+                <td colspan="3" [ngClass]="{'input-error': errores.nombres_completos}">
+                  <input
+                    type="text"
+                    [(ngModel)]="formulario.nombres_completos"
+                    readonly
+                    style="width:100%;border:none;background:transparent;outline:none;font-weight:bold;font-family:monospace;">
+                </td>
+              </tr>
+
+              <tr>
+                <td class="ps-label" [ngClass]="{'input-error': errores.regimen_laboral}">
+                  MODALIDAD LABORAL:
+                </td>
+                <td colspan="3" [ngClass]="{'input-error': errores.regimen_laboral}">
+                  <div style="display:flex;justify-content:space-between;">
+                    <label>NOMBRAMIENTO PERMANENTE <input type="checkbox" [(ngModel)]="formulario.mod_permanente"></label>
+                    <label>NOMBRAMIENTO PROVISIONAL <input type="checkbox" [(ngModel)]="formulario.mod_provisional"></label>
+                    <label>CONTRATO OCASIONAL <input type="checkbox" [(ngModel)]="formulario.mod_ocasional"></label>
+                    <label>CONTRATO DE TRABAJO <input type="checkbox" [(ngModel)]="formulario.mod_trabajo"></label>
+                  </div>
+                </td>
+              </tr>
+
+              <tr>
+                <td class="ps-label">CÉDULA DE CIUDADANÍA / PASAPORTE:</td>
+                <td [ngClass]="{'input-error': errores.cedula}">
+                  <input
+                    type="text"
+                    [(ngModel)]="formulario.cedula"
+                    readonly
+                    style="width:100%;border:none;background:transparent;outline:none;font-weight:bold;font-family:monospace;">
+                </td>
+
+                <td class="ps-label w-20">FECHA INGRESO:</td>
+                <td>
+                  <input
+                    type="date"
+                    [(ngModel)]="formulario.desde"
+                    [ngClass]="{'input-error': errores.desde}"
+                    style="width:100%;border:none;background:transparent;outline:none;font-weight:bold;font-family:monospace;">
+                </td>
+              </tr>
+
+              <div class="dashboard-container">
+
+  <div class="header-section no-print">
+    <div class="header-titles">
+      <h2>Bienvenido, {{ usuarioActual?.nombres }}</h2>
+      <p>Proceso de emisión de Paz y Salvo Institucional</p>
+    </div>
+
+    <button class="btn-logout" (click)="cerrarSesion()">Salir</button>
+  </div>
+
+  <div class="status-card no-print">
+    <h3>Estado Actual de su Trámite</h3>
+
+    <div class="status-indicator">
+      <span class="badge" [ngClass]="{
+        'badge-pendiente': estadoSolicitud === 'PENDIENTE',
+        'badge-revision': estadoSolicitud === 'EN_REVISION',
+        'badge-aprobado': estadoSolicitud === 'APROBADO',
+        'badge-negado': estadoSolicitud === 'NEGADO'
+      }">
+        {{ estadoSolicitud }}
+      </span>
+
+      <p *ngIf="estadoSolicitud === 'PENDIENTE'" class="status-text">
+        Debe completar su información personal para iniciar las validaciones.
+      </p>
+
+      <p *ngIf="estadoSolicitud === 'EN_REVISION'" class="status-text">
+        Sus datos fueron enviados. Las áreas están validando su información.
+      </p>
+
+      <p *ngIf="estadoSolicitud === 'APROBADO'" class="status-text">
+        Su proceso ha finalizado con éxito.
+      </p>
+    </div>
+  </div>
+
+  <div class="progress-card no-print" *ngIf="estadoSolicitud !== 'PENDIENTE'">
+    <div class="form-title">
+      <h3>Avance de Validación por Áreas</h3>
+    </div>
+
+    <div class="areas-grid">
+
+      <div class="area-item">
+        <div>
+          <div class="area-name">Gestión de TICS</div>
+          <div class="subtitle">Equipos e Información</div>
+        </div>
+        <span class="badge" [ngClass]="{
+          'badge-aprobado': estadoAreas.tics === 'COMPLETADO',
+          'badge-pendiente': estadoAreas.tics !== 'COMPLETADO'
+        }">
+          {{ estadoAreas.tics }}
+        </span>
+      </div>
+
+      <div class="area-item">
+        <div>
+          <div class="area-name">Gestión Financiera</div>
+          <div class="subtitle">Saldos y Anticipos</div>
+        </div>
+        <span class="badge" [ngClass]="{
+          'badge-aprobado': estadoAreas.financiero === 'COMPLETADO',
+          'badge-pendiente': estadoAreas.financiero !== 'COMPLETADO'
+        }">
+          {{ estadoAreas.financiero }}
+        </span>
+      </div>
+
+      <div class="area-item">
+        <div>
+          <div class="area-name">Gestión Administrativa</div>
+          <div class="subtitle">Bienes y Pasajes</div>
+        </div>
+        <span class="badge" [ngClass]="{
+          'badge-aprobado': estadoAreas.administrativo === 'COMPLETADO',
+          'badge-pendiente': estadoAreas.administrativo !== 'COMPLETADO'
+        }">
+          {{ estadoAreas.administrativo }}
+        </span>
+      </div>
+
+      <div class="area-item">
+        <div>
+          <div class="area-name">Seguridad de la Información</div>
+          <div class="subtitle">Accesos y Archivos</div>
+        </div>
+        <span class="badge" [ngClass]="{
+          'badge-aprobado': estadoAreas.seguridad === 'COMPLETADO',
+          'badge-pendiente': estadoAreas.seguridad !== 'COMPLETADO'
+        }">
+          {{ estadoAreas.seguridad }}
+        </span>
+      </div>
+
+      <div class="area-item">
+        <div>
+          <div class="area-name">Recursos Humanos</div>
+          <div class="subtitle">Cierre Final</div>
+        </div>
+        <span class="badge" [ngClass]="{
+          'badge-aprobado': estadoAreas.recursos_humanos === 'COMPLETADO',
+          'badge-pendiente': estadoAreas.recursos_humanos !== 'COMPLETADO'
+        }">
+          {{ estadoAreas.recursos_humanos }}
+        </span>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="upload-card no-print"
+    *ngIf="estadoAreas.recursos_humanos === 'COMPLETADO' && estadoSolicitud !== 'APROBADO'">
+
+    <div class="form-title">
+      <h3>Subir Documento Firmado</h3>
+      <p>El proceso ha sido validado por todas las áreas. Descargue el PDF, fírmelo y súbalo aquí.</p>
+    </div>
+
+    <div class="upload-section">
+      <input
+        type="file"
+        class="file-input"
+        (change)="seleccionarArchivo($event)"
+        accept=".pdf">
+
+      <button
+        class="btn-primary"
+        style="background:#2563eb;color:white;padding:0.6rem 1.2rem;border-radius:8px;border:none;font-weight:700;cursor:pointer;"
+        (click)="subirDocumento()"
+        [disabled]="!archivoSeleccionado || cargando">
+        {{ cargando ? 'Subiendo...' : 'Enviar Documento' }}
+      </button>
+    </div>
+  </div>
+
+  <div class="upload-card no-print" *ngIf="estadoSolicitud === 'APROBADO'">
+    <div class="form-title" style="border:none;margin:0;text-align:center;">
+      <h3 style="color:#15803d;font-size:1.5rem;">
+        ¡Trámite Completado Exitosamente!
+      </h3>
+      <p style="margin-top:1rem;">
+        Su documento Paz y Salvo ha sido aprobado y finalizado.
+      </p>
+    </div>
+  </div>
+
+  <div style="margin-top:2rem;">
+
+    <div class="solicitud-header no-print">
+      <div class="header-info">
+        <h2>Documento Oficial</h2>
+        <p>Complete sus datos para continuar el proceso</p>
+      </div>
+
+      <div class="header-actions">
+        <button class="btn-clear" (click)="limpiarFormulario()" *ngIf="estadoSolicitud === 'PENDIENTE'">
+          Limpiar
+        </button>
+
+        <button
+          class="btn-pdf"
+          style="background:#2563eb;"
+          (click)="guardarDatos()"
+          [disabled]="cargando"
+          *ngIf="estadoSolicitud === 'PENDIENTE'">
+          {{ cargando ? 'Guardando...' : 'Iniciar Trámite' }}
+        </button>
+
+        <button class="btn-pdf" (click)="exportarPDF()" [disabled]="exportando">
+          {{ exportando ? 'Exportando...' : 'Exportar a PDF' }}
+        </button>
+      </div>
+    </div>
+
+    <div class="pdf-preview-wrapper" [ngClass]="{'readonly-wrapper': estadoSolicitud !== 'PENDIENTE'}">
+      <div class="pdf-content" #pdfContent>
+
+        <section class="pdf-page-a4">
+          <div class="page-inner paz-salvo-page">
+
+            <table class="ps-header-table">
+              <tr>
+                <td class="ps-logo-cell" rowspan="3">
+                  <img src="/img/logo.png" alt="INAMHI" style="max-height:40px;">
+                </td>
+                <td class="ps-title-main">
+                  INSTITUTO NACIONAL DE METEOROLOGÍA E HIDROLOGÍA
+                </td>
+              </tr>
+              <tr>
+                <td class="ps-title-sub">
+                  DIRECCIÓN DE ADMINISTRACIÓN DE RECURSOS HUMANOS
+                </td>
+              </tr>
+              <tr>
+                <td class="ps-title-doc">
+                  FORMULARIO PAZ Y SALVO PARA EL PAGO DE LIQUIDACIÓN DE HABERES
+                </td>
+              </tr>
+            </table>
+
+            <table class="ps-table">
+              <tr>
+                <th colspan="4" class="ps-section-title">DATOS PERSONALES</th>
+              </tr>
+
+              <tr>
+                <td class="ps-label w-25">NOMBRES Y APELLIDOS:</td>
+                <td colspan="3" [ngClass]="{'input-error': errores.nombres_completos}">
+                  <input type="text" [(ngModel)]="formulario.nombres_completos" readonly
+                    style="width:100%;border:none;background:transparent;outline:none;font-weight:bold;font-family:monospace;">
+                </td>
+              </tr>
+
+              <tr>
+                <td class="ps-label" [ngClass]="{'input-error': errores.regimen_laboral}">
+                  MODALIDAD LABORAL:
+                </td>
+                <td colspan="3" [ngClass]="{'input-error': errores.regimen_laboral}">
+                  <div style="display:flex;justify-content:space-between;">
+                    <label>NOMBRAMIENTO PERMANENTE <input type="checkbox" [(ngModel)]="formulario.mod_permanente"></label>
+                    <label>NOMBRAMIENTO PROVISIONAL <input type="checkbox" [(ngModel)]="formulario.mod_provisional"></label>
+                    <label>CONTRATO OCASIONAL <input type="checkbox" [(ngModel)]="formulario.mod_ocasional"></label>
+                    <label>CONTRATO DE TRABAJO <input type="checkbox" [(ngModel)]="formulario.mod_trabajo"></label>
+                  </div>
+                </td>
+              </tr>
+
+              <tr>
+                <td class="ps-label">CÉDULA DE CIUDADANÍA / PASAPORTE:</td>
+                <td [ngClass]="{'input-error': errores.cedula}">
+                  <input type="text" [(ngModel)]="formulario.cedula" readonly
+                    style="width:100%;border:none;background:transparent;outline:none;font-weight:bold;font-family:monospace;">
+                </td>
+
+                <td class="ps-label w-20">FECHA INGRESO:</td>
+                <td>
+                  <input type="date" [(ngModel)]="formulario.desde"
+                    [ngClass]="{'input-error': errores.desde}"
+                    style="width:100%;border:none;background:transparent;outline:none;font-weight:bold;font-family:monospace;">
+                </td>
+              </tr>
+
+                            <tr>
+                <td class="ps-label">DIRECCIÓN DOMICILIARIA:</td>
+                <td [ngClass]="{'input-error': errores.direccion_domicilio}">
+                  <input type="text"
+                         [(ngModel)]="formulario.direccion_domicilio"
+                         style="width:100%;border:none;background:transparent;outline:none;font-weight:bold;font-family:monospace;">
+                </td>
+
+                <td class="ps-label">FECHA SALIDA:</td>
+                <td>
+                  <input type="date"
+                         [(ngModel)]="formulario.hasta"
+                         [ngClass]="{'input-error': errores.hasta}"
+                         style="width:100%;border:none;background:transparent;outline:none;font-weight:bold;font-family:monospace;">
+                </td>
+              </tr>
+
+              <tr>
+                <td class="ps-label">NUMERO CELULAR:</td>
+                <td [ngClass]="{'input-error': errores.celular}">
+                  <input type="text"
+                         [(ngModel)]="formulario.celular"
+                         style="width:100%;border:none;background:transparent;outline:none;font-weight:bold;font-family:monospace;">
+                </td>
+
+                <td class="ps-label">NUMERO CONTACTO EMERGENCIA:</td>
+                <td [ngClass]="{'input-error': errores.emergencia}">
+                  <input type="text"
+                         [(ngModel)]="formulario.emergencia"
+                         style="width:100%;border:none;background:transparent;outline:none;font-weight:bold;font-family:monospace;">
+                </td>
+              </tr>
+
+              <tr>
+                <td class="ps-label">EMAIL (1):</td>
+                <td>
+                  <input type="email"
+                         [(ngModel)]="formulario.email1"
+                         readonly
+                         style="width:100%;border:none;background:transparent;outline:none;font-weight:bold;font-family:monospace;">
+                </td>
+
+                <td class="ps-label">EMAIL (2):</td>
+                <td>
+                  <input type="email"
+                         [(ngModel)]="formulario.email2"
+                         [ngClass]="{'input-error': errores.email2}"
+                         style="width:100%;border:none;background:transparent;outline:none;font-weight:bold;font-family:monospace;">
+                </td>
+              </tr>
+
+              <tr>
+                <td class="ps-label">PROVINCIA:</td>
+                <td [ngClass]="{'input-error': errores.provincia}">
+                  <input type="text"
+                         [(ngModel)]="formulario.provincia"
+                         style="width:100%;border:none;background:transparent;outline:none;font-weight:bold;font-family:monospace;">
+                </td>
+
+                <td class="ps-label">CANTÓN:</td>
+                <td [ngClass]="{'input-error': errores.canton}">
+                  <input type="text"
+                         [(ngModel)]="formulario.canton"
+                         style="width:100%;border:none;background:transparent;outline:none;font-weight:bold;font-family:monospace;">
+                </td>
+              </tr>
+
+            </table>
+
+            <table class="ps-table mt-1">
+              <tr>
+                <th colspan="4" class="ps-section-title">
+                  DATOS DE LA DIRECCION/UNIDAD QUE PRESTO SUS SERVICIOS
+                </th>
+              </tr>
+
+              <tr>
+                <td class="ps-label w-25"
+                    [ngClass]="{'input-error': errores.lugar_trabajo}">
+                  LUGAR DE TRABAJO:
+                </td>
+
+                <td colspan="3"
+                    [ngClass]="{'input-error': errores.lugar_trabajo}">
+
+                  <label>
+                    PLANTA CENTRAL
+                    <input type="checkbox" [(ngModel)]="formulario.lugar_planta">
+                  </label>
+
+                  &nbsp;&nbsp;&nbsp;&nbsp;
+
+                  <label>
+                    PROCESOS DESCONCENTRADOS
+                    <input type="checkbox" [(ngModel)]="formulario.lugar_desconcentrados">
+                  </label>
+                </td>
+              </tr>
+
+              <tr>
+                <td class="ps-label">DIRECCIÓN/UNIDAD:</td>
+                <td colspan="3">
+                  <input type="text"
+                         [(ngModel)]="formulario.unidad_actual"
+                         readonly
+                         style="width:100%;border:none;background:transparent;outline:none;font-weight:bold;font-family:monospace;">
+                </td>
+              </tr>
+
+              <tr>
+                <td class="ps-label">CARGO DESEMPEÑADO:</td>
+                <td class="w-35">
+                  <input type="text"
+                         [(ngModel)]="formulario.cargo"
+                         readonly
+                         style="width:100%;border:none;background:transparent;outline:none;font-weight:bold;font-family:monospace;">
+                </td>
+
+                <td class="ps-label w-20">GRUPO OCUPACIONAL:</td>
+                <td>
+                  <input type="text"
+                         [(ngModel)]="formulario.grupo_ocupacional"
+                         style="width:100%;border:none;background:transparent;outline:none;font-weight:bold;font-family:monospace;">
+                </td>
+              </tr>
+            </table>
+
+            <table class="ps-table mt-1">
+
+              <tr class="ps-grid-header">
+                <td class="w-40">DETALLE</td>
+                <td class="w-5">SI</td>
+                <td class="w-5">NO</td>
+                <td class="w-25">NOMBRE RESPONSABLE</td>
+                <td class="w-25">FIRMA RESPONSABLE</td>
+              </tr>
+
+              <tr>
+                <td>ENTREGA INFORME DE FIN DE GESTIÓN</td>
+
+                <td class="text-center">
+                  <input type="checkbox" [(ngModel)]="formulario.info_fin_si">
+                </td>
+
+                <td class="text-center">
+                  <input type="checkbox" [(ngModel)]="formulario.info_fin_no">
+                </td>
+
+                <td>
+                  <input type="text"
+                         [(ngModel)]="formulario.info_fin_resp"
+                         style="width:100%;border:none;background:transparent;outline:none;text-align:center;">
+                </td>
+
+                <td>
+                  <input type="text"
+                         [(ngModel)]="formulario.info_fin_firma"
+                         style="width:100%;border:none;background:transparent;outline:none;text-align:center;">
+                </td>
+              </tr>
+
+              <tr>
+                <td>FE DE PRESENTACIÓN</td>
+
+                <td class="text-center">
+                  <input type="checkbox" [(ngModel)]="formulario.fe_pres_si">
+                </td>
+
+                <td class="text-center">
+                  <input type="checkbox" [(ngModel)]="formulario.fe_pres_no">
+                </td>
+
+                <td>
+                  <input type="text"
+                         [(ngModel)]="formulario.fe_pres_resp"
+                         style="width:100%;border:none;background:transparent;outline:none;text-align:center;">
+                </td>
+
+                <td>
+                  <input type="text"
+                         [(ngModel)]="formulario.fe_pres_firma"
+                         style="width:100%;border:none;background:transparent;outline:none;text-align:center;">
+                </td>
+              </tr>
+
+              <tr>
+                <td>ENTREGA DOCUMENTACIÓN FÍSICA Y DIGITAL</td>
+
+                <td class="text-center">
+                  <input type="checkbox" [(ngModel)]="formulario.doc_fis_dig_si">
+                </td>
+
+                <td class="text-center">
+                  <input type="checkbox" [(ngModel)]="formulario.doc_fis_dig_no">
+                </td>
+
+                <td>
+                  <input type="text"
+                         [(ngModel)]="formulario.doc_fis_dig_resp"
+                         style="width:100%;border:none;background:transparent;outline:none;text-align:center;">
+                </td>
+
+                <td>
+                  <input type="text"
+                         [(ngModel)]="formulario.doc_fis_dig_firma"
+                         style="width:100%;border:none;background:transparent;outline:none;text-align:center;">
+                </td>
+              </tr>
+
+            </table>
+
+    <!-- HOJA 2 -->
+    <section class="pdf-page-a4">
+  <div class="page-inner paz-salvo-page">
+
+    <table class="ps-header-table">
       <tr>
-        <td rowspan="4" class="logo-box">
-          <img src="/frontend/src/assets/logo.png" alt="INAMHI" class="logo">
+        <td class="ps-logo-cell" rowspan="3">
+          <img src="/img/logo.png" alt="INAMHI" style="max-height:40px;">
         </td>
-        <td rowspan="4" class="titulo-doc">
-          PAZ Y SALVO PARA EL PAGO DE LIQUIDACIÓN DE HABERES
-        </td>
-        <td class="meta-label">Código:</td>
-        <td class="meta-value">INAMHI-TH-F-001</td>
+        <td class="ps-title-main">INSTITUTO NACIONAL DE METEOROLOGÍA E HIDROLOGÍA</td>
       </tr>
       <tr>
-        <td class="meta-label">Versión:</td>
-        <td class="meta-value">1.0</td>
+        <td class="ps-title-sub">DIRECCIÓN DE ADMINISTRACIÓN DE RECURSOS HUMANOS</td>
       </tr>
       <tr>
-        <td class="meta-label">Fecha:</td>
-        <td class="meta-value">{{ form.fechaDocumento || '____/____/____' }}</td>
-      </tr>
-      <tr>
-        <td class="meta-label">Página:</td>
-        <td class="meta-value">1 de 2</td>
+        <td class="ps-title-doc">FORMULARIO PAZ Y SALVO PARA EL PAGO DE LIQUIDACIÓN DE HABERES</td>
       </tr>
     </table>
 
-    <table class="tabla">
+    <table class="ps-table mt-1">
       <tr>
-        <th colspan="4" class="section-title">DATOS PERSONALES</th>
+        <th colspan="7" class="ps-section-title">SEGURIDAD DE LA INFORMACIÓN</th>
+      </tr>
+
+      <tr class="ps-grid-header">
+        <td colspan="5" class="text-center">
+          Detalle: Acuerdo Ministerial 166 - Esquema Gubernamental de Seguridad de la Información EGSI
+        </td>
+        <td class="w-20">NOMBRE RESPONSABLE</td>
+        <td class="w-20">FIRMA RESPONSABLE</td>
       </tr>
 
       <tr>
-        <td class="label w-25">NOMBRES Y APELLIDOS:</td>
-        <td colspan="3">{{ form.nombres }}</td>
+        <td class="ps-label text-center w-15">ARCHIVOS DIGITALES</td>
+        <td class="text-center" [ngClass]="{'input-error': errores.seg_digitales}">
+          SI <input type="checkbox" [(ngModel)]="formulario.seg_digitales_si"><br>
+          NO <input type="checkbox" [(ngModel)]="formulario.seg_digitales_no">
+        </td>
+
+        <td class="ps-label text-center w-25">ENTREGA COPIA DE INFORME DE ACTIVIDADES</td>
+        <td class="text-center" [ngClass]="{'input-error': errores.seg_informe}">
+          SI <input type="checkbox" [(ngModel)]="formulario.seg_informe_si"><br>
+          NO <input type="checkbox" [(ngModel)]="formulario.seg_informe_no">
+        </td>
+
+        <td rowspan="2" class="ps-label text-center w-20">
+          NOMBRE DEL OFICIAL DE SEGURIDAD INSTITUCIONAL<br>
+          <input type="text" [(ngModel)]="formulario.seg_oficial_nombre"
+            [ngClass]="{'input-error': errores.seg_oficial_nombre}"
+            style="width:100%;border:none;background:transparent;outline:none;text-align:center;">
+        </td>
+
+        <td rowspan="2">
+          <input type="text" [(ngModel)]="formulario.seg_resp"
+            [ngClass]="{'input-error': errores.seg_resp}"
+            style="width:100%;height:100%;border:none;background:transparent;outline:none;text-align:center;">
+        </td>
+
+        <td rowspan="2">
+          <input type="text" [(ngModel)]="formulario.seg_firma"
+            style="width:100%;height:100%;border:none;background:transparent;outline:none;text-align:center;">
+        </td>
       </tr>
 
       <tr>
-        <td class="label">MODALIDAD LABORAL:</td>
+        <td class="ps-label text-center">ARCHIVOS FÍSICOS</td>
+        <td class="text-center" [ngClass]="{'input-error': errores.seg_fisicos}">
+          SI <input type="checkbox" [(ngModel)]="formulario.seg_fisicos_si"><br>
+          NO <input type="checkbox" [(ngModel)]="formulario.seg_fisicos_no">
+        </td>
+
+        <td class="ps-label text-center">VERIFICACIÓN DE LA INFORMACIÓN INSTITUCIONAL</td>
+        <td class="text-center" [ngClass]="{'input-error': errores.seg_verificacion}">
+          SI <input type="checkbox" [(ngModel)]="formulario.seg_verificacion_si"><br>
+          NO <input type="checkbox" [(ngModel)]="formulario.seg_verificacion_no">
+        </td>
+      </tr>
+    </table>
+
+    <table class="ps-table mt-1">
+      <tr>
+        <th colspan="5" class="ps-section-title">
+          DIRECCIÓN DE ADMINISTRACIÓN DE RECURSOS HUMANOS
+        </th>
+      </tr>
+
+      <tr class="ps-grid-header">
+        <td class="w-45 text-center">Detalle</td>
+        <td class="w-5">SI</td>
+        <td class="w-5">NO</td>
+        <td class="w-25">NOMBRE RESPONSABLE</td>
+        <td class="w-20">FIRMA RESPONSABLE</td>
+      </tr>
+
+      <tr>
+        <td>EL RESPONSABLE DE CAPACITACIÓN CERTIFICA QUE EL SERVIDOR SALIENTE DEVENGÓ LOS CURSOS RECIBIDOS EN LA INSTITUCIÓN</td>
+        <td class="text-center" [ngClass]="{'input-error': errores.rh_cursos}">
+          <input type="checkbox" [(ngModel)]="formulario.rh_cursos_si">
+        </td>
+        <td class="text-center" [ngClass]="{'input-error': errores.rh_cursos}">
+          <input type="checkbox" [(ngModel)]="formulario.rh_cursos_no">
+        </td>
+        <td>
+          <input type="text" [(ngModel)]="formulario.rh_cursos_resp"
+            [ngClass]="{'input-error': errores.rh_cursos_resp}"
+            style="width:100%;border:none;background:transparent;outline:none;text-align:center;">
+        </td>
+        <td>
+          <input type="text" [(ngModel)]="formulario.rh_cursos_firma"
+            style="width:100%;border:none;background:transparent;outline:none;text-align:center;">
+        </td>
+      </tr>
+
+      <tr>
+        <td>SE APLICÓ LA EVALUACIÓN DEL DESEMPEÑO DEL AÑO EN CURSO</td>
+        <td class="text-center" [ngClass]="{'input-error': errores.rh_eval}">
+          <input type="checkbox" [(ngModel)]="formulario.rh_eval_si">
+        </td>
+        <td class="text-center" [ngClass]="{'input-error': errores.rh_eval}">
+          <input type="checkbox" [(ngModel)]="formulario.rh_eval_no">
+        </td>
+        <td>
+          <input type="text" [(ngModel)]="formulario.rh_eval_resp"
+            [ngClass]="{'input-error': errores.rh_eval_resp}"
+            style="width:100%;border:none;background:transparent;outline:none;text-align:center;">
+        </td>
+        <td>
+          <input type="text" [(ngModel)]="formulario.rh_eval_firma"
+            style="width:100%;border:none;background:transparent;outline:none;text-align:center;">
+        </td>
+      </tr>
+
+      <tr>
+        <td>REALIZÓ LA DEVENGACIÓN Y/O CAPACITACIÓN DE LOS VIAJES REALIZADOS DURANTE EL ÚLTIMO AÑO</td>
+        <td class="text-center" [ngClass]="{'input-error': errores.rh_viajes}">
+          <input type="checkbox" [(ngModel)]="formulario.rh_viajes_si">
+        </td>
+        <td class="text-center" [ngClass]="{'input-error': errores.rh_viajes}">
+          <input type="checkbox" [(ngModel)]="formulario.rh_viajes_no">
+        </td>
+        <td>
+          <input type="text" [(ngModel)]="formulario.rh_viajes_resp"
+            [ngClass]="{'input-error': errores.rh_viajes_resp}"
+            style="width:100%;border:none;background:transparent;outline:none;text-align:center;">
+        </td>
+        <td>
+          <input type="text" [(ngModel)]="formulario.rh_viajes_firma"
+            style="width:100%;border:none;background:transparent;outline:none;text-align:center;">
+        </td>
+      </tr>
+
+      <tr>
+        <td>FUE DESVINCULADO DEL PUESTO QUE RENUNCIA</td>
+        <td class="text-center" [ngClass]="{'input-error': errores.rh_siith}">
+          <input type="checkbox" [(ngModel)]="formulario.rh_siith_si">
+        </td>
+        <td class="text-center" [ngClass]="{'input-error': errores.rh_siith}">
+          <input type="checkbox" [(ngModel)]="formulario.rh_siith_no">
+        </td>
+        <td>
+          <input type="text" [(ngModel)]="formulario.rh_siith_resp"
+            [ngClass]="{'input-error': errores.rh_siith_resp}"
+            style="width:100%;border:none;background:transparent;outline:none;text-align:center;">
+        </td>
+        <td>
+          <input type="text" [(ngModel)]="formulario.rh_siith_firma"
+            style="width:100%;border:none;background:transparent;outline:none;text-align:center;">
+        </td>
+      </tr>
+
+      <tr>
         <td colspan="3">
-          <label>NOMBRAMIENTO PERMANENTE <input type="checkbox" [checked]="form.modPermanente" disabled></label>
-          <label>NOMBRAMIENTO PROVISIONAL <input type="checkbox" [checked]="form.modProvisional" disabled></label>
-          <label>CONTRATO OCASIONAL <input type="checkbox" [checked]="form.modOcasional" disabled></label>
-          <label>CONTRATO DE TRABAJO <input type="checkbox" [checked]="form.modTrabajo" disabled></label>
+          DÍAS ACUMULADOS DE VACACIONES:
+          <input type="text" [(ngModel)]="formulario.rh_dias_vacaciones"
+            [ngClass]="{'input-error': errores.rh_dias_vacaciones}"
+            style="width:60px;border:none;border-bottom:1px solid #000;background:transparent;outline:none;text-align:center;">
+        </td>
+        <td>
+          NÚMERO DE CERTIFICADO:<br>
+          <input type="text" [(ngModel)]="formulario.rh_num_cert_vac"
+            style="width:100%;border:none;background:transparent;outline:none;">
+        </td>
+        <td>
+          <input type="text" [(ngModel)]="formulario.rh_vac_firma"
+            style="width:100%;border:none;background:transparent;outline:none;text-align:center;">
         </td>
       </tr>
 
       <tr>
-        <td class="label">CÉDULA DE CIUDADANÍA / PASAPORTE:</td>
-        <td>{{ form.cedula }}</td>
-        <td class="label">FECHA INGRESO:</td>
-        <td>{{ form.fechaIngreso }}</td>
+        <td>ENTREGA CONSTANCIA Y DECLARACIÓN JURAMENTADA DE FIN DE GESTIÓN</td>
+        <td class="text-center" [ngClass]="{'input-error': errores.rh_dec_jur}">
+          <input type="checkbox" [(ngModel)]="formulario.rh_dec_jur_si">
+        </td>
+        <td class="text-center" [ngClass]="{'input-error': errores.rh_dec_jur}">
+          <input type="checkbox" [(ngModel)]="formulario.rh_dec_jur_no">
+        </td>
+        <td>
+          NÚMERO DECLARACIÓN:<br>
+          <input type="text" [(ngModel)]="formulario.rh_num_dec_jur"
+            style="width:100%;border:none;background:transparent;outline:none;">
+        </td>
+        <td>
+          <input type="text" [(ngModel)]="formulario.rh_dec_jur_firma"
+            style="width:100%;border:none;background:transparent;outline:none;text-align:center;">
+        </td>
       </tr>
 
       <tr>
-        <td class="label">DIRECCIÓN DOMICILIARIA:</td>
-        <td>{{ form.direccion }}</td>
-        <td class="label">FECHA SALIDA:</td>
-        <td>{{ form.fechaSalida }}</td>
+        <td>ENTREGA CREDENCIAL INSTITUCIONAL, PORTA CREDENCIAL Y COLGANTE</td>
+        <td class="text-center" [ngClass]="{'input-error': errores.rh_credencial}">
+          <input type="checkbox" [(ngModel)]="formulario.rh_credencial_si">
+        </td>
+        <td class="text-center" [ngClass]="{'input-error': errores.rh_credencial}">
+          <input type="checkbox" [(ngModel)]="formulario.rh_credencial_no">
+        </td>
+        <td rowspan="2" class="ps-label text-center">
+          ACTA DE BIENES DEL CUSTODIO<br>
+          <input type="text" [(ngModel)]="formulario.rh_acta_bienes_obs"
+            style="width:100%;border:none;background:transparent;outline:none;">
+        </td>
+        <td rowspan="2">
+          <input type="text" [(ngModel)]="formulario.rh_acta_bienes_firma"
+            style="width:100%;height:100%;border:none;background:transparent;outline:none;text-align:center;">
+        </td>
       </tr>
 
       <tr>
-        <td class="label">NÚMERO CELULAR:</td>
-        <td>{{ form.celular }}</td>
-        <td class="label">NÚMERO CONTACTO EMERGENCIA:</td>
-        <td>{{ form.emergencia }}</td>
+        <td>ENTREGA COPIA DE INFORMACIÓN DE ACTIVIDADES Y RESPALDOS CD</td>
+        <td class="text-center" [ngClass]="{'input-error': errores.rh_cd}">
+          <input type="checkbox" [(ngModel)]="formulario.rh_cd_si">
+        </td>
+        <td class="text-center" [ngClass]="{'input-error': errores.rh_cd}">
+          <input type="checkbox" [(ngModel)]="formulario.rh_cd_no">
+        </td>
       </tr>
 
       <tr>
-        <td class="label">EMAIL (1):</td>
-        <td>{{ form.email1 }}</td>
-        <td class="label">EMAIL (2):</td>
-        <td>{{ form.email2 }}</td>
-      </tr>
-
-      <tr>
-        <td class="label">PROVINCIA:</td>
-        <td>{{ form.provincia }}</td>
-        <td class="label">CANTÓN:</td>
-        <td>{{ form.canton }}</td>
+        <td>ENTREGA ROPA DE TRABAJO O EQUIPO DE PROTECCIÓN</td>
+        <td class="text-center" [ngClass]="{'input-error': errores.rh_ropa}">
+          <input type="checkbox" [(ngModel)]="formulario.rh_ropa_si">
+        </td>
+        <td class="text-center" [ngClass]="{'input-error': errores.rh_ropa}">
+          <input type="checkbox" [(ngModel)]="formulario.rh_ropa_no">
+        </td>
+        <td class="ps-label text-center">
+          NOMBRE DIRECTOR/A TALENTO HUMANO<br>
+          <input type="text" [(ngModel)]="formulario.rh_dir_nombre"
+            [ngClass]="{'input-error': errores.rh_dir_nombre}"
+            style="width:100%;border:none;background:transparent;outline:none;text-align:center;">
+        </td>
+        <td class="text-center font-bold">FIRMA</td>
       </tr>
     </table>
 
-    <table class="tabla">
+    <table class="ps-table mt-1">
       <tr>
-        <th colspan="4" class="section-title">
-          DATOS DE LA DIRECCIÓN / UNIDAD QUE PRESTÓ SUS SERVICIOS
+        <th colspan="4" class="ps-section-title">
+          RECEPCIÓN DE DOCUMENTOS
         </th>
       </tr>
 
       <tr>
-        <td class="label">LUGAR DE TRABAJO:</td>
-        <td colspan="3">
-          <label>PLANTA CENTRAL <input type="checkbox" [checked]="form.lugarPlanta" disabled></label>
-          <label>PROCESOS DESCONCENTRADOS <input type="checkbox" [checked]="form.lugarDesconcentrados" disabled></label>
+        <td class="ps-label w-25">FECHA DE ENTREGA</td>
+        <td class="w-25">
+          <input type="date" [(ngModel)]="formulario.recep_fecha"
+            [ngClass]="{'input-error': errores.recep_fecha}"
+            style="width:100%;border:none;background:transparent;outline:none;">
+        </td>
+
+        <td class="ps-label w-25">No. HOJAS RECIBIDAS</td>
+        <td class="w-25">
+          <input type="number" [(ngModel)]="formulario.recep_hojas"
+            [ngClass]="{'input-error': errores.recep_hojas}"
+            style="width:100%;border:none;background:transparent;outline:none;">
         </td>
       </tr>
 
       <tr>
-        <td class="label">DIRECCIÓN / UNIDAD:</td>
-        <td colspan="3">{{ form.unidad }}</td>
-      </tr>
-
-      <tr>
-        <td class="label">CARGO DESEMPEÑADO:</td>
-        <td>{{ form.cargo }}</td>
-        <td class="label">GRUPO OCUPACIONAL:</td>
-        <td>{{ form.grupoOcupacional }}</td>
-      </tr>
-    </table>
-
-    <table class="tabla">
-      <tr class="grid-header">
-        <td class="w-40">DETALLE</td>
-        <td class="w-5">SI</td>
-        <td class="w-5">NO</td>
-        <td class="w-25">NOMBRE RESPONSABLE</td>
-        <td class="w-25">FIRMA RESPONSABLE</td>
-      </tr>
-
-      <tr>
-        <td>ENTREGA INFORME DE FIN DE GESTIÓN CON DETALLE DE ACTIVIDADES EJECUTADAS Y PENDIENTES (NO REQUIERE APROBACIÓN)</td>
-        <td class="center"><input type="checkbox" [checked]="form.infoFinSi" disabled></td>
-        <td class="center"><input type="checkbox" [checked]="form.infoFinNo" disabled></td>
-        <td>{{ form.infoFinResp }}</td>
-        <td></td>
-      </tr>
-
-      <tr>
-        <td>FE DE PRESENTACIÓN DE LA ENTREGA EN RECEPCIÓN DE DOCUMENTOS DEL INFORME DE FIN DE GESTIÓN</td>
-        <td class="center"><input type="checkbox" [checked]="form.fePresentacionSi" disabled></td>
-        <td class="center"><input type="checkbox" [checked]="form.fePresentacionNo" disabled></td>
-        <td>{{ form.fePresentacionResp }}</td>
-        <td></td>
-      </tr>
-
-      <tr>
-        <td>REALIZA LA ENTREGA DE ARCHIVO DE LA DOCUMENTACIÓN FÍSICA Y DIGITAL (LOSEP)</td>
-        <td class="center"><input type="checkbox" [checked]="form.archivoSi" disabled></td>
-        <td class="center"><input type="checkbox" [checked]="form.archivoNo" disabled></td>
-        <td>{{ form.archivoResp }}</td>
-        <td></td>
-      </tr>
-
-      <tr>
-        <td class="label">ES ADMINISTRADOR DE CONTRATO</td>
-        <td colspan="2" class="center">
-          SI <input type="checkbox" [checked]="form.adminContratoSi" disabled>
-          NO <input type="checkbox" [checked]="form.adminContratoNo" disabled>
+        <td class="ps-label">NOMBRE SERVIDOR/A QUIEN RECIBE</td>
+        <td>
+          <input type="text" [(ngModel)]="formulario.recep_nombre"
+            [ngClass]="{'input-error': errores.recep_nombre}"
+            style="width:100%;border:none;background:transparent;outline:none;">
         </td>
-        <td colspan="2">
-          <strong>DESCRIPCIÓN DEL CONTRATO:</strong><br>
-          {{ form.descripcionContrato }}
+        <td rowspan="2" class="ps-label text-center">FIRMA</td>
+        <td rowspan="2">
+          <input type="text" [(ngModel)]="formulario.recep_firma"
+            style="width:100%;height:100%;border:none;background:transparent;outline:none;">
         </td>
       </tr>
 
       <tr>
-        <td colspan="2" class="label">NÚMERO DE MEMORANDO DESIGNACIÓN DE NUEVO ADMINISTRADOR DE CONTRATO</td>
-        <td colspan="3">{{ form.memoAdministrador }}</td>
-      </tr>
-
-      <tr>
-        <td class="label">NOMBRE Y CARGO DEL JEFE INMEDIATO</td>
-        <td colspan="4">{{ form.jefeInmediato }}</td>
-      </tr>
-    </table>
-
-    <table class="tabla">
-      <tr>
-        <th colspan="8" class="section-title">GESTIÓN ADMINISTRATIVA</th>
-      </tr>
-
-      <tr class="grid-header">
-        <td colspan="2">Detalle</td>
-        <td>SI</td>
-        <td>NO</td>
-        <td colspan="2">Detalle</td>
-        <td>Nombre responsable</td>
-        <td>Firma responsable</td>
-      </tr>
-
-      <tr>
-        <td colspan="2">ENTREGÓ BIENES MUEBLES Y EQUIPOS?</td>
-        <td class="center"><input type="checkbox" [checked]="form.bienesSi" disabled></td>
-        <td class="center"><input type="checkbox" [checked]="form.bienesNo" disabled></td>
-        <td colspan="2">NÚMERO DE ACTA:<br>{{ form.numeroActaBienes }}</td>
-        <td>{{ form.responsableAdministrativa }}</td>
-        <td></td>
-      </tr>
-
-      <tr>
-        <td colspan="2">TIENE VALORES PENDIENTES POR DEDUCIBLES?</td>
-        <td class="center"><input type="checkbox" [checked]="form.deduciblesSi" disabled></td>
-        <td class="center"><input type="checkbox" [checked]="form.deduciblesNo" disabled></td>
-        <td colspan="2">VALOR A DESCONTAR:<br>{{ form.valorDeducibles }}</td>
-        <td>{{ form.responsableAdministrativa }}</td>
-        <td></td>
-      </tr>
-
-      <tr>
-        <td colspan="2">TIENE PASAJES AÉREOS POR JUSTIFICAR?</td>
-        <td class="center"><input type="checkbox" [checked]="form.pasajesSi" disabled></td>
-        <td class="center"><input type="checkbox" [checked]="form.pasajesNo" disabled></td>
-        <td colspan="2">VALOR A DESCONTAR:<br>{{ form.valorPasajes }}</td>
-        <td>{{ form.responsableAdministrativa }}</td>
-        <td></td>
-      </tr>
-    </table>
-
-    <table class="tabla">
-      <tr>
-        <td class="w-40">ENTREGA LOS TRÁMITES ASIGNADOS EN EL SISTEMA DE GESTIÓN DOCUMENTAL QUIPUX (BANDEJA EN CERO)</td>
-        <td class="w-10 center">
-          SI <input type="checkbox" [checked]="form.quipuxSi" disabled><br>
-          NO <input type="checkbox" [checked]="form.quipuxNo" disabled>
-        </td>
-        <td class="w-20 label center">NOMBRE Y CARGO DEL SERVIDOR QUE RECIBE LOS TRÁMITES PENDIENTES</td>
-        <td class="w-30">{{ form.quipuxRecibe }}</td>
-      </tr>
-
-      <tr>
-        <td>TIENE ASIGNADO CLAVES DE ACCESO EN SU UNIDAD</td>
-        <td class="center">
-          SI <input type="checkbox" [checked]="form.clavesSi" disabled><br>
-          NO <input type="checkbox" [checked]="form.clavesNo" disabled>
-        </td>
-        <td rowspan="2" class="label center">FIRMA</td>
-        <td rowspan="2"></td>
-      </tr>
-
-      <tr>
-        <td>REALIZÓ ACTA ENTREGA DE CLAVES DE SU UNIDAD<br>Observación: {{ form.obsClaves }}</td>
-        <td class="center">
-          SI <input type="checkbox" [checked]="form.actaClavesSi" disabled><br>
-          NO <input type="checkbox" [checked]="form.actaClavesNo" disabled>
+        <td class="ps-label">CARGO SERVIDOR/A QUIEN RECIBE</td>
+        <td>
+          <input type="text" [(ngModel)]="formulario.recep_cargo"
+            [ngClass]="{'input-error': errores.recep_cargo}"
+            style="width:100%;border:none;background:transparent;outline:none;">
         </td>
       </tr>
     </table>
 
-    <table class="tabla">
+    <table class="ps-table mt-1">
       <tr>
-        <th colspan="8" class="section-title">DIRECCIÓN ADMINISTRATIVA FINANCIERA</th>
-      </tr>
-      <tr>
-        <th colspan="8" class="subsection-title">GESTIÓN DE TECNOLOGÍAS DE LA INFORMACIÓN Y COMUNICACIÓN</th>
-      </tr>
-
-      <tr class="grid-header">
-        <td colspan="2">Detalle</td>
-        <td>SI</td>
-        <td>NO</td>
-        <td colspan="2">Observación / Detalle</td>
-        <td>Nombre responsable</td>
-        <td>Firma responsable</td>
+        <th colspan="2" class="ps-section-title">AUTORIZACIÓN</th>
       </tr>
 
       <tr>
-        <td colspan="2">¿SE REALIZÓ LA VERIFICACIÓN DEL EQUIPO INFORMÁTICO?</td>
-        <td class="center"><input type="checkbox" [checked]="form.ticEquipoSi" disabled></td>
-        <td class="center"><input type="checkbox" [checked]="form.ticEquipoNo" disabled></td>
-        <td colspan="2" rowspan="3">{{ form.obsTics }}</td>
-        <td rowspan="3">{{ form.responsableTics }}</td>
-        <td rowspan="3"></td>
+        <td colspan="2" class="ps-legal-text">
+          Conforme lo establecido en el artículo 110 del Reglamento a la Ley Orgánica de Servicio Público LOSEP,
+          quien suscribe el presente formulario de paz y salvo para la liquidación de haberes que me corresponde,
+          AUTORIZO a la Dirección Administrativa Financiera del INAMHI para que efectúe los descuentos detallados
+          por reintegro y/o recuperación de valores, bienes y/o especies.
+        </td>
       </tr>
 
       <tr>
-        <td colspan="2">¿TIENE ACCESO A IP FIJA WI-FI Y/O MÓVIL?</td>
-        <td class="center"><input type="checkbox" [checked]="form.ticIpSi" disabled></td>
-        <td class="center"><input type="checkbox" [checked]="form.ticIpNo" disabled></td>
-      </tr>
+        <td class="ps-signature-box w-50">
+          ___________________________________________<br>
+          FIRMA DEL SERVIDOR SALIENTE<br>
+          C.C:
+          <input type="text" [(ngModel)]="formulario.cedula"
+            style="width:140px;border:none;background:transparent;outline:none;font-weight:bold;text-align:center;">
+        </td>
 
-      <tr>
-        <td colspan="2">RETIRO DE CONTROL DE ACCESO (CONTRASEÑAS DE SISTEMAS DE INFORMACIÓN)</td>
-        <td class="center"><input type="checkbox" [checked]="form.ticRetiroSi" disabled></td>
-        <td class="center"><input type="checkbox" [checked]="form.ticRetiroNo" disabled></td>
-      </tr>
-
-      <tr>
-        <td colspan="2">ENTREGA DEL BACKUP DE LA INFORMACIÓN GENERADA (ENTREGAR RUTA DEL BACKUP)</td>
-        <td class="center"><input type="checkbox" [checked]="form.ticBackupSi" disabled></td>
-        <td class="center"><input type="checkbox" [checked]="form.ticBackupNo" disabled></td>
-        <td colspan="2">{{ form.rutaBackup }}</td>
-        <td>{{ form.responsableTics }}</td>
-        <td></td>
-      </tr>
-
-      <tr>
-        <td rowspan="5" class="label center">¿SE REALIZÓ EL CIERRE DE LAS CUENTAS?</td>
-        <td>CORREO INSTITUCIONAL</td>
-        <td class="center"><input type="checkbox" [checked]="form.ticCorreoSi" disabled></td>
-        <td class="center"><input type="checkbox" [checked]="form.ticCorreoNo" disabled></td>
-        <td colspan="2" rowspan="6">{{ form.obsCuentas }}</td>
-        <td rowspan="6">{{ form.responsableTics }}</td>
-        <td rowspan="6"></td>
-      </tr>
-
-      <tr>
-        <td>eSIGEF</td>
-        <td class="center"><input type="checkbox" [checked]="form.ticEsigefSi" disabled></td>
-        <td class="center"><input type="checkbox" [checked]="form.ticEsigefNo" disabled></td>
-      </tr>
-
-      <tr>
-        <td>SPRYN</td>
-        <td class="center"><input type="checkbox" [checked]="form.ticSprynSi" disabled></td>
-        <td class="center"><input type="checkbox" [checked]="form.ticSprynNo" disabled></td>
-      </tr>
-
-      <tr>
-        <td>QUIPUX</td>
-        <td class="center"><input type="checkbox" [checked]="form.ticQuipuxSi" disabled></td>
-        <td class="center"><input type="checkbox" [checked]="form.ticQuipuxNo" disabled></td>
-      </tr>
-
-      <tr>
-        <td>eSBYE</td>
-        <td class="center"><input type="checkbox" [checked]="form.ticEsbyeSi" disabled></td>
-        <td class="center"><input type="checkbox" [checked]="form.ticEsbyeNo" disabled></td>
-      </tr>
-
-      <tr>
-        <td colspan="2" class="label">¿SE REALIZÓ LA ENTREGA Y DESACTIVACIÓN DE LA TARJETA DE ACCESO?</td>
-        <td class="center"><input type="checkbox" [checked]="form.ticTarjetaSi" disabled></td>
-        <td class="center"><input type="checkbox" [checked]="form.ticTarjetaNo" disabled></td>
+        <td class="ps-signature-box w-50">
+          ___________________________________________<br>
+          DIRECCIÓN DE TALENTO HUMANO<br>
+          Sello
+        </td>
       </tr>
     </table>
 
-  </section>
-
-  <!-- HOJA 2 -->
-  <section class="hoja">
-
-    <table class="tabla encabezado">
-      <tr>
-        <td rowspan="4" class="logo-box">
-          <img src="/assets/logo-inamhi.png" alt="INAMHI" class="logo">
-        </td>
-        <td rowspan="4" class="titulo-doc">
-          PAZ Y SALVO PARA EL PAGO DE LIQUIDACIÓN DE HABERES
-        </td>
-        <td class="meta-label">Código:</td>
-        <td class="meta-value">INAMHI-TH-F-001</td>
-      </tr>
-      <tr>
-        <td class="meta-label">Versión:</td>
-        <td class="meta-value">1.0</td>
-      </tr>
-      <tr>
-        <td class="meta-label">Fecha:</td>
-        <td class="meta-value">{{ form.fechaDocumento || '____/____/____' }}</td>
-      </tr>
-      <tr>
-        <td class="meta-label">Página:</td>
-        <td class="meta-value">2 de 2</td>
-      </tr>
-    </table>
-
-      <!-- GESTIÓN FINANCIERA -->
-      <table class="tabla">
-        <tr>
-          <th colspan="8" class="subsection-title">GESTIÓN FINANCIERA</th>
-        </tr>
-
-        <tr class="grid-header">
-          <td colspan="3">Detalle</td>
-          <td>SI</td>
-          <td>NO</td>
-          <td>Detalle</td>
-          <td>Nombre responsable</td>
-          <td>Firma responsable</td>
-        </tr>
-
-        <tr>
-          <td colspan="3">¿TIENE VALORES PENDIENTES DE PAGO POR SALDOS CONTABLES? (VALORES PENDIENTES POR VIÁTICOS, CAJA CHICA, PASAJES AÉREOS)</td>
-          <td class="center"><input type="checkbox" [(ngModel)]="form.finSaldosSi"></td>
-          <td class="center"><input type="checkbox" [(ngModel)]="form.finSaldosNo"></td>
-          <td>VALOR A DESCONTAR: {{ form.finSaldosValor }}<br>OBSERVACIÓN: {{ form.finSaldosObs }}</td>
-          <td>{{ form.responsableFinanciera }}</td>
-          <td></td>
-        </tr>
-
-        <tr>
-          <td colspan="3">¿TIENE VALORES PENDIENTES DE PAGO POR ANTICIPO DE SUELDOS?</td>
-          <td class="center"><input type="checkbox" [(ngModel)]="form.finAnticipoSi"></td>
-          <td class="center"><input type="checkbox" [(ngModel)]="form.finAnticipoNo"></td>
-          <td>VALOR A DESCONTAR: {{ form.finAnticipoValor }}<br>OBSERVACIÓN: {{ form.finAnticipoObs }}</td>
-          <td>{{ form.responsableFinanciera }}</td>
-          <td></td>
-        </tr>
-
-        <tr>
-          <td colspan="3">¿TIENE VALORES PENDIENTES DE PAGO POR RECUPERACIÓN DE VALORES?</td>
-          <td class="center"><input type="checkbox" [(ngModel)]="form.finRecuperacionSi"></td>
-          <td class="center"><input type="checkbox" [(ngModel)]="form.finRecuperacionNo"></td>
-          <td>VALOR A DESCONTAR: {{ form.finRecuperacionValor }}<br>OBSERVACIÓN: {{ form.finRecuperacionObs }}</td>
-          <td>{{ form.responsableFinanciera }}</td>
-          <td></td>
-        </tr>
-
-        <tr>
-          <td colspan="3">¿TIENE VALORES PENDIENTES DE PAGO DEVOLUCIÓN DE MUEBLES Y EQUIPOS DE OFICINA?</td>
-          <td class="center"><input type="checkbox" [(ngModel)]="form.finMueblesSi"></td>
-          <td class="center"><input type="checkbox" [(ngModel)]="form.finMueblesNo"></td>
-          <td>VALOR A DESCONTAR: {{ form.finMueblesValor }}<br>OBSERVACIÓN: {{ form.finMueblesObs }}</td>
-          <td>{{ form.responsableFinanciera }}</td>
-          <td></td>
-        </tr>
-
-        <tr>
-          <td colspan="5" class="center label">NOMBRE DEL/LA DIRECTORA/A ADMINISTRATIVO/A FINANCIERO/A</td>
-          <td colspan="2">{{ form.directorFinanciero }}</td>
-          <td class="center label">FIRMA</td>
-        </tr>
-      </table>
-
-      <!-- SEGURIDAD -->
-      <table class="tabla">
-        <tr>
-          <th colspan="7" class="section-title">SEGURIDAD DE LA INFORMACIÓN</th>
-        </tr>
-
-        <tr class="grid-header">
-          <td colspan="5" class="center">
-            Detalle: (Acuerdo Ministerial 166 Esquema Gubernamental de Seguridad de la Información EGSI)
-          </td>
-          <td>Nombre responsable</td>
-          <td>Firma responsable</td>
-        </tr>
-
-        <tr>
-          <td class="label center">ARCHIVOS DIGITALES</td>
-          <td class="center">
-            SI <input type="checkbox" [(ngModel)]="form.segDigitalesSi"><br>
-            NO <input type="checkbox" [(ngModel)]="form.segDigitalesNo">
-          </td>
-
-          <td class="label center">ENTREGA COPIA DE INFORME DE ACTIVIDADES</td>
-          <td class="center">
-            SI <input type="checkbox" [(ngModel)]="form.segInformeSi"><br>
-            NO <input type="checkbox" [(ngModel)]="form.segInformeNo">
-          </td>
-
-          <td rowspan="2" class="label center">
-            NOMBRE DEL OFICIAL DE SEGURIDAD INSTITUCIONAL<br>
-            {{ form.oficialSeguridad }}
-          </td>
-
-          <td rowspan="2">{{ form.responsableSeguridad }}</td>
-          <td rowspan="2"></td>
-        </tr>
-
-        <tr>
-          <td class="label center">ARCHIVOS FÍSICOS</td>
-          <td class="center">
-            SI <input type="checkbox" [(ngModel)]="form.segFisicosSi"><br>
-            NO <input type="checkbox" [(ngModel)]="form.segFisicosNo">
-          </td>
-
-          <td class="label center">VERIFICACIÓN DE LA INFORMACIÓN INSTITUCIONAL</td>
-          <td class="center">
-            SI <input type="checkbox" [(ngModel)]="form.segVerificacionSi"><br>
-            NO <input type="checkbox" [(ngModel)]="form.segVerificacionNo">
-          </td>
-        </tr>
-      </table>
-
-      <!-- TALENTO HUMANO -->
-      <table class="tabla">
-        <tr>
-          <th colspan="5" class="section-title">DIRECCIÓN DE ADMINISTRACIÓN DE RECURSOS HUMANOS</th>
-        </tr>
-
-        <tr class="grid-header">
-          <td class="w-45">Detalle</td>
-          <td class="w-5">SI</td>
-          <td class="w-5">NO</td>
-          <td class="w-25">Nombre responsable</td>
-          <td class="w-20">Firma responsable</td>
-        </tr>
-
-        <tr>
-          <td>EL RESPONSABLE DE CAPACITACIÓN CERTIFICA QUE EL SERVIDOR SALIENTE: DEVENGÓ LOS CURSOS RECIBIDOS EN LA INSTITUCIÓN</td>
-          <td class="center"><input type="checkbox" [(ngModel)]="form.rhCursosSi"></td>
-          <td class="center"><input type="checkbox" [(ngModel)]="form.rhCursosNo"></td>
-          <td>{{ form.responsableTalentoHumano }}</td>
-          <td></td>
-        </tr>
-
-        <tr>
-          <td>EL RESPONSABLE DE EVALUACIÓN DEL DESEMPEÑO CERTIFICA QUE AL SERVIDOR SALIENTE: SE APLICÓ LA EVALUACIÓN DEL DESEMPEÑO DEL AÑO EN CURSO</td>
-          <td class="center"><input type="checkbox" [(ngModel)]="form.rhEvalSi"></td>
-          <td class="center"><input type="checkbox" [(ngModel)]="form.rhEvalNo"></td>
-          <td>{{ form.responsableTalentoHumano }}</td>
-          <td></td>
-        </tr>
-
-        <tr>
-          <td>EL RESPONSABLE DE VIAJES AL EXTERIOR CERTIFICA QUE EL SERVIDOR SALIENTE: REALIZÓ LA DEVENGACIÓN Y/O CAPACITACIÓN DE LOS VIAJES REALIZADOS DURANTE EL ÚLTIMO AÑO</td>
-          <td class="center"><input type="checkbox" [(ngModel)]="form.rhViajesSi"></td>
-          <td class="center"><input type="checkbox" [(ngModel)]="form.rhViajesNo"></td>
-          <td>{{ form.responsableTalentoHumano }}</td>
-          <td></td>
-        </tr>
-
-        <tr>
-          <td>EL RESPONSABLE DEL SISTEMA INTEGRADO DE INFORMACIÓN DE TALENTO HUMANO (SIITH) CERTIFICA QUE EL SERVIDOR SALIENTE: FUE DESVINCULADO DEL PUESTO QUE RENUNCIA</td>
-          <td class="center"><input type="checkbox" [(ngModel)]="form.rhSiithSi"></td>
-          <td class="center"><input type="checkbox" [(ngModel)]="form.rhSiithNo"></td>
-          <td>{{ form.responsableTalentoHumano }}</td>
-          <td></td>
-        </tr>
-
-        <tr>
-          <td colspan="3">
-            EL RESPONSABLE DE VACACIONES CERTIFICA QUE EL SERVIDOR SALIENTE, CUENTA CON UN TOTAL DE DÍAS ACUMULADOS VACACIONES:
-            {{ form.diasVacaciones }}
-          </td>
-          <td>NÚMERO DE CERTIFICADO EMITIDO:<br>{{ form.certificadoVacaciones }}</td>
-          <td></td>
-        </tr>
-
-        <tr>
-          <td>ENTREGA CONSTANCIA Y DECLARACIÓN JURAMENTADA DE FIN DE GESTIÓN</td>
-          <td class="center"><input type="checkbox" [(ngModel)]="form.rhDeclaracionSi"></td>
-          <td class="center"><input type="checkbox" [(ngModel)]="form.rhDeclaracionNo"></td>
-          <td>NÚMERO DE DECLARACIÓN JURAMENTADA DE FIN DE GESTIÓN RECIBIDA:<br>{{ form.numeroDeclaracion }}</td>
-          <td></td>
-        </tr>
-
-        <tr>
-          <td>ENTREGA CREDENCIAL INSTITUCIONAL, PORTA CREDENCIAL Y COLGANTE</td>
-          <td class="center"><input type="checkbox" [(ngModel)]="form.rhCredencialSi"></td>
-          <td class="center"><input type="checkbox" [(ngModel)]="form.rhCredencialNo"></td>
-          <td rowspan="2" class="label center">
-            ACTA DE BIENES DEL CUSTODIO<br>{{ form.actaBienesCustodio }}
-          </td>
-          <td rowspan="2"></td>
-        </tr>
-
-        <tr>
-          <td>ENTREGA COPIA DE INFORMACIÓN DE ACTIVIDADES Y RESPALDOS (CD)</td>
-          <td class="center"><input type="checkbox" [(ngModel)]="form.rhCdSi"></td>
-          <td class="center"><input type="checkbox" [(ngModel)]="form.rhCdNo"></td>
-        </tr>
-
-        <tr>
-          <td>ENTREGA ROPA DE TRABAJO O EQUIPO DE PROTECCIÓN</td>
-          <td class="center"><input type="checkbox" [(ngModel)]="form.rhRopaSi"></td>
-          <td class="center"><input type="checkbox" [(ngModel)]="form.rhRopaNo"></td>
-          <td class="label center">
-            NOMBRE DE/LA DIRECTOR/A ADMINISTRACIÓN DE RECURSOS HUMANOS<br>
-            {{ form.directorTalentoHumano }}
-          </td>
-          <td class="center label">FIRMA</td>
-        </tr>
-      </table>
-
-      <!-- RECEPCIÓN -->
-      <table class="tabla">
-        <tr>
-          <th colspan="4" class="section-title">
-            DIRECCIÓN DE ADMINISTRACIÓN DE RECURSOS HUMANOS - RECEPCIÓN DE DOCUMENTOS
-          </th>
-        </tr>
-
-        <tr>
-          <td class="label w-25">FECHA DE ENTREGA DEL PAZ Y SALVO</td>
-          <td class="w-25">{{ form.fechaRecepcion }}</td>
-          <td class="label w-25">No. HOJAS RECIBIDAS</td>
-          <td class="w-25">{{ form.hojasRecibidas }}</td>
-        </tr>
-
-        <tr>
-          <td class="label">NOMBRE SERVIDOR/A QUIEN RECIBE</td>
-          <td>{{ form.responsableRecepcion }}</td>
-          <td rowspan="2" class="label center">FIRMA</td>
-          <td rowspan="2"></td>
-        </tr>
-
-        <tr>
-          <td class="label">CARGO SERVIDOR/A QUIEN RECIBE</td>
-          <td>{{ form.cargoRecepcion }}</td>
-        </tr>
-      </table>
-
-      <!-- AUTORIZACIÓN -->
-      <table class="tabla">
-        <tr>
-          <th colspan="2" class="section-title">AUTORIZACIÓN</th>
-        </tr>
-
-        <tr>
-          <td colspan="2" class="legal-text">
-            Conforme lo establecido en el artículo 110 del Reglamento a la Ley Orgánica de Servicio Público (LOSEP),
-            quién suscribe el presente formulario de "paz y salvo" para la liquidación de haberes que me corresponde,
-            AUTORIZO a la DIRECCIÓN ADMINISTRATIVA FINANCIERA del INAMHI, para que efectúe los descuentos detallados
-            en el presente documento por reintegro y/o recuperación de valores, bienes y/o especies que se hayan
-            encontrado a mi cargo y no hayan sido devueltos en las condiciones recibidas, los mismos que serán
-            DESCONTADOS a través de mi rol de pagos y/o liquidación de haberes.
-          </td>
-        </tr>
-
-        <tr>
-          <td class="signature-box w-50">
-            <div class="linea-firma"></div>
-            FIRMA DEL SERVIDOR SALIENTE<br>
-            C.C: {{ form.cedula }}
-          </td>
-
-          <td class="signature-box w-50">
-            <div class="linea-firma"></div>
-            DIRECCIÓN DE TALENTO HUMANO<br>
-            Sello
-          </td>
-        </tr>
-      </table>
-
-    </section>
-
-  </main>
+  </div>
+</section>
 
 </div>

@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RouterLink } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { SolicitudesService } from '../../services/solicitudes';
 
 @Component({
@@ -24,10 +24,22 @@ export class Dashboard implements OnInit {
   cargando = true;
   error = '';
 
-  constructor(private solicitudesService: SolicitudesService) {}
+  constructor(
+    private solicitudesService: SolicitudesService,
+    private router: Router
+  ) {}
 
   ngOnInit(): void {
     this.cargarSolicitudes();
+  }
+
+  /* 🔐 CERRAR SESIÓN */
+  cerrarSesion(): void {
+    // limpiar todo
+    localStorage.clear();
+
+    // redirigir al login
+    this.router.navigate(['/login']);
   }
 
   cargarSolicitudes(): void {

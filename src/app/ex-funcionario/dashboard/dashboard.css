@@ -316,4 +316,12 @@ button.action-btn:disabled {
   pointer-events: none;
   cursor: not-allowed;
 }
+.btn-volver {
+  background: linear-gradient(135deg, #64748b, #334155);
+  color: white;
+}
+
+.btn-volver:hover {
+  background: linear-gradient(135deg, #475569, #1e293b);
+}
 }

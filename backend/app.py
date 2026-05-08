@@ -160,7 +160,7 @@ def login():
         cursor = conn.cursor(dictionary=True)
 
         cursor.execute("""
-            SELECT id, nombres, apellidos, usuario, rol, area, estado
+            SELECT id, nombres, apellidos, usuario, rol, estado
             FROM usuarios
             WHERE usuario = %s AND password = %s
         """, (usuario, password))
@@ -209,7 +209,7 @@ def listar_usuarios():
         cursor = conn.cursor(dictionary=True)
 
         cursor.execute("""
-            SELECT id, nombres, apellidos, usuario, rol, area, estado
+            SELECT id, nombres, apellidos, usuario, password, rol, estado, creado_en
             FROM usuarios
             ORDER BY id DESC
         """)
@@ -232,29 +232,50 @@ def listar_usuarios():
 def crear_usuario():
     data = request.get_json()
 
+    roles_validos = [
+        "admin",
+        "talento_humano",
+        "ex_funcionario",
+        "administrativa",
+        "financiera",
+        "tics",
+        "seguridad"
+    ]
+
     campos_obligatorios = ["nombres", "apellidos", "usuario", "password", "rol"]
 
     for campo in campos_obligatorios:
         if not data.get(campo):
-            return jsonify({
-                "mensaje": f"El campo {campo} es obligatorio"
-            }), 400
+            return jsonify({"mensaje": f"El campo {campo} es obligatorio"}), 400
+
+    if data.get("rol") not in roles_validos:
+        return jsonify({"mensaje": "Rol no válido"}), 400
 
     try:
         conn = get_connection()
         cursor = conn.cursor()
 
         cursor.execute("""
-            INSERT INTO usuarios 
-            (nombres, apellidos, usuario, password, rol, area, estado)
-            VALUES (%s, %s, %s, %s, %s, %s, %s)
+            SELECT id FROM usuarios WHERE usuario = %s
+        """, (data.get("usuario"),))
+
+        existe = cursor.fetchone()
+
+        if existe:
+            cursor.close()
+            conn.close()
+            return jsonify({"mensaje": "El usuario ya existe"}), 400
+
+        cursor.execute("""
+            INSERT INTO usuarios
+            (nombres, apellidos, usuario, password, rol, estado)
+            VALUES (%s, %s, %s, %s, %s, %s)
         """, (
             data.get("nombres"),
             data.get("apellidos"),
             data.get("usuario"),
             data.get("password"),
             data.get("rol"),
-            data.get("area"),
             "ACTIVO"
         ))
 
@@ -262,17 +283,7 @@ def crear_usuario():
         cursor.close()
         conn.close()
 
-        registrar_auditoria(
-            data.get("creado_por", "admin"),
-            data.get("rol_creador", "admin"),
-            "Usuarios",
-            "Crear usuario",
-            f"Se creó el usuario {data.get('usuario')} con rol {data.get('rol')}"
-        )
-
-        return jsonify({
-            "mensaje": "Usuario creado correctamente"
-        }), 201
+        return jsonify({"mensaje": "Usuario creado correctamente"}), 201
 
     except Exception as e:
         return jsonify({
@@ -288,7 +299,7 @@ def listar_ex_funcionarios():
         cursor = conn.cursor(dictionary=True)
 
         cursor.execute("""
-            SELECT id, nombres, apellidos, usuario, area, estado
+            SELECT id, nombres, apellidos, usuario, estado
             FROM usuarios
             WHERE rol = 'ex_funcionario'
             AND estado = 'ACTIVO'
@@ -350,101 +361,6 @@ def listar_solicitudes():
         }), 500
 
 
-@app.route("/api/solicitudes", methods=["POST"])
-def crear_solicitud():
-    data = request.get_json() or {}
-
-    ex_funcionario_id = data.get("ex_funcionario_id")
-    creado_por = str(data.get("creado_por", "")).strip()
-
-    if not ex_funcionario_id or not creado_por:
-        return jsonify({
-            "mensaje": "Ex funcionario y nombre del encargado son obligatorios"
-        }), 400
-
-    try:
-        conn = get_connection()
-        cursor = conn.cursor()
-
-        cursor.execute("""
-            INSERT INTO solicitudes
-            (ex_funcionario_id, creado_por, estado, observacion)
-            VALUES (%s, %s, %s, %s)
-        """, (
-            int(ex_funcionario_id),
-            creado_por,
-            "PENDIENTE",
-            ""
-        ))
-
-        solicitud_id = cursor.lastrowid
-
-        areas = [
-            "Unidad de Prestación de Servicios",
-            "Dirección Administrativa Financiera",
-            "TICS",
-            "Gestión Financiera",
-            "Seguridad de la Información",
-            "Recursos Humanos",
-            "Recepción de Documentos"
-        ]
-
-        for area in areas:
-            cursor.execute("""
-                INSERT INTO solicitudes_areas
-                (
-                    solicitud_id,
-                    area,
-                    estado,
-                    comentario,
-                    responsable,
-                    detalle,
-                    observacion,
-                    datos_json
-                )
-                VALUES (%s, %s, %s, %s, %s, %s, %s, %s)
-            """, (
-                solicitud_id,
-                area,
-                "PENDIENTE",
-                "Pendiente de revisión",
-                "",
-                "",
-                "",
-                json.dumps({})
-            ))
-
-        conn.commit()
-
-        registrar_auditoria(
-            creado_por,
-            "talento_humano",
-            "Solicitudes",
-            "Crear solicitud",
-            f"Se creó la solicitud #{solicitud_id} con flujo por áreas"
-        )
-
-        cursor.close()
-        conn.close()
-
-        return jsonify({
-            "mensaje": "Solicitud creada correctamente",
-            "solicitud_id": solicitud_id
-        }), 201
-
-    except Exception as e:
-        try:
-            conn.rollback()
-            cursor.close()
-            conn.close()
-        except:
-            pass
-
-        return jsonify({
-            "mensaje": "Error al crear solicitud",
-            "error": str(e)
-        }), 500
-
 @app.route("/api/solicitudes/<int:id>", methods=["GET"])
 def detalle_solicitud(id):
     try:
@@ -455,7 +371,7 @@ def detalle_solicitud(id):
         cursor = conn.cursor(dictionary=True)
 
         cursor.execute("""
-            SELECT 
+            SELECT
                 s.id,
                 s.ex_funcionario_id,
                 s.creado_por,
@@ -466,7 +382,7 @@ def detalle_solicitud(id):
                 u.nombres,
                 u.apellidos,
                 u.usuario,
-                u.area
+                u.rol
             FROM solicitudes s
             INNER JOIN usuarios u ON s.ex_funcionario_id = u.id
             WHERE s.id = %s
@@ -1166,6 +1082,19 @@ def reporte_resumen():
 def actualizar_usuario(id):
     data = request.get_json()
 
+    roles_validos = [
+        "admin",
+        "talento_humano",
+        "ex_funcionario",
+        "administrativa",
+        "financiera",
+        "tics",
+        "seguridad"
+    ]
+
+    if data.get("rol") not in roles_validos:
+        return jsonify({"mensaje": "Rol no válido"}), 400
+
     try:
         conn = get_connection()
         cursor = conn.cursor()
@@ -1178,7 +1107,6 @@ def actualizar_usuario(id):
                     usuario = %s,
                     password = %s,
                     rol = %s,
-                    area = %s,
                     estado = %s
                 WHERE id = %s
             """, (
@@ -1187,8 +1115,7 @@ def actualizar_usuario(id):
                 data.get("usuario"),
                 data.get("password"),
                 data.get("rol"),
-                data.get("area"),
-                data.get("estado"),
+                data.get("estado", "ACTIVO"),
                 id
             ))
         else:
@@ -1198,7 +1125,6 @@ def actualizar_usuario(id):
                     apellidos = %s,
                     usuario = %s,
                     rol = %s,
-                    area = %s,
                     estado = %s
                 WHERE id = %s
             """, (
@@ -1206,22 +1132,13 @@ def actualizar_usuario(id):
                 data.get("apellidos"),
                 data.get("usuario"),
                 data.get("rol"),
-                data.get("area"),
-                data.get("estado"),
+                data.get("estado", "ACTIVO"),
                 id
             ))
 
         conn.commit()
         cursor.close()
         conn.close()
-
-        registrar_auditoria(
-            data.get("usuario_actual", "admin"),
-            data.get("rol_actual", "admin"),
-            "Usuarios",
-            "Actualizar usuario",
-            f"Se actualizó el usuario ID {id}"
-        )
 
         return jsonify({"mensaje": "Usuario actualizado correctamente"}), 200
 
@@ -1256,14 +1173,6 @@ def cambiar_estado_usuario(id):
         conn.commit()
         cursor.close()
         conn.close()
-
-        registrar_auditoria(
-            data.get("usuario_actual", "admin"),
-            data.get("rol_actual", "admin"),
-            "Usuarios",
-            "Cambiar estado",
-            f"Usuario ID {id} cambiado a {estado}"
-        )
 
         return jsonify({"mensaje": f"Usuario cambiado a {estado}"}), 200
 

@@ -6,9 +6,15 @@
       <p>Registre una nueva solicitud para iniciar el flujo institucional.</p>
     </div>
 
-    <div class="user-card">
-      <strong>{{ usuarioActual?.nombres || 'Talento Humano' }}</strong>
-      <span>{{ usuarioActual?.rol || 'talento_humano' }}</span>
+    <div class="header-actions">
+      <button type="button" class="btn-volver" (click)="irPanelTalentoHumano()">
+        ← Volver
+      </button>
+
+      <div class="user-card">
+        <strong>{{ usuarioActual?.nombres || 'Talento Humano' }}</strong>
+        <span>{{ usuarioActual?.rol || 'talento_humano' }}</span>
+      </div>
     </div>
   </header>
 
@@ -16,11 +22,12 @@
     <div class="section-header">
       <div>
         <h2>Nueva solicitud</h2>
-        <p>Seleccione el ex funcionario para iniciar el proceso.</p>
+        <p>Seleccione el ex funcionario y registre el encargado de crear la solicitud.</p>
       </div>
     </div>
 
     <div class="form-grid">
+
       <div class="field">
         <label>Ex funcionario *</label>
         <select
@@ -55,6 +62,7 @@
           {{ errores.creado_por }}
         </span>
       </div>
+
     </div>
 
     <section class="message success" *ngIf="mensaje">
@@ -64,18 +72,16 @@
     <section class="message error" *ngIf="error">
       {{ error }}
     </section>
-    <br>
-    <br>
 
-    
-
-    <button
-      class="primary"
-      type="button"
-      (click)="crearSolicitud()"
-      [disabled]="cargando">
-      {{ cargando ? 'Creando solicitud...' : 'Crear solicitud' }}
-    </button>
+    <div class="form-actions">
+      <button
+        class="primary"
+        type="button"
+        (click)="crearSolicitud()"
+        [disabled]="cargando">
+        {{ cargando ? 'Creando solicitud...' : 'Crear solicitud' }}
+      </button>
+    </div>
   </section>
 
   <section class="table-card">

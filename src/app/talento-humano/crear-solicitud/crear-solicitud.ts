@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { Router } from '@angular/router';
 import { SolicitudesService } from '../../services/solicitudes';
 
 @Component({
@@ -28,11 +29,18 @@ export class CrearSolicitud implements OnInit {
   cargando = false;
   cargandoDatos = false;
 
-  constructor(private solicitudesService: SolicitudesService) {}
+  constructor(
+    private solicitudesService: SolicitudesService,
+    private router: Router
+  ) {}
 
   ngOnInit(): void {
     this.obtenerUsuarioActual();
     this.cargarDatosIniciales();
+  }
+
+  irPanelTalentoHumano(): void {
+    this.router.navigate(['/talento-humano/dashboard']);
   }
 
   obtenerUsuarioActual(): void {

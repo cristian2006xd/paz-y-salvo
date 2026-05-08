@@ -28,6 +28,16 @@ export class Usuarios implements OnInit {
   editando = false;
   usuarioEditandoId: number | null = null;
 
+  rolesValidos = [
+    'admin',
+    'talento_humano',
+    'ex_funcionario',
+    'administrativa',
+    'financiera',
+    'tics',
+    'seguridad'
+  ];
+
   constructor(
     private usuariosService: UsuariosService,
     private router: Router
@@ -47,8 +57,7 @@ export class Usuarios implements OnInit {
       apellidos: '',
       usuario: '',
       password: '',
-      rol: '',
-      area: ''
+      rol: ''
     };
   }
 
@@ -83,31 +92,22 @@ export class Usuarios implements OnInit {
     this.validarFormulario();
   }
 
-  soloLetrasInput(campo: 'nombres' | 'apellidos' | 'area'): void {
+  soloLetrasInput(campo: 'nombres' | 'apellidos'): void {
     this.nuevo[campo] = String(this.nuevo[campo] || '')
       .replace(/[^A-Za-zÁÉÍÓÚáéíóúÑñ\s]/g, '')
       .slice(0, 45);
 
-    if (campo === 'nombres' || campo === 'apellidos') {
-      this.generarUsuarioAutomatico();
-    } else {
-      this.validarFormulario();
-    }
+    this.generarUsuarioAutomatico();
   }
 
   cambiarRol(): void {
-    if (this.nuevo.rol !== 'area') {
-      this.nuevo.area = '';
-      delete this.errores.area;
-    }
-
     this.validarFormulario();
   }
 
   validarFormulario(): boolean {
     this.errores = {};
 
-    const validarLetras = (campo: 'nombres' | 'apellidos' | 'area'): void => {
+    const validarLetras = (campo: 'nombres' | 'apellidos'): void => {
       const valor = String(this.nuevo[campo] || '').trim();
 
       if (!valor) {
@@ -145,10 +145,8 @@ export class Usuarios implements OnInit {
 
     if (!this.nuevo.rol) {
       this.errores.rol = 'Seleccione un rol.';
-    }
-
-    if (this.nuevo.rol === 'area') {
-      validarLetras('area');
+    } else if (!this.rolesValidos.includes(this.nuevo.rol)) {
+      this.errores.rol = 'Rol inválido.';
     }
 
     return Object.keys(this.errores).length === 0;
@@ -163,6 +161,7 @@ export class Usuarios implements OnInit {
 
   cargarUsuarios(): void {
     this.cargando = true;
+    this.error = '';
 
     this.usuariosService.listar().subscribe({
       next: (data: Usuario[]) => {
@@ -186,7 +185,6 @@ export class Usuarios implements OnInit {
       u.apellidos?.toLowerCase().includes(texto) ||
       u.usuario?.toLowerCase().includes(texto) ||
       u.rol?.toLowerCase().includes(texto) ||
-      u.area?.toLowerCase().includes(texto) ||
       u.estado?.toLowerCase().includes(texto)
     );
   }
@@ -200,10 +198,6 @@ export class Usuarios implements OnInit {
     if (!this.validarFormulario()) {
       this.error = 'Formulario inválido.';
       return;
-    }
-
-    if (this.nuevo.rol !== 'area') {
-      this.nuevo.area = '';
     }
 
     this.cargando = true;
@@ -240,10 +234,6 @@ export class Usuarios implements OnInit {
     if (!this.validarFormulario()) {
       this.error = 'Formulario inválido.';
       return;
-    }
-
-    if (this.nuevo.rol !== 'area') {
-      this.nuevo.area = '';
     }
 
     this.usuariosService.actualizar(this.usuarioEditandoId, this.nuevo).subscribe({
@@ -301,8 +291,10 @@ export class Usuarios implements OnInit {
       admin: 'Administrador',
       talento_humano: 'Talento Humano',
       ex_funcionario: 'Ex Funcionario',
-      area: 'Área',
-      recepcion: 'Recepción'
+      administrativa: 'Administrativa',
+      financiera: 'Financiera',
+      tics: 'TICs',
+      seguridad: 'Seguridad'
     };
 
     return roles[rol] || rol;

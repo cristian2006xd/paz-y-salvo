@@ -17,6 +17,7 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
+  gap: 18px;
   margin-bottom: 28px;
 }
 
@@ -33,6 +34,12 @@
   color: #64748b;
 }
 
+.header-actions {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
 /* CARDS */
 .user-card,
 .form-card,
@@ -45,6 +52,7 @@
 
 .user-card {
   padding: 16px 20px;
+  min-width: 190px;
 }
 
 .user-card strong,
@@ -97,7 +105,6 @@
   font-weight: 900;
 }
 
-/* INPUTS */
 .field select,
 .field input {
   width: 100%;
@@ -117,7 +124,7 @@
   box-shadow: 0 0 0 4px rgba(37, 99, 235, .12);
 }
 
-/* 🔥 VALIDACIONES */
+/* VALIDACIONES */
 .input-error {
   border-color: #dc2626 !important;
   background: #fef2f2 !important;
@@ -150,6 +157,13 @@
 }
 
 /* BOTONES */
+.form-actions {
+  margin-top: 22px;
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
 button {
   padding: 14px 22px;
   border: none;
@@ -170,6 +184,14 @@ button:disabled {
   opacity: .55;
   cursor: not-allowed;
   transform: none;
+}
+
+.btn-volver {
+  background: linear-gradient(135deg, #64748b, #334155);
+}
+
+.btn-volver:hover:not(:disabled) {
+  box-shadow: 0 10px 20px rgba(51, 65, 85, .25);
 }
 
 /* TABLA */
@@ -252,11 +274,19 @@ th {
     gap: 16px;
   }
 
-  .form-grid {
-    grid-template-columns: 1fr;
+  .header-actions {
+    width: 100%;
+    flex-direction: column;
+    align-items: stretch;
   }
 
+  .user-card,
+  .btn-volver,
   button {
     width: 100%;
+  }
+
+  .form-grid {
+    grid-template-columns: 1fr;
   }
 }

@@ -4,29 +4,42 @@
 
     <!-- LADO IZQUIERDO -->
     <section class="login-info">
-      <div class="logo">PS</div>
 
-      <h1>Paz y Salvo Institucional</h1>
+      <div class="logo-container">
+        <!-- IMPORTANTE: si estás usando public -->
+        <img src="/img/logo.png" alt="Logo INAMHI" class="inamhi-logo">
+      </div>
 
-      <p>
-        Sistema integral para la gestión de solicitudes, validaciones por áreas,
-        control documental y auditoría institucional.
+      <h1>Sistema de Paz y Salvo</h1>
+
+      <p class="subtitle">
+        Plataforma institucional del INAMHI para la gestión integral de
+        procesos administrativos, validaciones interdepartamentales
+        y control documental.
       </p>
 
+      <div class="divider"></div>
+
       <ul class="features">
-        <li>✔ Gestión de solicitudes</li>
-        <li>✔ Validación por áreas</li>
-        <li>✔ Documentos firmados</li>
-        <li>✔ Auditoría completa</li>
+        <li>✔ Gestión centralizada de solicitudes</li>
+        <li>✔ Validación por áreas institucionales</li>
+        <li>✔ Control y seguimiento en tiempo real</li>
+        <li>✔ Auditoría y trazabilidad completa</li>
       </ul>
+
+      <div class="system-info">
+        <span>INAMHI</span>
+        <small>Tiempo, Clima y Agua del Ecuador</small>
+      </div>
+
     </section>
 
     <!-- LADO DERECHO -->
     <section class="login-form">
 
       <div class="form-header">
-        <h2>Iniciar sesión</h2>
-        <p>Ingrese sus credenciales para acceder al sistema</p>
+        <h2>Acceso al sistema</h2>
+        <p>Ingrese sus credenciales institucionales</p>
       </div>
 
       <form (ngSubmit)="login()">
@@ -37,7 +50,7 @@
             type="text"
             name="usuario"
             [(ngModel)]="usuario"
-            placeholder="Ej: admin"
+            placeholder="Ingrese su usuario"
             autocomplete="username"
           />
         </div>
@@ -58,13 +71,13 @@
         </div>
 
         <button type="submit" [disabled]="cargando">
-          {{ cargando ? 'Ingresando...' : 'Ingresar' }}
+          {{ cargando ? 'Verificando...' : 'Ingresar al sistema' }}
         </button>
 
       </form>
 
       <p class="footer">
-        Sistema institucional • Talento Humano
+        © INAMHI • Sistema institucional
       </p>
 
     </section>

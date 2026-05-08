@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-formulario',
@@ -13,6 +14,33 @@ export class Formulario {
   form: any = this.getInitialForm();
   errores: any = {};
   cargando = false;
+
+  usuarioActual: any = { nombres: 'Ex Funcionario' };
+  estadoSolicitud = 'PENDIENTE';
+  exportando = false;
+  archivoSeleccionado: File | null = null;
+
+  estadoAreas: any = {
+    tics: 'PENDIENTE',
+    financiero: 'PENDIENTE',
+    administrativo: 'PENDIENTE',
+    seguridad: 'PENDIENTE',
+    recursos_humanos: 'PENDIENTE'
+  };
+
+  constructor(private router: Router) {}
+
+  get formulario(): any {
+    return this.form;
+  }
+
+  set formulario(valor: any) {
+    this.form = valor;
+  }
+
+  irPanelExFuncionario(): void {
+    this.router.navigate(['/ex-funcionario/dashboard']);
+  }
 
   getInitialForm(): any {
     return {
@@ -33,152 +61,155 @@ export class Formulario {
       grupoOcupacional: '',
       jefeInmediato: '',
 
-      modalidadLaboral: '',
+      nombres_completos: '',
+      desde: '',
+      hasta: '',
+      direccion_domicilio: '',
+      grupo_ocupacional: '',
+      unidad_actual: '',
+      correo: '',
 
+      modalidadLaboral: '',
       modPermanente: false,
       modProvisional: false,
       modOcasional: false,
       modTrabajo: false,
 
+      mod_permanente: false,
+      mod_provisional: false,
+      mod_ocasional: false,
+      mod_trabajo: false,
+
+      lugarTrabajo: '',
       lugarPlanta: false,
       lugarDesconcentrados: false,
+      lugar_planta: false,
+      lugar_desconcentrados: false,
 
-      responsableAdministrativa: '',
-      responsableTics: '',
-      responsableFinanciera: '',
-      responsableTalentoHumano: '',
-      responsableSeguridad: '',
-      responsableRecepcion: '',
-
-      obsAdministrativa: '',
-      obsTics: '',
-      obsFinanciera: '',
-      obsCuentas: '',
-
+      infoFinOpcion: '',
       infoFinSi: false,
       infoFinNo: false,
       infoFinResp: '',
+      info_fin_si: false,
+      info_fin_no: false,
+      info_fin_resp: '',
+      info_fin_firma: '',
 
+      fePresentacionOpcion: '',
       fePresentacionSi: false,
       fePresentacionNo: false,
       fePresentacionResp: '',
+      fe_pres_si: false,
+      fe_pres_no: false,
+      fe_pres_resp: '',
+      fe_pres_firma: '',
 
+      archivoOpcion: '',
       archivoSi: false,
       archivoNo: false,
       archivoResp: '',
+      doc_fis_dig_si: false,
+      doc_fis_dig_no: false,
+      doc_fis_dig_resp: '',
+      doc_fis_dig_firma: '',
 
+      adminContratoOpcion: '',
       adminContratoSi: false,
       adminContratoNo: false,
+      admin_contrato_si: false,
+      admin_contrato_no: false,
       descripcionContrato: '',
+      desc_contrato: '',
       memoAdministrador: '',
+      num_memo_admin: '',
+      jefe_inmediato: '',
 
-      bienesSi: false,
-      bienesNo: false,
-      numeroActaBienes: '',
+      seg_digitales_si: false,
+      seg_digitales_no: false,
+      seg_informe_si: false,
+      seg_informe_no: false,
+      seg_fisicos_si: false,
+      seg_fisicos_no: false,
+      seg_verificacion_si: false,
+      seg_verificacion_no: false,
+      seg_oficial_nombre: '',
+      seg_resp: '',
+      seg_firma: '',
 
-      deduciblesSi: false,
-      deduciblesNo: false,
-      valorDeducibles: '',
+      rh_cursos_si: false,
+      rh_cursos_no: false,
+      rh_cursos_resp: '',
+      rh_cursos_firma: '',
+      rh_eval_si: false,
+      rh_eval_no: false,
+      rh_eval_resp: '',
+      rh_eval_firma: '',
+      rh_viajes_si: false,
+      rh_viajes_no: false,
+      rh_viajes_resp: '',
+      rh_viajes_firma: '',
+      rh_siith_si: false,
+      rh_siith_no: false,
+      rh_siith_resp: '',
+      rh_siith_firma: '',
+      rh_dias_vacaciones: '',
+      rh_num_cert_vac: '',
+      rh_vac_firma: '',
+      rh_dec_jur_si: false,
+      rh_dec_jur_no: false,
+      rh_num_dec_jur: '',
+      rh_dec_jur_firma: '',
+      rh_credencial_si: false,
+      rh_credencial_no: false,
+      rh_acta_bienes_obs: '',
+      rh_acta_bienes_firma: '',
+      rh_cd_si: false,
+      rh_cd_no: false,
+      rh_ropa_si: false,
+      rh_ropa_no: false,
+      rh_dir_nombre: '',
 
-      pasajesSi: false,
-      pasajesNo: false,
-      valorPasajes: '',
-
-      quipuxSi: false,
-      quipuxNo: false,
-      quipuxRecibe: '',
-
-      clavesSi: false,
-      clavesNo: false,
-      actaClavesSi: false,
-      actaClavesNo: false,
-      obsClaves: '',
-
-      ticEquipoSi: false,
-      ticEquipoNo: false,
-      ticIpSi: false,
-      ticIpNo: false,
-      ticRetiroSi: false,
-      ticRetiroNo: false,
-      ticBackupSi: false,
-      ticBackupNo: false,
-      rutaBackup: '',
-
-      ticCorreoSi: false,
-      ticCorreoNo: false,
-      ticEsigefSi: false,
-      ticEsigefNo: false,
-      ticSprynSi: false,
-      ticSprynNo: false,
-      ticQuipuxSi: false,
-      ticQuipuxNo: false,
-      ticEsbyeSi: false,
-      ticEsbyeNo: false,
-      ticTarjetaSi: false,
-      ticTarjetaNo: false,
-
-      finSaldosSi: false,
-      finSaldosNo: false,
-      finSaldosValor: '',
-      finSaldosObs: '',
-
-      finAnticipoSi: false,
-      finAnticipoNo: false,
-      finAnticipoValor: '',
-      finAnticipoObs: '',
-
-      finRecuperacionSi: false,
-      finRecuperacionNo: false,
-      finRecuperacionValor: '',
-      finRecuperacionObs: '',
-
-      finMueblesSi: false,
-      finMueblesNo: false,
-      finMueblesValor: '',
-      finMueblesObs: '',
-
-      directorFinanciero: '',
-
-      segDigitalesSi: false,
-      segDigitalesNo: false,
-      segInformeSi: false,
-      segInformeNo: false,
-      segFisicosSi: false,
-      segFisicosNo: false,
-      segVerificacionSi: false,
-      segVerificacionNo: false,
-      oficialSeguridad: '',
-
-      rhCursosSi: false,
-      rhCursosNo: false,
-      rhEvalSi: false,
-      rhEvalNo: false,
-      rhViajesSi: false,
-      rhViajesNo: false,
-      rhSiithSi: false,
-      rhSiithNo: false,
-
-      diasVacaciones: '',
-      certificadoVacaciones: '',
-
-      rhDeclaracionSi: false,
-      rhDeclaracionNo: false,
-      numeroDeclaracion: '',
-
-      rhCredencialSi: false,
-      rhCredencialNo: false,
-      rhCdSi: false,
-      rhCdNo: false,
-      rhRopaSi: false,
-      rhRopaNo: false,
-
-      actaBienesCustodio: '',
-      directorTalentoHumano: '',
-
-      fechaRecepcion: '',
-      hojasRecibidas: '',
-      cargoRecepcion: ''
+      recep_fecha: '',
+      recep_hojas: '',
+      recep_nombre: '',
+      recep_firma: '',
+      recep_cargo: ''
     };
+  }
+
+  sincronizarCampos(): void {
+    this.form.nombres_completos = this.form.nombres;
+    this.form.desde = this.form.fechaIngreso;
+    this.form.hasta = this.form.fechaSalida;
+    this.form.direccion_domicilio = this.form.direccion;
+    this.form.grupo_ocupacional = this.form.grupoOcupacional;
+    this.form.unidad_actual = this.form.unidad;
+
+    this.form.mod_permanente = this.form.modPermanente;
+    this.form.mod_provisional = this.form.modProvisional;
+    this.form.mod_ocasional = this.form.modOcasional;
+    this.form.mod_trabajo = this.form.modTrabajo;
+
+    this.form.lugar_planta = this.form.lugarPlanta;
+    this.form.lugar_desconcentrados = this.form.lugarDesconcentrados;
+
+    this.form.info_fin_si = this.form.infoFinSi;
+    this.form.info_fin_no = this.form.infoFinNo;
+    this.form.info_fin_resp = this.form.infoFinResp;
+
+    this.form.fe_pres_si = this.form.fePresentacionSi;
+    this.form.fe_pres_no = this.form.fePresentacionNo;
+    this.form.fe_pres_resp = this.form.fePresentacionResp;
+
+    this.form.doc_fis_dig_si = this.form.archivoSi;
+    this.form.doc_fis_dig_no = this.form.archivoNo;
+    this.form.doc_fis_dig_resp = this.form.archivoResp;
+
+    this.form.admin_contrato_si = this.form.adminContratoSi;
+    this.form.admin_contrato_no = this.form.adminContratoNo;
+    this.form.desc_contrato = this.form.descripcionContrato;
+    this.form.num_memo_admin = this.form.memoAdministrador;
+    this.form.jefe_inmediato = this.form.jefeInmediato;
   }
 
   seleccionarModalidadSelect(): void {
@@ -191,31 +222,43 @@ export class Formulario {
       this.form[this.form.modalidadLaboral] = true;
     }
 
+    this.sincronizarCampos();
+    this.validarFormulario();
+  }
+
+  seleccionarLugarTrabajo(): void {
+    this.form.lugarPlanta = false;
+    this.form.lugarDesconcentrados = false;
+
+    if (this.form.lugarTrabajo) {
+      this.form[this.form.lugarTrabajo] = true;
+    }
+
+    this.sincronizarCampos();
+    this.validarFormulario();
+  }
+
+  seleccionarSiNo(campo: string): void {
+    this.form[`${campo}Si`] = this.form[`${campo}Opcion`] === 'si';
+    this.form[`${campo}No`] = this.form[`${campo}Opcion`] === 'no';
+    this.sincronizarCampos();
     this.validarFormulario();
   }
 
   soloLetrasInput(campo: string): void {
-    this.form[campo] = String(this.form[campo] || '')
-      .replace(/[^A-Za-zÁÉÍÓÚáéíóúÑñ\s]/g, '');
-
-    const palabras = this.form[campo].trim().split(/\s+/).filter((p: string) => p);
-
-    if (palabras.length > 35) {
-      this.form[campo] = palabras.slice(0, 35).join(' ');
-    }
-
+    this.form[campo] = String(this.form[campo] || '').replace(/[^A-Za-zÁÉÍÓÚáéíóúÑñ\s]/g, '');
+    this.sincronizarCampos();
     this.validarFormulario();
   }
 
   soloNumerosInput(campo: string, max: number): void {
-    this.form[campo] = String(this.form[campo] || '')
-      .replace(/[^0-9]/g, '')
-      .slice(0, max);
-
+    this.form[campo] = String(this.form[campo] || '').replace(/[^0-9]/g, '').slice(0, max);
+    this.sincronizarCampos();
     this.validarFormulario();
   }
 
   validarFormulario(): boolean {
+    this.sincronizarCampos();
     this.errores = {};
 
     const requerido = (campo: string): void => {
@@ -224,94 +267,28 @@ export class Formulario {
       }
     };
 
-    const soloLetras = (campo: string): void => {
-      const valor = String(this.form[campo] || '').trim();
-
-      if (!valor) {
-        this.errores[campo] = 'Campo obligatorio.';
-        return;
-      }
-
-      if (!/^[A-Za-zÁÉÍÓÚáéíóúÑñ\s]+$/.test(valor)) {
-        this.errores[campo] = 'Solo se permiten letras.';
-        return;
-      }
-
-      const palabras = valor.split(/\s+/).filter(p => p.length > 0);
-
-      if (palabras.length > 35) {
-        this.errores[campo] = 'Máximo 35 palabras permitidas.';
-      }
-    };
-
     const soloNumeros = (campo: string, min: number, max: number, msg: string): void => {
       const valor = String(this.form[campo] || '').trim();
-
-      if (!valor) {
-        this.errores[campo] = 'Campo obligatorio.';
-        return;
-      }
-
-      if (!/^[0-9]+$/.test(valor)) {
-        this.errores[campo] = 'Solo se permiten números.';
-        return;
-      }
-
-      if (valor.length < min || valor.length > max) {
+      if (!/^[0-9]+$/.test(valor) || valor.length < min || valor.length > max) {
         this.errores[campo] = msg;
       }
     };
 
-    const validarEmail = (campo: string): void => {
-      const valor = String(this.form[campo] || '').trim();
-
-      if (!valor) {
-        this.errores[campo] = 'Campo obligatorio.';
-        return;
-      }
-
-      if (valor.length > 30) {
-        this.errores[campo] = 'Máximo 30 caracteres.';
-        return;
-      }
-
-      if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(valor)) {
-        this.errores[campo] = 'Correo inválido. Debe contener @.';
-      }
-    };
-
     [
-      'nombres',
-      'cedula',
-      'fechaIngreso',
-      'fechaSalida',
-      'direccion',
-      'celular',
-      'emergencia',
-      'email1',
-      'email2',
-      'provincia',
-      'canton',
-      'unidad',
-      'cargo',
-      'grupoOcupacional',
-      'jefeInmediato'
+      'nombres', 'cedula', 'fechaIngreso', 'fechaSalida', 'direccion',
+      'celular', 'emergencia', 'email1', 'email2', 'provincia', 'canton',
+      'unidad', 'cargo', 'grupoOcupacional', 'jefeInmediato',
+      'lugarTrabajo', 'infoFinOpcion', 'infoFinResp',
+      'fePresentacionOpcion', 'fePresentacionResp',
+      'archivoOpcion', 'archivoResp', 'adminContratoOpcion'
     ].forEach(campo => requerido(campo));
-
-    soloLetras('nombres');
-    soloLetras('provincia');
-    soloLetras('canton');
 
     soloNumeros('cedula', 10, 10, 'La cédula debe tener 10 números.');
     soloNumeros('celular', 10, 10, 'El celular debe tener 10 números.');
     soloNumeros('emergencia', 7, 10, 'El contacto debe tener entre 7 y 10 números.');
 
-    validarEmail('email1');
-    validarEmail('email2');
-
-    if (!this.form.modalidadLaboral) {
-      this.errores.modalidad = 'Seleccione una modalidad laboral.';
-    }
+    if (!this.form.modalidadLaboral) this.errores.modalidad = 'Seleccione una modalidad laboral.';
+    if (!this.form.lugarTrabajo) this.errores.lugarTrabajo = 'Seleccione el lugar de trabajo.';
 
     if (this.form.fechaIngreso && this.form.fechaSalida) {
       if (new Date(this.form.fechaSalida) < new Date(this.form.fechaIngreso)) {
@@ -339,29 +316,19 @@ export class Formulario {
     alert('Formulario guardado correctamente.');
   }
 
-  cargar(): void {
-    const data = localStorage.getItem('formulario_paz_salvo');
-
-    if (!data) {
-      alert('No hay datos guardados.');
-      return;
-    }
-
-    this.form = {
-      ...this.getInitialForm(),
-      ...JSON.parse(data)
-    };
-
-    this.validarFormulario();
-    alert('Datos cargados correctamente.');
+  guardarDatos(): void {
+    this.guardar();
   }
 
   limpiar(): void {
     if (!confirm('¿Seguro que deseas limpiar el formulario?')) return;
-
     this.form = this.getInitialForm();
     this.errores = {};
     localStorage.removeItem('formulario_paz_salvo');
+  }
+
+  limpiarFormulario(): void {
+    this.limpiar();
   }
 
   imprimir(): void {
@@ -371,5 +338,22 @@ export class Formulario {
     }
 
     window.print();
+  }
+
+  exportarPDF(): void {
+    this.imprimir();
+  }
+
+  seleccionarArchivo(event: any): void {
+    this.archivoSeleccionado = event.target.files?.[0] || null;
+  }
+
+  subirDocumento(): void {
+    alert('Documento seleccionado correctamente.');
+  }
+
+  cerrarSesion(): void {
+    localStorage.clear();
+    this.router.navigate(['/login']);
   }
 }

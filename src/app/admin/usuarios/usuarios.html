@@ -2,10 +2,10 @@
   <header class="header">
     <div>
       <h1>Gestión de Usuarios</h1>
-      <p>Administre usuarios, roles, áreas y estados del sistema.</p>
+      <p>Administre usuarios, roles y estados del sistema.</p>
     </div>
 
-  <button type="button" (click)="irDashboard()">VOLVER</button>
+    <button type="button" (click)="irDashboard()">VOLVER</button>
   </header>
 
   <section class="form-card">
@@ -44,18 +44,14 @@
         <select [(ngModel)]="nuevo.rol" name="rol" (change)="cambiarRol()" [class.input-error]="errores.rol">
           <option value="">Seleccione un rol</option>
           <option value="admin">Administrador</option>
-          <option value="talento_humano">Talento Humano</option>
+          <option value="talento_humano">Talento Humano - Recepcion Documentos</option>
           <option value="ex_funcionario">Ex Funcionario</option>
-          <option value="area">Área</option>
-          <option value="recepcion">Recepción</option>
+          <option value="administrativa">Administrativa</option>
+          <option value="financiera">Financiera</option>
+          <option value="tics">TICs</option>
+          <option value="seguridad">Seguridad</option>
         </select>
         <span class="error-text" *ngIf="errores.rol">{{ errores.rol }}</span>
-      </label>
-
-      <label>Área
-        <input [(ngModel)]="nuevo.area" name="area" placeholder="Área" maxlength="45" [disabled]="nuevo.rol !== 'area'"
-          (input)="soloLetrasInput('area')" [class.input-error]="errores.area">
-        <span class="error-text" *ngIf="errores.area">{{ errores.area }}</span>
       </label>
     </div>
 
@@ -87,7 +83,6 @@
           <th>Nombre completo</th>
           <th>Usuario</th>
           <th>Rol</th>
-          <th>Área</th>
           <th>Estado</th>
           <th>Acciones</th>
         </tr>
@@ -99,7 +94,6 @@
           <td>{{ u.nombres }} {{ u.apellidos }}</td>
           <td>{{ u.usuario }}</td>
           <td><span class="role">{{ nombreRol(u.rol) }}</span></td>
-          <td>{{ u.area || 'No aplica' }}</td>
           <td>
             <span class="badge" [class.activo]="u.estado === 'ACTIVO'">
               {{ u.estado || 'ACTIVO' }}
